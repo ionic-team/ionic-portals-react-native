@@ -43,17 +43,18 @@ android.iml
 # Cocoapods
 #
 example/ios/Pods
+ios/Pods
 
 # node.js
 #
-node_modules/
+**/node_modules/
 npm-debug.log
 yarn-debug.log
 yarn-error.log
 
 # BUCK
-buck-out/
-\.buckd/
+**/buck-out/
+**/\.buckd/
 android/app/libs
 android/keystores/debug.keystore
 

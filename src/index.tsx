@@ -1,22 +1,48 @@
-import { NativeModules, Platform } from 'react-native';
+import { HostComponent, NativeEventEmitter, NativeModules, requireNativeComponent, ViewProps } from 'react-native';
+// export * from './PortalView.ios';
+// export * from './PortalView.android';
 
-const LINKING_ERROR =
-  `The package '@ionic/react-native-portals' doesn't seem to be linked. Make sure: \n\n` +
-  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
-  '- You rebuilt the app after installing the package\n' +
-  '- You are not using Expo managed workflow\n';
+const { IONPortalsPubSub, IONPortalManager } = NativeModules;
 
-const ReactNativePortals = NativeModules.ReactNativePortals
-  ? NativeModules.ReactNativePortals
-  : new Proxy(
-      {},
-      {
-        get() {
-          throw new Error(LINKING_ERROR);
-        },
-      }
-    );
-
-export function multiply(a: number, b: number): Promise<number> {
-  return ReactNativePortals.multiply(a, b);
+export interface Message {
+  subscriptionRef: number;
+  data: any;
+  topic: string;
 }
+
+const PortalsPubSub = new NativeEventEmitter(IONPortalsPubSub);
+
+let subscriptionRefDict: any = {};
+
+export const subscribe = async (topic: string, onMessageReceived: (message: Message) => void): Promise<number> => {
+  const subscriptionRef = await IONPortalsPubSub.subscribe(topic);
+  subscriptionRefDict[subscriptionRef] = PortalsPubSub.addListener("PortalsSubscription", onMessageReceived);  
+  return subscriptionRef
+};
+
+export const unsubscribe = (topic: string, subRef: number) => {
+  IONPortalsPubSub.unsubscribe(topic, subRef);
+  subscriptionRefDict[subRef] = null;
+};
+
+export const publish = (topic: string, data: any) => {
+  const msg = { message: data };
+  IONPortalsPubSub.publish(topic, msg);
+};
+
+export const register = (key: string) => {
+  IONPortalManager.register(key);
+};
+
+export interface Portal extends ViewProps {
+  name: string,
+  startDir: string,
+  initialContext: any
+}
+
+export const addPortal = (portal: Portal) => {
+  IONPortalManager.addPortal(portal)
+};
+
+export const PortalView: HostComponent<any> = requireNativeComponent("IONPortalView");
+
