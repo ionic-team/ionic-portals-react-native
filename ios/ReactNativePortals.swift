@@ -52,6 +52,8 @@ class PortalsPubSub: RCTEventEmitter {
     @objc func publish(_ topic: String, data: Any) {
         PortalsPlugin.publish(topic, data)
     }
+    
+    override class func requiresMainQueueSetup() -> Bool { true }
 }
 
 @objc(IONPortalViewManager)

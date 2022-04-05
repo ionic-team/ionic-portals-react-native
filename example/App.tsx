@@ -67,6 +67,7 @@ const PubSubLabel: React.FC<{initialNumber: number}> = ({ initialNumber }) => {
       .catch(reason => console.log("Failed for ", reason))
 
     return () => {
+      console.log("Unsubscribing from ref ", subRef);
       unsubscribe("button:tapped", subRef);
     }
   }, []);
@@ -126,7 +127,7 @@ const App = () => {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <PubSubLabel initialNumber={0}/>
+          <PubSubLabel initialNumber={1}/>
           <PortalView portal="button" style={{flex: 1, height: 150}}/>
           <Section title="Step One">
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this

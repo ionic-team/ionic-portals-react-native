@@ -20,7 +20,6 @@ target 'ReactNativePortalsExample' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  pod 'ReactNativePortals', :path => '../node_modules/@ionic/react-native-portals'
 
   target 'ReactNativePortalsExampleTests' do
     inherit! :complete
