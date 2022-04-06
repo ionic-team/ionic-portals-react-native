@@ -8,7 +8,8 @@
  * @format
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
+
 import {
   SafeAreaView,
   ScrollView,
@@ -27,58 +28,76 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import { register, addPortal, subscribe, unsubscribe, publish, Message, PortalView } from '@ionic/react-native-portals';
+import {
+  register,
+  addPortal,
+  subscribe,
+  unsubscribe,
+  publish,
+  Message,
+  PortalView,
+} from '@ionic/react-native-portals';
 
-register("YOUR_PORTAL_KEY_HERE");
+register('YOUR_PORTAL_KEY_HERE');
 
 const portal = {
-  name: "button",
-  startDir: "/portals/buttonapp",
+  name: 'button',
+  startDir: '/portals/buttonapp',
   initialContext: {
-    initialNumber: 2
-  }
+    initialNumber: 2,
+  },
 };
 
 addPortal(portal);
 
-const PubSubLabel: React.FC<{initialNumber: number}> = ({ initialNumber }) => {
-  const isDarkMode = useColorScheme() === "dark";
+const PubSubLabel: React.FC<{initialNumber: number}> = ({initialNumber}) => {
+  const isDarkMode = useColorScheme() === 'dark';
   const [immutableNumber, setNumber] = useState(initialNumber);
   const [subRef, setSubRef] = useState(0);
   const number = useRef(initialNumber);
 
   useEffect(() => {
     const subscribeToButtonTapped = async () => {
-      console.log("subscribing")
-      const subRef = await subscribe("button:tapped", (message: Message) => {
-        console.log(`Got Message ${JSON.stringify(message.data, null, 2)} from IonicPortals`);
+      console.log('subscribing');
+      const subRef = await subscribe('button:tapped', (message: Message) => {
+        console.log(
+          `Got Message ${JSON.stringify(
+            message.data,
+            null,
+            2,
+          )} from IonicPortals`,
+        );
         number.current = number.current + 1;
         setNumber(number.current);
 
-        publish("button:received", number.current + 1)
+        publish('button:received', number.current + 1);
       });
 
-      console.log("subscribed with subRef ", subRef)
+      console.log('subscribed with subRef ', subRef);
       setSubRef(subRef);
-
     };
 
-    subscribeToButtonTapped()
-      .catch(reason => console.log("Failed for ", reason))
+    subscribeToButtonTapped().catch(reason =>
+      console.log('Failed for ', reason),
+    );
 
     return () => {
-      console.log("Unsubscribing from ref ", subRef);
-      unsubscribe("button:tapped", subRef);
-    }
+      console.log('Unsubscribing from ref ', subRef);
+      unsubscribe('button:tapped', subRef);
+    };
   }, []);
 
   return (
     <View style={styles.sectionContainer}>
-      <Text style={[ styles.sectionDescription, { color: isDarkMode ? Colors.white : Colors.black }]}>
-        React Native Current Number: { immutableNumber }
+      <Text
+        style={[
+          styles.sectionDescription,
+          {color: isDarkMode ? Colors.white : Colors.black},
+        ]}>
+        React Native Current Number: {immutableNumber}
       </Text>
     </View>
-  )
+  );
 };
 
 const Section: React.FC<{
@@ -127,8 +146,8 @@ const App = () => {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <PubSubLabel initialNumber={1}/>
-          <PortalView portal="button" style={{flex: 1, height: 150}}/>
+          <PubSubLabel initialNumber={1} />
+          <PortalView portal="button" style={{flex: 1, height: 150}} />
           <Section title="Step One">
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this
             screen and then come back to see your edits.
