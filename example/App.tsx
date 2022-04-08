@@ -42,7 +42,7 @@ register('YOUR_PORTAL_KEY_HERE');
 
 const portal = {
   name: 'button',
-  startDir: '/portals/buttonapp',
+  startDir: 'portals/buttonapp',
   initialContext: {
     initialNumber: 2,
   },
@@ -147,7 +147,7 @@ const App = () => {
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
           <PubSubLabel initialNumber={1} />
-          <PortalView portal="button" style={{flex: 1, height: 150}} />
+          <PortalView name="button" style={{flex: 1, height: 150}} />
           <Section title="Step One">
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this
             screen and then come back to see your edits.

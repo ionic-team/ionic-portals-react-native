@@ -1,6 +1,8 @@
-import { NativeEventEmitter, NativeModules, Platform, requireNativeComponent } from 'react-native';
+import { NativeEventEmitter, NativeModules, ViewProps } from 'react-native';
 
 const { IONPortalsPubSub, IONPortalManager } = NativeModules;
+
+export { default as PortalView } from './PortalView';
 
 export interface Message {
   subscriptionRef: number;
@@ -34,16 +36,13 @@ export const register = (key: string) => {
 
 export interface Portal {
   name: string,
-  startDir: string,
-  initialContext: any
+  startDir?: string,
+  initialContext?: any
 }
+
+export type PortalProps = Pick<Portal, "name" | "initialContext"> & ViewProps
 
 export const addPortal = (portal: Portal) => {
   IONPortalManager.addPortal(portal)
 };
-
-export const PortalView = Platform.select({
-  ios: requireNativeComponent("IONPortalView"),
-  android: require('./PortalView.android')   
-})
 

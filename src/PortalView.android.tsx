@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { findNodeHandle, requireNativeComponent, UIManager } from 'react-native';
+import type { PortalProps } from '.';
 
 const PortalViewManager = requireNativeComponent("AndroidPortalView")
 
-const createFragment = (viewId:any) =>
+const createFragment = (viewId: number | null) =>
   UIManager.dispatchViewManagerCommand(
     viewId,
     // we are calling the 'create' command
@@ -12,7 +13,7 @@ const createFragment = (viewId:any) =>
     [viewId]
   );
 
-export default (props:any) => {
+const PortalView = (props: PortalProps) => {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -23,7 +24,10 @@ export default (props:any) => {
   return (
     <PortalViewManager 
     {...props}
-    portal={props.portal}
+    // portal={props.portal}
+    // initialContext={props.initialContext}
     ref={ref}/>
   );
-};
+}
+
+export default PortalView;

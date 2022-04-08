@@ -65,7 +65,7 @@ class PortalViewManager: RCTViewManager {
 class PortalView: UIView {
     private var webView: PortalWebView?
     
-    @objc var portal: String? {
+    @objc var name: String? {
         get {
             guard let _portal = _portal else { return nil }
             return _portal.name
@@ -84,8 +84,8 @@ class PortalView: UIView {
         }
         
         set {
-            guard let portalName = portal else { return }
-            _portal = try? IonicPortals.PortalManager.getPortal(portalName)
+            guard let name = name else { return }
+            _portal = try? IonicPortals.PortalManager.getPortal(name)
             _portal?.initialContext = newValue
         }
     }

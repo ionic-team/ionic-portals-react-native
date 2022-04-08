@@ -254,6 +254,8 @@ dependencies {
 
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation project(":@ionic_react-native-portals")
+//    implementation files("../../node_modules/@ionic/react-native-portals/android")
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
@@ -299,6 +301,14 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+
+task copyWebAssets(type: Copy) {
+  def webBuildFolder = "../../web/RNPortals/build"
+  from webBuildFolder
+  into layout.projectDirectory.dir("src/main/assets/portals/buttonapp")
+}
+
+preBuild.dependsOn(copyWebAssets)
 
 def isNewArchitectureEnabled() {
     // To opt-in for the New Architecture, you can either:
