@@ -87,7 +87,7 @@ class PortalsPubSubModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun removeListener(count: Int) {
+    fun removeListeners(count: Int) {
     }
 }
 
