@@ -60,13 +60,8 @@ const PubSubLabel: React.FC<{initialNumber: number}> = ({initialNumber}) => {
     const subscribeToButtonTapped = async () => {
       console.log('subscribing');
       const subRef = await subscribe('button:tapped', (message: Message) => {
-        console.log(
-          `Got Message ${JSON.stringify(
-            message.data,
-            null,
-            2,
-          )} from IonicPortals`,
-        );
+        console.log(`Received message ${JSON.stringify(message.data, null, 2)} on topic ${message.topic} from IonicPortals`);
+
         number.current = number.current + 1;
         setNumber(number.current);
 

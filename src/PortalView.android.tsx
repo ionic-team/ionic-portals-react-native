@@ -21,13 +21,7 @@ const PortalView = (props: PortalProps) => {
     createFragment(viewId);
   }, []);
 
-  return (
-    <PortalViewManager 
-    {...props}
-    // portal={props.portal}
-    // initialContext={props.initialContext}
-    ref={ref}/>
-  );
+  return <PortalViewManager  {...props} ref={ref} />
 }
 
 export default PortalView;

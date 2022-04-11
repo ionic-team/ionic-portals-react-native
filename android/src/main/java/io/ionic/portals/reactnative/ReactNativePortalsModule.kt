@@ -107,7 +107,7 @@ fun JSONObject.toReactMap(): ReadableMap =
         } catch (_: JSONException) {
         }
 
-        return map
+        return@fold map
     }
 
 fun JSONArray.toReactArray(): ReadableArray =
@@ -126,7 +126,7 @@ fun JSONArray.toReactArray(): ReadableArray =
         } catch (_: JSONException) {
         }
 
-        return array
+        return@fold array
     }
 
 fun ReadableMap.toJSObject(): JSObject = JSObject.fromJSONObject(JSONObject(toHashMap()))
