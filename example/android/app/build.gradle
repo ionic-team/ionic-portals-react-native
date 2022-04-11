@@ -208,7 +208,7 @@ android {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk false  // If true, also generate a universal APK
-            include (*reactNativeArchitectures())
+            include(*reactNativeArchitectures())
         }
     }
     signingConfigs {
@@ -242,7 +242,7 @@ android {
             def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {  // null for the universal-debug, universal-release variants
                 output.versionCodeOverride =
-                        defaultConfig.versionCode * 1000 + versionCodes.get(abi)
+                    defaultConfig.versionCode * 1000 + versionCodes.get(abi)
             }
 
         }
@@ -260,16 +260,16 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
-        exclude group:'com.facebook.fbjni'
+        exclude group: 'com.facebook.fbjni'
     }
 
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
-        exclude group:'com.facebook.flipper'
-        exclude group:'com.squareup.okhttp3', module:'okhttp'
+        exclude group: 'com.facebook.flipper'
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
     }
 
     debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}") {
-        exclude group:'com.facebook.flipper'
+        exclude group: 'com.facebook.flipper'
     }
 
     if (enableHermes) {
@@ -288,7 +288,7 @@ if (isNewArchitectureEnabled()) {
     configurations.all {
         resolutionStrategy.dependencySubstitution {
             substitute(module("com.facebook.react:react-native"))
-                    .using(project(":ReactAndroid")).because("On New Architecture we're building React Native from source")
+                .using(project(":ReactAndroid")).because("On New Architecture we're building React Native from source")
         }
     }
 }
@@ -303,9 +303,9 @@ task copyDownloadableDepsToLibs(type: Copy) {
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
 
 task copyWebAssets(type: Copy) {
-  def webBuildFolder = "../../web/RNPortals/build"
-  from webBuildFolder
-  into layout.projectDirectory.dir("src/main/assets/portals/buttonapp")
+    def webBuildFolder = "../../web/RNPortals/build"
+    from webBuildFolder
+    into layout.projectDirectory.dir("src/main/assets/portals/buttonapp")
 }
 
 preBuild.dependsOn(copyWebAssets)
