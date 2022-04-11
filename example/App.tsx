@@ -42,7 +42,7 @@ register('YOUR_PORTAL_KEY_HERE');
 
 const portal = {
   name: 'button',
-  startDir: '/portals/buttonapp',
+  startDir: 'portals/buttonapp',
   initialContext: {
     initialNumber: 2,
   },
@@ -60,13 +60,8 @@ const PubSubLabel: React.FC<{initialNumber: number}> = ({initialNumber}) => {
     const subscribeToButtonTapped = async () => {
       console.log('subscribing');
       const subRef = await subscribe('button:tapped', (message: Message) => {
-        console.log(
-          `Got Message ${JSON.stringify(
-            message.data,
-            null,
-            2,
-          )} from IonicPortals`,
-        );
+        console.log(`Received message ${JSON.stringify(message.data, null, 2)} on topic ${message.topic} from IonicPortals`);
+
         number.current = number.current + 1;
         setNumber(number.current);
 
@@ -147,7 +142,7 @@ const App = () => {
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
           <PubSubLabel initialNumber={1} />
-          <PortalView portal="button" style={{flex: 1, height: 150}} />
+          <PortalView name="button" style={{flex: 1, height: 150}} />
           <Section title="Step One">
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this
             screen and then come back to see your edits.
