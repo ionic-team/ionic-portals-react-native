@@ -27,7 +27,149 @@ Ionic Portals is a supercharged native Web View component for iOS and Android th
 
 ## Getting Started
 
-See our docs to [get started with Portals](https://ionic.io/docs/portals/getting-started/guide).
+### Installation
+`npm install @ionic/portals-react-native`
+or
+`yarn add @ionic/portals-react-native`
+
+### Usage
+Register Portals with your [product key](#Registration) 
+```javascript
+import { register } from @ionic/portals-react-native;
+
+register('YOUR_PORTAL_KEY_HERE');
+```
+
+Create a Portal and add it to the portal registry
+```javascript
+import { addPortal } from @ionic/portals-react-native;
+const helloPortal = {
+  // A unique name to reference later
+  name: 'hello',
+  // This is the location of your web bundle relative to the asset directory in Android and Bundle.main in iOS
+  // This will default to the name of the portal
+  startDir: 'portals/hello', 
+  // Any initial state to be provided to a Portal if needed
+  initialContext: {
+    greeting: 'Hello, world!'
+  }
+};
+
+addPortal(helloPortal);
+```
+
+Create a PortalView in your view hierarchy:
+```javascript
+<PortalView 
+  // The name of the portal to be used in the view
+  name='hello' 
+
+  // Set any initial context you may want to override.
+  initialContext={{ greeting: 'Goodbye!' }}
+
+  // Setting a size is required
+  style={{ flex: 1, height: 300 }} 
+  />
+```
+
+#### iOS Specific Configuration
+Both Capacitor and ReactNative have implementations conforming to `UIApplicationDelegate`. To prevent a clash that will likely cause your React Native application to not render,
+you will need to rename `AppDelegate` to something else.
+```objective-c
+// AppDelegate.h
+@interface RNAppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate>
+```
+
+```objective-c
+// AppDelegate.m
+@implementation RNAppDelegate
+@end
+```
+
+```objective-c
+// main.m
+#import <UIKit/UIKit.h>
+
+#import "AppDelegate.h"
+
+int main(int argc, char *argv[])
+{
+  @autoreleasepool {
+    return UIApplicationMain(argc, argv, nil, NSStringFromClass([RNAppDelegate class]));
+  }
+}
+```
+
+Because many of the Ionic Portals dependencies are comprised of Swift code and have custom module maps, you will need to add `use_frameworks!` to your iOS Podfile and remove `use_flipper!()`
+
+### Communicating between React Native and Web
+One of the key features of Ionic Portals for React Native is facilitating communication between the web and React Native layers of your application.
+Publishing a message to the web:
+```javascript
+import { publish } from @ionic/portals-react-native;
+
+publish('topic', { number: 1 })
+```
+
+Subscribe to messages from the web:
+```javascript
+import { subscribe } from @ionic/portals-react-native;
+
+let subscriptionReference = await subscribe('topic', message => {
+  // Here you have access to:
+  // message.data - Any data sent from the web
+  // message.subscriptionRef - The subscription reference used to manage the lifecycle of the subscription
+  // message.topic - The topic the message was published on
+})
+```
+
+When you no longer need to receive events, unsubscribe:
+```javascript
+import { unsubscribe } from @ionic/portals-react-native;
+
+unsubscribe('channel:topic', subscriptionReference)
+```
+
+To see an example of Portals Pub/Sub in action that manages the lifecycle of a subscription with the lifecycle of a React Native component, refer to the [`PubSubLabel`](https://github.com/ionic-team/react-native-ionic-portals/blob/af19df0d66059d85ab8dde493504368c3bf39127/example/App.tsx#L53) implementation in the example project.
+
+### Using Capacitor Plugins
+If you need to use any Capacitor plugins, you will have to register them your Android project. This will also require creating and registering your Portals in native code as well:
+
+**Android**
+```java
+public class MainApplication extends Application implements ReactApplication {
+  @Override    
+  public void onCreate() {
+    super.onCreate();
+
+    PortalManager.register("YOUR_PORTAL_KEY_HERE");
+    PortalManager.newPortal("hello")
+      .addPlugin(MyCapacitorPlugin.class) // Plugin registration
+      .setInitialContext(Map.of("greeting", "Hello, world!"))
+      .setStartDir("portals/hello")
+      .create();
+  }
+}
+```
+
+**iOS**
+```objective-c
+@implementation RNAppDelegate
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDicationary *)launchOptions {
+    // React Native boilerplate
+    [PortalManager register:@"YOUR_PORTAL_KEY_HERE"];
+    PortalBuilder *builder = [[PortalBuilder alloc] init:@"hello"];
+    [builder setStartDir:@"portals/hello"];
+    [builder setInitialContext: @{ @"greeting": @"Hello, world!" }] 
+    Portal *portal = [builder create];
+    [PortalManager addPortal:portal];
+}
+@end
+```
+
+### Bundling Your Web Apps
+Currently there is no tooling for bundling your web apps directly as part of @ionic/portals-react-native. Please follow the [native guides](https://ionic.io/docs/portals/how-to/pull-in-web-bundle#setup-the-web-asset-directory) to manage this as part of the native build process.
+
 
 ## Registration
 

@@ -1,5 +1,5 @@
 {
-  "name": "@ionic/react-native-portals",
+  "name": "@ionic/portals-react-native",
   "version": "0.1.0",
   "description": "Ionic Portals for React Native",
   "main": "lib/commonjs/index",
@@ -89,7 +89,7 @@
   "release-it": {
     "git": {
       "commitMessage": "chore: release ${version}",
-      "tagName": "v${version}"
+      "tagName": "${version}"
     },
     "npm": {
       "publish": true

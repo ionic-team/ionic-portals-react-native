@@ -36,7 +36,7 @@ import {
   publish,
   Message,
   PortalView,
-} from '@ionic/react-native-portals';
+} from '@ionic/portals-react-native';
 
 register('YOUR_PORTAL_KEY_HERE');
 
