@@ -1,0 +1,26 @@
+name: Pre-Release
+
+on:
+  push:
+    branches:
+    - 'release/**'
+
+jobs:
+  increment-version:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+    - name: Assign version to RELEASE_VERSION environment variable
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/*/}" >> $GITHUB_ENV
+    - name: Bump npm package version
+      run: npm version $RELEASE_VERSION --no-git-tag-version
+    - name: Push version bump commit
+      uses: EndBug/add-and-commit@v9
+    - name: Validate Publish Flow
+      run: |
+        npm install
+        npm publish --dry-run
+

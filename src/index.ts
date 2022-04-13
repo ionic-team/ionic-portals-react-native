@@ -14,10 +14,16 @@ const PortalsPubSub = new NativeEventEmitter(IONPortalsPubSub);
 
 let subscriptionRefDict: any = {};
 
-export const subscribe = async (topic: string, onMessageReceived: (message: Message) => void): Promise<number> => {
+export const subscribe = async (
+  topic: string,
+  onMessageReceived: (message: Message) => void
+): Promise<number> => {
   const subscriptionRef = await IONPortalsPubSub.subscribe(topic);
-  subscriptionRefDict[subscriptionRef] = PortalsPubSub.addListener("PortalsSubscription", onMessageReceived);  
-  return subscriptionRef
+  subscriptionRefDict[subscriptionRef] = PortalsPubSub.addListener(
+    'PortalsSubscription',
+    onMessageReceived
+  );
+  return subscriptionRef;
 };
 
 export const unsubscribe = (topic: string, subRef: number) => {
@@ -35,14 +41,13 @@ export const register = (key: string) => {
 };
 
 export interface Portal {
-  name: string,
-  startDir?: string,
-  initialContext?: any
+  name: string;
+  startDir?: string;
+  initialContext?: any;
 }
 
-export type PortalProps = Pick<Portal, "name" | "initialContext"> & ViewProps
+export type PortalProps = Pick<Portal, 'name' | 'initialContext'> & ViewProps;
 
 export const addPortal = (portal: Portal) => {
-  IONPortalManager.addPortal(portal)
+  IONPortalManager.addPortal(portal);
 };
-
