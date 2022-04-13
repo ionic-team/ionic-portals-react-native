@@ -70,7 +70,8 @@ import { PortalView } from '@ionic/portals-react-native';
 ```
 
 #### iOS Specific Configuration
-Both Capacitor and ReactNative have classes named `AppDelegate`. To prevent a clash that can prevent your React Native application from launching,
+##### AppDelegate
+Both Capacitor and React Native have classes named `AppDelegate`. To prevent a clash that can prevent your React Native application from launching,
 you will need to rename `AppDelegate` to something else:
 ```objective-c
 // AppDelegate.h
@@ -97,6 +98,7 @@ int main(int argc, char *argv[])
 }
 ```
 
+##### Podfile
 Because many of the Ionic Portals dependencies are comprised of Swift code and have custom module maps, you will need to add `use_frameworks!` to your iOS Podfile and remove `use_flipper!()`
 
 ### Communicating between React Native and Web
