@@ -23,4 +23,6 @@ jobs:
       run: |
         npm install
         npm publish --dry-run
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
 
