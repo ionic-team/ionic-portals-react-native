@@ -35,14 +35,14 @@ or
 ### Usage
 Register Portals with your [product key](#Registration) 
 ```javascript
-import { register } from @ionic/portals-react-native;
+import { register } from '@ionic/portals-react-native';
 
 register('YOUR_PORTAL_KEY_HERE');
 ```
 
 Create a Portal and add it to the portal registry
 ```javascript
-import { addPortal } from @ionic/portals-react-native;
+import { addPortal } from '@ionic/portals-react-native';
 const helloPortal = {
   // A unique name to reference later
   name: 'hello',
@@ -60,6 +60,8 @@ addPortal(helloPortal);
 
 Create a PortalView in your view hierarchy:
 ```javascript
+import { PortalView } from '@ionic/portals-react-native';
+
 <PortalView 
   // The name of the portal to be used in the view
   name='hello' 
@@ -106,14 +108,14 @@ Because many of the Ionic Portals dependencies are comprised of Swift code and h
 One of the key features of Ionic Portals for React Native is facilitating communication between the web and React Native layers of your application.
 Publishing a message to the web:
 ```javascript
-import { publish } from @ionic/portals-react-native;
+import { publish } from '@ionic/portals-react-native';
 
 publish('topic', { number: 1 })
 ```
 
 Subscribe to messages from the web:
 ```javascript
-import { subscribe } from @ionic/portals-react-native;
+import { subscribe } from '@ionic/portals-react-native';
 
 let subscriptionReference = await subscribe('topic', message => {
   // Here you have access to:
@@ -125,7 +127,7 @@ let subscriptionReference = await subscribe('topic', message => {
 
 When you no longer need to receive events, unsubscribe:
 ```javascript
-import { unsubscribe } from @ionic/portals-react-native;
+import { unsubscribe } from '@ionic/portals-react-native';
 
 unsubscribe('channel:topic', subscriptionReference)
 ```
