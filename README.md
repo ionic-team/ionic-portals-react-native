@@ -28,14 +28,14 @@ or
 `yarn add @ionic/portals-react-native`
 
 ### Usage
-Register Portals with your [product key](#Registration) 
+Register Portals with your [product key](#Registration):
 ```javascript
 import { register } from '@ionic/portals-react-native';
 
 register('YOUR_PORTAL_KEY_HERE');
 ```
 
-Create a Portal and add it to the portal registry
+Create a Portal and add it to the portal registry:
 ```javascript
 import { addPortal } from '@ionic/portals-react-native';
 const helloPortal = {
@@ -71,7 +71,7 @@ import { PortalView } from '@ionic/portals-react-native';
 
 #### iOS Specific Configuration
 Both Capacitor and ReactNative have classes named `AppDelegate`. To prevent a clash that can prevent your React Native application from launching,
-you will need to rename `AppDelegate` to something else.
+you will need to rename `AppDelegate` to something else:
 ```objective-c
 // AppDelegate.h
 @interface RNAppDelegate : UIResponder <UIApplicationDelegate, RCTBridgeDelegate>
@@ -170,7 +170,7 @@ Currently there is no tooling for bundling your web apps directly as part of @io
 
 ## Registration
 
-The Ionic Portals libraries for Android and iOS require a **free** license key to use. Once you have integrated Portals into your project, login to your ionic account to get a key. See our doc on [how to register for free and get your Portals license key](https://ionic.io/docs/portals/how-to/get-a-product-key) and refer to the [Android](https://ionic.io/docs/portals/getting-started/android) or [iOS](https://ionic.io/docs/portals/getting-started/iOS) getting started guides to see where to add your key.
+Ionic Portals for React Native requires a key to use. Once you have integrated Portals into your project, login to your ionic account to get a key. See our doc on [how to register for free and get your Portals license key](https://ionic.io/docs/portals/how-to/get-a-product-key) and refer to the [usage](#Usage) section on how to add your key to your React Native application.
 
 ## FAQ
 
