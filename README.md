@@ -8,13 +8,8 @@
 <br />
 <p align="center">
   <a href="https://github.com/ionic-team/react-native-ionic-portals/actions?query=workflow%3ACI"><img src="https://img.shields.io/github/workflow/status/ionic-team/ionic-portals/CI?style=flat-square" /></a>
-  <a href="https://www.npmjs.com/package/@ionic/react-native-portals"><img src="https://img.shields.io/npm/dw/@ionic/react-native-portals?style=flat-square" /></a>
   <a href="https://www.npmjs.com/package/@ionic/react-native-portals"><img src="https://img.shields.io/npm/l/@ionic/react-native-portals?style=flat-square" /></a>
-</p>
-<p align="center">
   <a href="https://www.npmjs.com/package/@ionic/react-native-portals"><img src="https://img.shields.io/npm/v/@ionic/react-native-portals?style=flat-square" /></a>
-  <a href="https://search.maven.org/artifact/io.ionic/portals"><img src="https://img.shields.io/maven-central/v/io.ionic/portals" /></a>
-  <img src="https://img.shields.io/cocoapods/v/IonicPortals" />
 </p>
 <p align="center">
   <a href="https://ionic.io/docs/portals"><img src="https://img.shields.io/static/v1?label=docs&message=ionic.io/portals&color=blue&style=flat-square" /></a>
@@ -75,7 +70,7 @@ import { PortalView } from '@ionic/portals-react-native';
 ```
 
 #### iOS Specific Configuration
-Both Capacitor and ReactNative have implementations conforming to `UIApplicationDelegate`. To prevent a clash that will likely cause your React Native application to not render,
+Both Capacitor and ReactNative have classes named `AppDelegate`. To prevent a clash that can prevent your React Native application from launching,
 you will need to rename `AppDelegate` to something else.
 ```objective-c
 // AppDelegate.h
