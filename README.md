@@ -132,7 +132,7 @@ unsubscribe('channel:topic', subscriptionReference)
 To see an example of Portals Pub/Sub in action that manages the lifecycle of a subscription with the lifecycle of a React Native component, refer to the [`PubSubLabel`](https://github.com/ionic-team/react-native-ionic-portals/blob/af19df0d66059d85ab8dde493504368c3bf39127/example/App.tsx#L53) implementation in the example project.
 
 ### Using Capacitor Plugins
-If you need to use any Capacitor plugins, you will have to register them your Android project. This will also require creating and registering your Portals in native code as well:
+If you need to use any Capacitor plugins, you will have to register them in your Android project. This will also require creating and registering your Portals in native code as well:
 
 **Android**
 ```java
