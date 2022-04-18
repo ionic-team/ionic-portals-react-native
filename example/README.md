@@ -17,10 +17,14 @@ Install and build:
 npm install
 # or
 yarn
+
+npm run build
+# or
+yarn build
 ```
 
 Navigate back to the example project:
-```
+```bash
 cd ../../
 ```
 
