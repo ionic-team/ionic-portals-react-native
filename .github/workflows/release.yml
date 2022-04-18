@@ -1,0 +1,21 @@
+name: Publish NPM Package
+
+on:
+  push:
+    tags:
+    - '*'
+
+jobs:
+  publish-to-npm:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+    - name: Publish package
+      run: |
+        npm install
+        npm publish 
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}

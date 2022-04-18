@@ -330,7 +330,7 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - "ReactNativePortals (from `../node_modules/@ionic/react-native-portals`)"
+  - "ReactNativePortals (from `../node_modules/@ionic/portals-react-native`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -404,7 +404,7 @@ EXTERNAL SOURCES:
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativePortals:
-    :path: "../node_modules/@ionic/react-native-portals"
+    :path: "../node_modules/@ionic/portals-react-native"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
