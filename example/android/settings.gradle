@@ -1,6 +1,6 @@
 rootProject.name = 'ReactNativePortalsExample'
-include ':@ionic_react-native-portals'
-project(':@ionic_react-native-portals').projectDir = new File(rootProject.projectDir, '../node_modules/@ionic/react-native-portals/android')
+include ':@ionic_portals-react-native'
+project(':@ionic_portals-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/@ionic/portals-react-native/android')
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
 include ':app'
 includeBuild('../node_modules/react-native-gradle-plugin')

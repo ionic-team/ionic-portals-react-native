@@ -254,7 +254,7 @@ dependencies {
 
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
-    implementation project(":@ionic_react-native-portals")
+    implementation project(":@ionic_portals-react-native")
 //    implementation files("../../node_modules/@ionic/react-native-portals/android")
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
