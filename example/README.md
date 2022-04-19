@@ -7,6 +7,8 @@ npm install
 yarn
 ```
 
+Replace `register('YOUR_PORTAL_KEY_HERE')` in `App.tsx` with your Portals key. See the main project README for how to register for a product key if you do not have one.
+
 Navigate to the web directory:
 ```bash
 cd web/RNPortals
