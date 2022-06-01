@@ -20,7 +20,6 @@ target 'ReactNativePortalsExample' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-
   target 'ReactNativePortalsExampleTests' do
     inherit! :complete
     # Pods for testing
