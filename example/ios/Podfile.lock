@@ -292,7 +292,8 @@ PODS:
     - React-logger (= 0.68.1)
     - React-perflogger (= 0.68.1)
   - ReactNativePortals (0.0.1):
-    - IonicPortals (~> 0.5.1)
+    - IonicLiveUpdates (= 0.0.5)
+    - IonicPortals (= 0.5.1)
     - React-Core
   - Yoga (1.14.0)
   - ZIPFoundation (0.9.13)
@@ -303,8 +304,6 @@ DEPENDENCIES:
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - IonicLiveUpdates (~> 0.0.5)
-  - IonicPortals (= 0.5.1)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -446,10 +445,10 @@ SPEC CHECKSUMS:
   React-RCTVibration: 9e344c840176b0af9c84d5019eb4fed8b3c105a1
   React-runtimeexecutor: 7285b499d0339104b2813a1f58ad1ada4adbd6c0
   ReactCommon: bf2888a826ceedf54b99ad1b6182d1bc4a8a3984
-  ReactNativePortals: c38659265afe0d5129250e6ea56f87961ae0829f
+  ReactNativePortals: b356ce5d44f6df2e7cb0dacc5cf926df499a3c6b
   Yoga: 17cd9a50243093b547c1e539c749928dd68152da
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: ad458e5b5a107b96e17f68810d22754214ae8b75
+PODFILE CHECKSUM: d638429893f0bc70e0fbdc793709e389e305c9be
 
 COCOAPODS: 1.11.2

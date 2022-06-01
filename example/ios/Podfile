@@ -20,9 +20,6 @@ target 'ReactNativePortalsExample' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  pod 'IonicLiveUpdates', '~> 0.0.5'
-  pod 'IonicPortals', '0.5.1'
-
   target 'ReactNativePortalsExampleTests' do
     inherit! :complete
     # Pods for testing
