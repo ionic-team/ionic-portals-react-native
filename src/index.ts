@@ -43,7 +43,7 @@ export const unsubscribe = (topic: string, subRef: number) => {
   IONPortalsPubSub.unsubscribe(topic, subRef);
 
   const subscription = subscriptionMap.get(subRef);
-  if (subscription != undefined) {
+  if (subscription !== undefined) {
     subscription.remove();
     subscriptionMap.delete(subRef);
   }
