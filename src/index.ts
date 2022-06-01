@@ -1,4 +1,9 @@
-import { EmitterSubscription, NativeEventEmitter, NativeModules, ViewProps } from 'react-native';
+import {
+  EmitterSubscription,
+  NativeEventEmitter,
+  NativeModules,
+  ViewProps,
+} from 'react-native';
 
 const { IONPortalsPubSub, IONPortalManager } = NativeModules;
 
@@ -20,11 +25,14 @@ export const subscribe = async (
 ): Promise<number> => {
   const subscriptionRef = await IONPortalsPubSub.subscribe(topic);
 
-  const subscriber = PortalsPubSub.addListener('PortalsSubscription', (message: Message) => {
-    if (message.topic === topic) {
-      onMessageReceived(message);
+  const subscriber = PortalsPubSub.addListener(
+    'PortalsSubscription',
+    (message: Message) => {
+      if (message.topic === topic) {
+        onMessageReceived(message);
+      }
     }
-  });
+  );
 
   subscriptionMap.set(subscriptionRef, subscriber);
 
@@ -34,7 +42,7 @@ export const subscribe = async (
 export const unsubscribe = (topic: string, subRef: number) => {
   IONPortalsPubSub.unsubscribe(topic, subRef);
 
-  const subscription = subscriptionMap.get(subRef); 
+  const subscription = subscriptionMap.get(subRef);
   if (subscription != undefined) {
     subscription.remove();
     subscriptionMap.delete(subRef);
