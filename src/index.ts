@@ -28,7 +28,7 @@ export const subscribe = async (
   const subscriber = PortalsPubSub.addListener(
     'PortalsSubscription',
     (message: Message) => {
-      if (message.topic === topic) {
+      if (message.subscriptionRef === subscriptionRef) {
         onMessageReceived(message);
       }
     }
