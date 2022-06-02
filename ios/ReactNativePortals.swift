@@ -45,8 +45,8 @@ class PortalsPubSub: RCTEventEmitter {
         resolver(subRef)
     }
     
-    @objc func unsubscribe(_ topic: String, subscriptionRef: Int) {
-        PortalsPlugin.unsubscribe(topic, subscriptionRef)
+    @objc func unsubscribe(_ topic: String, subscriptionRef: NSNumber) {
+        PortalsPlugin.unsubscribe(topic, subscriptionRef.intValue)
     }
     
     @objc func publish(_ topic: String, data: Any) {
