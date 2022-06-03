@@ -5,7 +5,7 @@ import {
   ViewProps,
 } from 'react-native';
 
-const { IONPortalsPubSub, IONPortalManager } = NativeModules;
+const { IONPortalPubSub, IONPortalManager } = NativeModules;
 
 export { default as PortalView } from './PortalView';
 
@@ -15,7 +15,7 @@ export interface Message {
   topic: string;
 }
 
-const PortalsPubSub = new NativeEventEmitter(IONPortalsPubSub);
+const PortalsPubSub = new NativeEventEmitter(IONPortalPubSub);
 
 const subscriptionMap = new Map<number, EmitterSubscription>();
 
@@ -23,7 +23,7 @@ export const subscribe = async (
   topic: string,
   onMessageReceived: (message: Message) => void
 ): Promise<number> => {
-  const subscriptionRef = await IONPortalsPubSub.subscribe(topic);
+  const subscriptionRef = await IONPortalPubSub.subscribe(topic);
 
   const subscriber = PortalsPubSub.addListener(
     'PortalsSubscription',
@@ -40,7 +40,7 @@ export const subscribe = async (
 };
 
 export const unsubscribe = (topic: string, subRef: number) => {
-  IONPortalsPubSub.unsubscribe(topic, subRef);
+  IONPortalPubSub.unsubscribe(topic, subRef);
 
   const subscription = subscriptionMap.get(subRef);
   if (subscription !== undefined) {
@@ -51,7 +51,7 @@ export const unsubscribe = (topic: string, subRef: number) => {
 
 export const publish = (topic: string, data: any) => {
   const msg = { message: data };
-  IONPortalsPubSub.publish(topic, msg);
+  IONPortalPubSub.publish(topic, msg);
 };
 
 export const register = (key: string) => {
@@ -61,7 +61,9 @@ export const register = (key: string) => {
 export interface Portal {
   name: string;
   startDir?: string;
-  initialContext?: any;
+  initialContext?: {
+    [key: string]: any;
+  };
 }
 
 export type PortalProps = Pick<Portal, 'name' | 'initialContext'> & ViewProps;

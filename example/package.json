@@ -11,7 +11,7 @@
     "format": "prettier App.tsx -w"
   },
   "dependencies": {
-    "@ionic/portals-react-native": "file:../ionic-portals-react-native-0.0.2.tgz",
+    "@ionic/portals-react-native": "file:../ionic-portals-react-native-0.0.3.tgz",
     "react": "17.0.2",
     "react-native": "0.68.1"
   },
