@@ -1,8 +1,8 @@
 PODS:
   - boost-for-react-native (1.63.0)
-  - Capacitor (3.4.3):
+  - Capacitor (3.5.1):
     - CapacitorCordova
-  - CapacitorCordova (3.4.3)
+  - CapacitorCordova (3.5.1)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.63.4)
   - FBReactNativeSpec (0.63.4):
@@ -22,11 +22,10 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - IonicLiveUpdates (0.0.5):
-    - ZIPFoundation
-  - IonicPortals (0.5.1):
-    - Capacitor
-    - IonicLiveUpdates
+  - IonicLiveUpdates (0.1.0)
+  - IonicPortals (0.6.1):
+    - Capacitor (~> 3.5)
+    - IonicLiveUpdates (~> 0.1.0)
   - RCTRequired (0.63.4)
   - RCTTypeSafety (0.63.4):
     - FBLazyVector (= 0.63.4)
@@ -254,7 +253,6 @@ PODS:
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
   - Yoga (1.14.0)
-  - ZIPFoundation (0.9.13)
 
 DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -262,7 +260,7 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - IonicPortals (~> 0.5.1)
+  - IonicPortals (~> 0.6.1)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
   - React (from `../node_modules/react-native/`)
@@ -294,7 +292,6 @@ SPEC REPOS:
     - CapacitorCordova
     - IonicLiveUpdates
     - IonicPortals
-    - ZIPFoundation
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -352,15 +349,15 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  Capacitor: df9b3339e2ccf9fcfa19f90073a83454b3113691
-  CapacitorCordova: 7a09a302f17e14a308291bb3fa2b01ad2e4dfcaf
+  Capacitor: c1b2bffd379c546d3aa1cec58a388592353a509c
+  CapacitorCordova: 46db16aab80803f65018a73fca15a7399fb1ed8c
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   FBLazyVector: 3bb422f41b18121b71783a905c10e58606f7dc3e
   FBReactNativeSpec: f2c97f2529dd79c083355182cc158c9f98f4bd6e
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
-  IonicLiveUpdates: f3e54dbb5a330eb820a823477c5a75cd4470b65d
-  IonicPortals: 4f1621c0fc949119ef78d1f5c39c8de9ba3e12c7
+  IonicLiveUpdates: baf9d18d2d752386abbad48b670d6590b4647701
+  IonicPortals: 17b9ee9ae513fc3906b062bdd0b7492db94e38ce
   RCTRequired: 082f10cd3f905d6c124597fd1c14f6f2655ff65e
   RCTTypeSafety: 8c9c544ecbf20337d069e4ae7fd9a377aadf504b
   React: b0a957a2c44da4113b0c4c9853d8387f8e64e615
@@ -382,8 +379,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
-  ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
-PODFILE CHECKSUM: 3d4e1ae438899ba8709c2e19e767a9a9cced011b
+PODFILE CHECKSUM: 67d6b2cc79c25d2c4dcf32d6e3c6d6e6defffdb1
 
 COCOAPODS: 1.11.2

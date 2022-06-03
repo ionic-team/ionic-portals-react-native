@@ -152,16 +152,35 @@ public class MainApplication extends Application implements ReactApplication {
 ```
 
 **iOS**
+Create a Swift file for your Portals configuration:
+```swift
+import IonicPortals
+import ReactNativePortals
+
+@objc class RNPortalsConfiguration: NSObject {
+    @objc static func setup() {
+        PortalManager.register("YOUR_PORTAL_KEY_HERE")
+
+        let portal = Portal(
+            name: "hello",
+            startDir: "portals/hello",
+            initialContext: ["greeting": "Hello, world!"]
+        )
+
+        PortalManager.add(portal)
+    }
+}
+```
+
+Call the setup function in RNAppDelegate:
 ```objective-c
+// Add the import to call the Swift code
+#import <YourProjectName-Swift.h>
+
 @implementation RNAppDelegate
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDicationary *)launchOptions {
     // React Native boilerplate
-    [PortalManager register:@"YOUR_PORTAL_KEY_HERE"];
-    PortalBuilder *builder = [[PortalBuilder alloc] init:@"hello"];
-    [builder setStartDir:@"portals/hello"];
-    [builder setInitialContext: @{ @"greeting": @"Hello, world!" }] 
-    Portal *portal = [builder create];
-    [PortalManager addPortal:portal];
+    [RNPortalsConfiguration setup];
 }
 @end
 ```

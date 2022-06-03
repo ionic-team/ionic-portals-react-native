@@ -9,7 +9,7 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
 
-@interface RCT_EXTERN_MODULE(IONPortalsPubSub, RCTEventEmitter)
+@interface RCT_EXTERN_MODULE(IONPortalPubSub, RCTEventEmitter)
 RCT_EXTERN_METHOD(subscribe: (NSString *) topic resolver: (RCTPromiseResolveBlock) resolver rejector: (RCTPromiseRejectBlock) rejector)
 RCT_EXTERN_METHOD(unsubscribe: (NSString *) topic subscriptionRef: (NSNumber _Nonnull) subscriptionRef)
 RCT_EXTERN_METHOD(publish: (NSString *) topic data: (id) data)

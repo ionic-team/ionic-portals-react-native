@@ -56,7 +56,7 @@ class PortalManagerModule(reactContext: ReactApplicationContext) :
 class PortalsPubSubModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
     override fun getName(): String {
-        return "IONPortalsPubSub"
+        return "IONPortalPubSub"
     }
 
     @ReactMethod
