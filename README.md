@@ -158,7 +158,7 @@ import IonicPortals
 import ReactNativePortals
 
 @objc class RNPortalsConfiguration: NSObject {
-    static func setup() {
+    @objc static func setup() {
         PortalManager.register("YOUR_PORTAL_KEY_HERE")
 
         let portal = Portal(
