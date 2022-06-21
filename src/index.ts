@@ -58,15 +58,21 @@ export const register = (key: string) => {
   IONPortalManager.register(key);
 };
 
+export interface LiveUpdate {
+  appId: string;
+  channel: 'production' | string;
+}
+
 export interface Portal {
   name: string;
   startDir?: string;
   initialContext?: {
     [key: string]: any;
   };
+  liveUpdate?: LiveUpdate;
 }
 
-export type PortalProps = Pick<Portal, 'name' | 'initialContext'> & ViewProps;
+export type PortalProps = Pick<Portal, 'name' | 'initialContext' | 'liveUpdate'> & ViewProps;
 
 export const addPortal = (portal: Portal) => {
   IONPortalManager.addPortal(portal);
