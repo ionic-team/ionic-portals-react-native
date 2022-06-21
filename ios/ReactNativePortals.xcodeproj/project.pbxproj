@@ -13,6 +13,7 @@
 		A7128A0827F7A16200DADDF3 /* ReactNativePortals-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FF95D5245B92E700C19C63 /* ReactNativePortals-Bridging-Header.h */; };
 		A7128A0927F7A16200DADDF3 /* PortalsPubSub.m in Sources */ = {isa = PBXBuildFile; fileRef = A71289F827F79D4000DADDF3 /* PortalsPubSub.m */; };
 		A7128A0A27F7A16200DADDF3 /* PortalView.m in Sources */ = {isa = PBXBuildFile; fileRef = A71289F727F79CDC00DADDF3 /* PortalView.m */; };
+		A748ABFC28626EC300F26852 /* LiveUpdatesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A748ABFB28626EC300F26852 /* LiveUpdatesManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,7 @@
 		A71289F827F79D4000DADDF3 /* PortalsPubSub.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PortalsPubSub.m; sourceTree = "<group>"; };
 		A71289F927F79EB200DADDF3 /* PortalManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PortalManager.m; sourceTree = "<group>"; };
 		A71289FF27F7A14900DADDF3 /* ReactNativePortals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReactNativePortals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A748ABFB28626EC300F26852 /* LiveUpdatesManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveUpdatesManager.m; sourceTree = "<group>"; };
 		CB9439A9444D2E97DA3B8149 /* Pods-ReactNativePortals.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativePortals.debug.xcconfig"; path = "Target Support Files/Pods-ReactNativePortals/Pods-ReactNativePortals.debug.xcconfig"; sourceTree = "<group>"; };
 		F4FF95D5245B92E700C19C63 /* ReactNativePortals-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ReactNativePortals-Bridging-Header.h"; sourceTree = "<group>"; };
 		F4FF95D6245B92E800C19C63 /* ReactNativePortals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactNativePortals.swift; sourceTree = "<group>"; };
@@ -57,6 +59,7 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				A748ABFB28626EC300F26852 /* LiveUpdatesManager.m */,
 				F4FF95D6245B92E800C19C63 /* ReactNativePortals.swift */,
 				A71289F727F79CDC00DADDF3 /* PortalView.m */,
 				A71289F927F79EB200DADDF3 /* PortalManager.m */,
@@ -183,6 +186,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A748ABFC28626EC300F26852 /* LiveUpdatesManager.m in Sources */,
 				A7128A0A27F7A16200DADDF3 /* PortalView.m in Sources */,
 				A7128A0927F7A16200DADDF3 /* PortalsPubSub.m in Sources */,
 				A7128A0627F7A16200DADDF3 /* ReactNativePortals.swift in Sources */,
