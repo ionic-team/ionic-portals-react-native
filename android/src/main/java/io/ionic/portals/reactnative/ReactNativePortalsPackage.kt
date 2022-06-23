@@ -10,7 +10,8 @@ class ReactNativePortalsPackage : ReactPackage {
     override fun createNativeModules(reactContext: ReactApplicationContext): List<NativeModule> {
         return listOf(
             PortalManagerModule(reactContext),
-            PortalsPubSubModule(reactContext)
+            PortalsPubSubModule(reactContext),
+            LiveUpdatesModule(reactContext)
         )
     }
 
