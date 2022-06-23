@@ -17,7 +17,9 @@ import io.ionic.liveupdates.network.FailStep
 import io.ionic.liveupdates.network.SyncCallback
 import io.ionic.portals.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.toCollection
 import org.json.JSONArray
 import org.json.JSONException
@@ -41,6 +43,7 @@ internal class PortalManagerModule(reactContext: ReactApplicationContext) :
         map.getString("name")?.let { name ->
             val startDir = map.getString("startDir")
             val initialContext = map.getMap("initialContext")?.toHashMap()
+            val liveUpdateConfig = map.getMap("liveUpdate")
 
             val portalBuilder = PortalBuilder(name)
 
@@ -50,6 +53,17 @@ internal class PortalManagerModule(reactContext: ReactApplicationContext) :
 
             if (initialContext != null) {
                 portalBuilder.setInitialContext(initialContext)
+            }
+
+            if (liveUpdateConfig != null) {
+                portalBuilder.setLiveUpdateConfig(
+                    reactApplicationContext,
+                    LiveUpdate(
+                        liveUpdateConfig.getString("appId")!!,
+                        liveUpdateConfig.getString("channel")!!,
+                    ),
+                    liveUpdateConfig.getBoolean("syncOnAdd")
+                )
             }
 
             // TODO: We need to figure out if we can register plugins from javascript
@@ -315,6 +329,7 @@ internal class LiveUpdatesModule(reactContext: ReactApplicationContext) :
         )
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @ReactMethod
     fun syncSome(appIds: ReadableArray, promise: Promise) {
         val appIds = (0 until appIds.size())
@@ -336,13 +351,17 @@ internal class LiveUpdatesModule(reactContext: ReactApplicationContext) :
                         }
 
                         override fun onSyncComplete() {
-                            cancel()
+                            close()
                         }
                     }
                 )
+
+                awaitClose { cancel() }
             }
 
             val syncResults = SyncResults(mutableListOf(), mutableListOf())
+
+            flow.collect()
 
             flow.toCollection(mutableListOf())
                 .forEach {
@@ -372,13 +391,17 @@ internal class LiveUpdatesModule(reactContext: ReactApplicationContext) :
                        }
 
                        override fun onSyncComplete() {
-                           cancel()
+                           close()
                        }
                    }
                )
+
+               awaitClose { cancel() }
            }
 
             val syncResults = SyncResults(mutableListOf(), mutableListOf())
+
+            flow.collect()
 
             flow.toCollection(mutableListOf())
                 .forEach {
