@@ -29,9 +29,7 @@ import java.util.concurrent.Executors
 
 internal class PortalManagerModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
-    override fun getName(): String {
-        return "IONPortalManager"
-    }
+    override fun getName() = "IONPortalManager"
 
     @ReactMethod
     fun register(key: String) {
@@ -40,56 +38,51 @@ internal class PortalManagerModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun addPortal(map: ReadableMap) {
-        map.getString("name")?.let { name ->
-            val startDir = map.getString("startDir")
-            val initialContext = map.getMap("initialContext")?.toHashMap()
-            val liveUpdateConfig = map.getMap("liveUpdate")
+        val name = map.getString("name") ?: return
+        val portalBuilder = PortalBuilder(name)
 
-            val portalBuilder = PortalBuilder(name)
+        map.getString("startDir")
+            ?.let(portalBuilder::setStartDir)
 
-            if (startDir != null) {
-                portalBuilder.setStartDir(startDir)
+        map.getMap("initialContext")
+            ?.toHashMap()
+            ?.let(portalBuilder::setInitialContext)
+
+        map.getArray("androidPlugins")
+            ?.toArrayList()
+            ?.mapNotNull { it as? String }
+            ?.map {
+                Class.forName(it)
+                    .asSubclass(Plugin::class.java)
             }
+            ?.forEach(portalBuilder::addPlugin)
 
-            if (initialContext != null) {
-                portalBuilder.setInitialContext(initialContext)
+        map.getMap("liveUpdate")
+            ?.let { readableMap ->
+                val appId = readableMap.getString("appId") ?: return@let null
+                val channel = readableMap.getString("channel") ?: return@let null
+                val syncOnAdd = readableMap.getBoolean("syncOnAdd")
+                Pair(LiveUpdate(appId, channel), syncOnAdd)
             }
-
-            map.getArray("androidPlugins")
-                ?.toArrayList()
-                ?.mapNotNull { it as? String }
-                ?.map {
-                    val clazz = Class.forName(it)
-                    clazz.asSubclass(Plugin::class.java)
-                }
-                ?.forEach(portalBuilder::addPlugin)
-
-            if (liveUpdateConfig != null) {
+            ?.let { pair ->
                 portalBuilder.setLiveUpdateConfig(
-                    reactApplicationContext,
-                    LiveUpdate(
-                        liveUpdateConfig.getString("appId")!!,
-                        liveUpdateConfig.getString("channel")!!,
-                    ),
-                    liveUpdateConfig.getBoolean("syncOnAdd")
+                    context = reactApplicationContext,
+                    liveUpdateConfig = pair.first,
+                    updateOnAppLoad = pair.second
                 )
             }
 
-            // TODO: We need to figure out if we can register plugins from javascript
-            val portal = portalBuilder
-                .addPlugin(PortalsPlugin::class.java)
-                .create()
+        val portal = portalBuilder
+            .addPlugin(PortalsPlugin::class.java)
+            .create()
 
-            PortalManager.addPortal(portal)
-        }
+        PortalManager.addPortal(portal)
     }
 }
 
 internal class PortalsPubSubModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
-    override fun getName(): String {
-        return "IONPortalPubSub"
-    }
+    override fun getName() = "IONPortalPubSub"
 
     @ReactMethod
     fun subscribe(topic: String, promise: Promise) {
@@ -178,9 +171,7 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         portal?.setInitialContext(initialContext.toHashMap())
     }
 
-    override fun getName(): String {
-        return "AndroidPortalView"
-    }
+    override fun getName() = "AndroidPortalView"
 
     override fun createViewInstance(reactContext: ThemedReactContext): FrameLayout {
         return FrameLayout(reactContext)
@@ -193,6 +184,7 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
     override fun receiveCommand(root: FrameLayout, commandId: String?, args: ReadableArray?) {
         super.receiveCommand(root, commandId, args)
         val viewId = args?.getInt(0) ?: return
+        @Suppress("NAME_SHADOWING")
         val commandId = commandId?.toIntOrNull() ?: return
 
         when (commandId) {
@@ -230,197 +222,6 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
             )
 
             child.layout(0, 0, child.measuredWidth, child.measuredHeight)
-        }
-    }
-}
-
-fun LiveUpdate.toReadableMap(): ReadableMap {
-    val map = WritableNativeMap()
-    map.putString("appId", appId)
-    map.putString("channel", channelName)
-    return map
-}
-
-private sealed class LiveUpdateResult()
-private data class LiveUpdateError(val appId: String, val failStep: String, val failMsg: String): LiveUpdateResult() {
-   val asReadableMap: ReadableMap
-    get() {
-        val map = WritableNativeMap()
-        map.putString("appId", appId)
-        map.putString("failStep", failStep)
-        map.putString("message", failMsg)
-        return map
-    }
-}
-private data class LiveUpdateSuccess(val liveUpdate: LiveUpdate): LiveUpdateResult()
-
-private data class SyncResults(var liveUpdates: MutableList<LiveUpdate>, var errors: MutableList<LiveUpdateError>) {
-    val asReadableMap: ReadableMap
-        get() {
-            val map = WritableNativeMap()
-
-            val liveUpdatesArray = WritableNativeArray()
-            liveUpdates.forEach { liveUpdatesArray.pushMap(it.toReadableMap()) }
-            map.putArray("liveUpdates", liveUpdatesArray)
-
-            val errorsArray = WritableNativeArray()
-            errors.forEach { errorsArray.pushMap(it.asReadableMap) }
-            map.putArray("errors", errorsArray)
-
-            return map
-        }
-}
-
-internal class LiveUpdatesModule(reactContext: ReactApplicationContext) :
-    ReactContextBaseJavaModule(reactContext) {
-
-    init {
-        LiveUpdateManager.initialize(reactContext)
-    }
-
-    override fun getName() = "IONLiveUpdatesManager"
-
-    private val scope = CoroutineScope(Executors.newFixedThreadPool(4).asCoroutineDispatcher())
-
-    private fun callbackToMap(liveUpdate: LiveUpdate, failStep: FailStep?, failMsg: String?): ReadableMap =
-        if (failStep != null) {
-            val map = WritableNativeMap()
-            map.putString("appId", liveUpdate.appId)
-            map.putString("failStep", failStep.name)
-            map.putString("message", failMsg ?: "Sync failed for unknown reason")
-            map
-        } else {
-            liveUpdate.toReadableMap()
-        }
-
-    private fun callbackToResult(liveUpdate: LiveUpdate, failStep: FailStep?, failMsg: String?): LiveUpdateResult =
-        if (failStep != null) {
-           LiveUpdateError(
-               appId = liveUpdate.appId,
-               failStep = failStep.name,
-               failMsg = failMsg ?: "Sync failed for unknown reason"
-           )
-        } else {
-           LiveUpdateSuccess(liveUpdate)
-        }
-
-
-    @ReactMethod
-    fun addLiveUpdate(map: ReadableMap) {
-        val appId = map.getString("appId") ?: return
-        val channel = map.getString("channel") ?: return
-
-        LiveUpdateManager.addLiveUpdateInstance(
-            context = reactApplicationContext,
-            liveUpdate = LiveUpdate(appId, channel)
-        )
-    }
-
-    @ReactMethod
-    fun syncOne(appId: String, promise: Promise) {
-        LiveUpdateManager.sync(
-            context = reactApplicationContext,
-            appId = appId,
-            callback = object: SyncCallback {
-                override fun onAppComplete(
-                    liveUpdate: LiveUpdate,
-                    failStep: FailStep?,
-                    failMsg: String?
-                ) {
-                    val map = callbackToMap(liveUpdate, failStep, failMsg)
-                    promise.resolve(map)
-                }
-
-                override fun onSyncComplete() {
-                    // do nothing
-                }
-            }
-        )
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @ReactMethod
-    fun syncSome(appIds: ReadableArray, promise: Promise) {
-        val appIds = (0 until appIds.size())
-            .mapNotNull(appIds::getString)
-            .toTypedArray()
-
-        scope.launch {
-            val flow = callbackFlow<LiveUpdateResult> {
-                LiveUpdateManager.sync(
-                    context = reactApplicationContext,
-                    appIds = appIds,
-                    callback = object: SyncCallback {
-                        override fun onAppComplete(
-                            liveUpdate: LiveUpdate,
-                            failStep: FailStep?,
-                            failMsg: String?
-                        ) {
-                            trySend(callbackToResult(liveUpdate, failStep, failMsg))
-                        }
-
-                        override fun onSyncComplete() {
-                            close()
-                        }
-                    }
-                )
-
-                awaitClose { cancel() }
-            }
-
-            val syncResults = SyncResults(mutableListOf(), mutableListOf())
-
-            flow.collect()
-
-            flow.toCollection(mutableListOf())
-                .forEach {
-                    when(it) {
-                        is LiveUpdateSuccess -> syncResults.liveUpdates.add(it.liveUpdate)
-                        is LiveUpdateError -> syncResults.errors.add(it)
-                    }
-                }
-
-            promise.resolve(syncResults.asReadableMap)
-        }
-    }
-
-    @ReactMethod
-    fun syncAll(promise: Promise) {
-        scope.launch {
-           val flow = callbackFlow<LiveUpdateResult> {
-               LiveUpdateManager.sync(
-                   context = reactApplicationContext,
-                   callback = object: SyncCallback {
-                       override fun onAppComplete(
-                           liveUpdate: LiveUpdate,
-                           failStep: FailStep?,
-                           failMsg: String?
-                       ) {
-                           trySend(callbackToResult(liveUpdate, failStep, failMsg))
-                       }
-
-                       override fun onSyncComplete() {
-                           close()
-                       }
-                   }
-               )
-
-               awaitClose { cancel() }
-           }
-
-            val syncResults = SyncResults(mutableListOf(), mutableListOf())
-
-            flow.collect()
-
-            flow.toCollection(mutableListOf())
-                .forEach {
-                    when(it) {
-                        is LiveUpdateSuccess -> syncResults.liveUpdates.add(it.liveUpdate)
-                        is LiveUpdateError -> syncResults.errors.add(it)
-                    }
-                }
-
-            promise.resolve(syncResults.asReadableMap)
         }
     }
 }
