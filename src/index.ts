@@ -59,18 +59,6 @@ export const register = (key: string) => {
   IONPortalManager.register(key);
 };
 
-export interface LiveUpdate {
-  appId: string;
-  channel: string;
-  syncOnAdd: boolean;
-}
-
-export interface LiveUpdateError {
-  appId: string;
-  failStep: string;
-  message: string;
-}
-
 export interface Portal {
   name: string;
   androidPlugins?: string[];
@@ -78,12 +66,7 @@ export interface Portal {
   initialContext?: {
     [key: string]: any;
   };
-  liveUpdate?: LiveUpdate;
-}
-
-export interface SyncResults {
-  liveUpdates: LiveUpdate[];
-  errors: LiveUpdateError[];
+  liveUpdate?: LiveUpdateConfig;
 }
 
 export type PortalProps = Pick<Portal, 'name' | 'initialContext'> & ViewProps;
@@ -92,9 +75,23 @@ export const addPortal = (portal: Portal) => {
   IONPortalManager.addPortal(portal);
 };
 
-export const addLiveUpdate = (liveUpdate: LiveUpdate) => {
-  IONLiveUpdatesManager.addLiveUpdate(liveUpdate);
-};
+export interface LiveUpdate {
+  appId: string;
+  channel: string;
+}
+
+export type LiveUpdateConfig = LiveUpdate & { syncOnAdd: boolean };
+
+export interface LiveUpdateError {
+  appId: string;
+  failStep: string;
+  message: string;
+}
+
+export interface SyncResults {
+  liveUpdates: LiveUpdate[];
+  errors: LiveUpdateError[];
+}
 
 export const syncOne = (appId: string): Promise<LiveUpdate> => {
   return IONLiveUpdatesManager.syncOne(appId);
