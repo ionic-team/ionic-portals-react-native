@@ -13,19 +13,10 @@ import com.facebook.react.uimanager.annotations.ReactProp
 import com.getcapacitor.JSObject
 import com.getcapacitor.Plugin
 import io.ionic.liveupdates.LiveUpdate
-import io.ionic.liveupdates.LiveUpdateManager
-import io.ionic.liveupdates.network.FailStep
-import io.ionic.liveupdates.network.SyncCallback
 import io.ionic.portals.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.toCollection
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import java.util.concurrent.Executors
 
 internal class PortalManagerModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
@@ -184,6 +175,7 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
     override fun receiveCommand(root: FrameLayout, commandId: String?, args: ReadableArray?) {
         super.receiveCommand(root, commandId, args)
         val viewId = args?.getInt(0) ?: return
+
         @Suppress("NAME_SHADOWING")
         val commandId = commandId?.toIntOrNull() ?: return
 
