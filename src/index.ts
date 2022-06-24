@@ -5,7 +5,8 @@ import {
   ViewProps,
 } from 'react-native';
 
-const { IONPortalPubSub, IONPortalManager } = NativeModules;
+const { IONPortalPubSub, IONPortalManager, IONLiveUpdatesManager } =
+  NativeModules;
 
 export { default as PortalView } from './PortalView';
 
@@ -60,14 +61,46 @@ export const register = (key: string) => {
 
 export interface Portal {
   name: string;
+  androidPlugins?: string[];
   startDir?: string;
   initialContext?: {
     [key: string]: any;
   };
+  liveUpdate?: LiveUpdateConfig;
 }
 
 export type PortalProps = Pick<Portal, 'name' | 'initialContext'> & ViewProps;
 
 export const addPortal = (portal: Portal) => {
   IONPortalManager.addPortal(portal);
+};
+
+export interface LiveUpdate {
+  appId: string;
+  channel: string;
+}
+
+export type LiveUpdateConfig = LiveUpdate & { syncOnAdd: boolean };
+
+export interface LiveUpdateError {
+  appId: string;
+  failStep: string;
+  message: string;
+}
+
+export interface SyncResults {
+  liveUpdates: LiveUpdate[];
+  errors: LiveUpdateError[];
+}
+
+export const syncOne = (appId: string): Promise<LiveUpdate> => {
+  return IONLiveUpdatesManager.syncOne(appId);
+};
+
+export const syncSome = (appIds: string[]): Promise<SyncResults> => {
+  return IONLiveUpdatesManager.syncSome(appIds);
+};
+
+export const syncAll = (): Promise<SyncResults> => {
+  return IONLiveUpdatesManager.syncAll();
 };

@@ -11,16 +11,16 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.getcapacitor.JSObject
+import com.getcapacitor.Plugin
+import io.ionic.liveupdates.LiveUpdate
 import io.ionic.portals.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-class PortalManagerModule(reactContext: ReactApplicationContext) :
+internal class PortalManagerModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
-    override fun getName(): String {
-        return "IONPortalManager"
-    }
+    override fun getName() = "IONPortalManager"
 
     @ReactMethod
     fun register(key: String) {
@@ -29,35 +29,51 @@ class PortalManagerModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun addPortal(map: ReadableMap) {
-        map.getString("name")?.let { name ->
-            val startDir = map.getString("startDir")
-            val initialContext = map.getMap("initialContext")?.toHashMap()
+        val name = map.getString("name") ?: return
+        val portalBuilder = PortalBuilder(name)
 
-            val portalBuilder = PortalBuilder(name)
+        map.getString("startDir")
+            ?.let(portalBuilder::setStartDir)
 
-            if (startDir != null) {
-                portalBuilder.setStartDir(startDir)
+        map.getMap("initialContext")
+            ?.toHashMap()
+            ?.let(portalBuilder::setInitialContext)
+
+        map.getArray("androidPlugins")
+            ?.toArrayList()
+            ?.mapNotNull { it as? String }
+            ?.map {
+                Class.forName(it)
+                    .asSubclass(Plugin::class.java)
+            }
+            ?.forEach(portalBuilder::addPlugin)
+
+        map.getMap("liveUpdate")
+            ?.let { readableMap ->
+                val appId = readableMap.getString("appId") ?: return@let null
+                val channel = readableMap.getString("channel") ?: return@let null
+                val syncOnAdd = readableMap.getBoolean("syncOnAdd")
+                Pair(LiveUpdate(appId, channel), syncOnAdd)
+            }
+            ?.let { pair ->
+                portalBuilder.setLiveUpdateConfig(
+                    context = reactApplicationContext,
+                    liveUpdateConfig = pair.first,
+                    updateOnAppLoad = pair.second
+                )
             }
 
-            if (initialContext != null) {
-                portalBuilder.setInitialContext(initialContext)
-            }
+        val portal = portalBuilder
+            .addPlugin(PortalsPlugin::class.java)
+            .create()
 
-            // TODO: We need to figure out if we can register plugins from javascript
-            val portal = portalBuilder
-                .addPlugin(PortalsPlugin::class.java)
-                .create()
-
-            PortalManager.addPortal(portal)
-        }
+        PortalManager.addPortal(portal)
     }
 }
 
-class PortalsPubSubModule(reactContext: ReactApplicationContext) :
+internal class PortalsPubSubModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
-    override fun getName(): String {
-        return "IONPortalPubSub"
-    }
+    override fun getName() = "IONPortalPubSub"
 
     @ReactMethod
     fun subscribe(topic: String, promise: Promise) {
@@ -91,7 +107,7 @@ class PortalsPubSubModule(reactContext: ReactApplicationContext) :
     }
 }
 
-fun JSONObject.toReactMap(): ReadableMap =
+private fun JSONObject.toReactMap(): ReadableMap =
     keys().asSequence().fold(WritableNativeMap()) { map, key ->
         try {
             when (val value = get(key)) {
@@ -110,7 +126,7 @@ fun JSONObject.toReactMap(): ReadableMap =
         return@fold map
     }
 
-fun JSONArray.toReactArray(): ReadableArray =
+private fun JSONArray.toReactArray(): ReadableArray =
     (0 until length()).fold(WritableNativeArray()) { array, index ->
         try {
             when (val value = get(index)) {
@@ -129,9 +145,9 @@ fun JSONArray.toReactArray(): ReadableArray =
         return@fold array
     }
 
-fun ReadableMap.toJSObject(): JSObject = JSObject.fromJSONObject(JSONObject(toHashMap()))
+private fun ReadableMap.toJSObject(): JSObject = JSObject.fromJSONObject(JSONObject(toHashMap()))
 
-class PortalViewManager(private val context: ReactApplicationContext) :
+internal class PortalViewManager(private val context: ReactApplicationContext) :
     ViewGroupManager<FrameLayout>() {
     private val createId = 1
     private var portal: Portal? = null
@@ -146,9 +162,7 @@ class PortalViewManager(private val context: ReactApplicationContext) :
         portal?.setInitialContext(initialContext.toHashMap())
     }
 
-    override fun getName(): String {
-        return "AndroidPortalView"
-    }
+    override fun getName() = "AndroidPortalView"
 
     override fun createViewInstance(reactContext: ThemedReactContext): FrameLayout {
         return FrameLayout(reactContext)
@@ -161,6 +175,8 @@ class PortalViewManager(private val context: ReactApplicationContext) :
     override fun receiveCommand(root: FrameLayout, commandId: String?, args: ReadableArray?) {
         super.receiveCommand(root, commandId, args)
         val viewId = args?.getInt(0) ?: return
+
+        @Suppress("NAME_SHADOWING")
         val commandId = commandId?.toIntOrNull() ?: return
 
         when (commandId) {

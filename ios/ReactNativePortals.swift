@@ -1,5 +1,6 @@
 import Foundation
 import IonicPortals
+import IonicLiveUpdates
 import React
 import UIKit
 import Capacitor
@@ -126,8 +127,136 @@ extension Portal {
         self.init(
             name: name,
             startDir: dict["startDir"] as? String,
-            initialContext: JSTypes.coerceDictionaryToJSObject(dict["initialContext"] as? [String: Any]) ?? [:]
+            initialContext: JSTypes.coerceDictionaryToJSObject(dict["initialContext"] as? [String: Any]) ?? [:],
+            liveUpdateConfig: (dict["liveUpdate"] as? [String: Any]).flatMap(LiveUpdate.init)
         )
     }
 }
 
+extension LiveUpdate {
+    init?(_ dict: [String: Any]) {
+        guard let appId = dict["appId"] as? String,
+              let channel = dict["channel"] as? String,
+              let syncOnAdd = dict["syncOnAdd"] as? Bool
+        else { return nil }
+        
+        self.init(appId: appId, channel: channel, syncOnAdd: syncOnAdd)
+    }
+}
+
+extension LiveUpdate {
+    var dict: [String: Any] {
+        return [
+            "appId": appId,
+            "channel": channel,
+            "syncOnAdd": syncOnAdd
+        ]
+    }
+}
+
+extension LiveUpdateManager.Error {
+    var dict: [String: Any] {
+        return [
+            "appId": appId,
+            "failStep": failStep.rawValue.uppercased(),
+            "message": localizedDescription
+        ]
+    }
+}
+
+private struct SyncResults {
+    var liveUpdates: [LiveUpdate]
+    var errors: [LiveUpdateManager.Error]
+}
+
+extension SyncResults {
+    var dict: [String: Any] {
+        return [
+            "liveUpdates": liveUpdates.map(\.dict),
+            "errors": errors.map(\.dict)
+        ]
+    }
+}
+
+@objc(IONLiveUpdatesManager)
+public class LiveUpdatesManager: NSObject {
+    private var lum = LiveUpdateManager.shared
+    
+    @objc func addLiveUpdate(_ dict: [String: Any]) {
+        guard let liveUpdate = LiveUpdate(dict) else { return }
+        try? lum.add(liveUpdate)
+    }
+    
+    @objc func syncOne(_ appId: String, resolver: @escaping RCTPromiseResolveBlock, rejector: @escaping RCTPromiseRejectBlock) {
+        lum.sync(appId: appId, isParallel: true) { result in
+            switch result {
+            case .success(let update):
+                resolver(update.dict)
+            case .failure(let error):
+                rejector(nil, nil, error)
+            }
+        }
+    }
+    
+    @objc func syncSome(_ appIds: [String], resolver: @escaping RCTPromiseResolveBlock, rejector: RCTPromiseRejectBlock) {
+        Task {
+            let syncResult = await lum.syncSome(appIds)
+            resolver(syncResult.dict)
+        }
+    }
+    
+    @objc func syncAll(_ resolver: @escaping RCTPromiseResolveBlock, rejector: RCTPromiseRejectBlock) {
+        Task {
+            let syncResult = await lum.syncAll()
+            resolver(syncResult.dict)
+        }
+    }
+
+    @objc static func requiresMainQueueSetup() -> Bool { true }
+}
+
+extension LiveUpdateManager {
+    fileprivate func syncSome(_ appIds: [String]) async -> SyncResults {
+        await _syncSome(appIds).syncResults
+    }
+    
+    private func _syncSome(_ appIds: [String]) -> AsyncStream<Result<LiveUpdate, LiveUpdateManager.Error>> {
+        AsyncStream { continuation in
+            sync(appIds: appIds, isParallel: true) {
+                continuation.finish()
+            } appComplete: { result in
+                continuation.yield(result)
+            }
+        }
+    }
+    
+    fileprivate func syncAll() async -> SyncResults {
+        await _syncAll().syncResults
+    }
+    
+    
+    private func _syncAll() -> AsyncStream<Result<LiveUpdate, LiveUpdateManager.Error>> {
+        AsyncStream { continuation in
+            sync(isParallel: true) {
+                continuation.finish()
+            } appComplete: { result in
+                continuation.yield(result)
+            }
+        }
+    }
+}
+
+extension AsyncStream where Element == Result<LiveUpdate, LiveUpdateManager.Error> {
+    fileprivate var syncResults: SyncResults {
+        get async {
+            await reduce(into: SyncResults(liveUpdates: [], errors: [])) { acc, next in
+                switch next {
+                case .success(let liveUpdate):
+                    acc.liveUpdates.append(liveUpdate)
+                case .failure(let error):
+                    acc.errors.append(error)
+                }
+            }
+        }
+    }
+}
