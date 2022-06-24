@@ -18,7 +18,6 @@ import io.ionic.portals.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
-import java.lang.IllegalStateException
 
 internal class PortalManagerModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
@@ -152,7 +151,8 @@ private fun ReadableMap.toJSObject(): JSObject = JSObject.fromJSONObject(JSONObj
 private data class PortalViewState(
     var fragment: PortalFragment?,
     var portal: Portal?,
-    var initialContext: HashMap<String, Any>?)
+    var initialContext: HashMap<String, Any>?
+)
 
 internal class PortalViewManager(private val context: ReactApplicationContext) :
     ViewGroupManager<FrameLayout>() {
@@ -237,7 +237,6 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         } catch (e: IllegalStateException) {
             Log.i("io.ionic.portals.rn", "Parent fragment manager not available")
         }
-
 
         fragmentMap.remove(view.id)
     }
