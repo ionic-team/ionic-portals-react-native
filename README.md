@@ -132,62 +132,23 @@ unsubscribe('channel:topic', subscriptionReference)
 To see an example of Portals Pub/Sub in action that manages the lifecycle of a subscription with the lifecycle of a React Native component, refer to the [`PubSubLabel`](https://github.com/ionic-team/react-native-ionic-portals/blob/af19df0d66059d85ab8dde493504368c3bf39127/example/App.tsx#L53) implementation in the example project.
 
 ### Using Capacitor Plugins
-If you need to use any Capacitor plugins, you will have to register them in your Android project. This will also require creating and registering your Portals in native code as well:
+If you need to use any Capacitor plugins, the classpath of the Android plugins will have to be provided to the `Portal` `androidPlugins` property. 
 
-**Android**
-```java
-public class MainApplication extends Application implements ReactApplication {
-  @Override    
-  public void onCreate() {
-    super.onCreate();
-
-    PortalManager.register("YOUR_PORTAL_KEY_HERE");
-    PortalManager.newPortal("hello")
-      .addPlugin(MyCapacitorPlugin.class) // Plugin registration
-      .setInitialContext(Map.of("greeting", "Hello, world!"))
-      .setStartDir("portals/hello")
-      .create();
+```javascript
+const helloPortal = {
+  name: 'hello',
+  startDir: 'portals/hello', 
+  androidPlugins: ['com.capacitorjs.plugins.camera.CameraPlugin'],
+  initialContext: {
+    greeting: 'Hello, world!'
   }
-}
+};
 ```
 
-**iOS**
-Create a Swift file for your Portals configuration:
-```swift
-import IonicPortals
-import ReactNativePortals
-
-@objc class RNPortalsConfiguration: NSObject {
-    @objc static func setup() {
-        PortalManager.register("YOUR_PORTAL_KEY_HERE")
-
-        let portal = Portal(
-            name: "hello",
-            startDir: "portals/hello",
-            initialContext: ["greeting": "Hello, world!"]
-        )
-
-        PortalManager.add(portal)
-    }
-}
-```
-
-Call the setup function in RNAppDelegate:
-```objective-c
-// Add the import to call the Swift code
-#import <YourProjectName-Swift.h>
-
-@implementation RNAppDelegate
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDicationary *)launchOptions {
-    // React Native boilerplate
-    [RNPortalsConfiguration setup];
-}
-@end
-```
+No configuration for iOS is needed since plugins are automatically registered when the Capacitor bridge initializes on iOS.
 
 ### Bundling Your Web Apps
 Currently there is no tooling for bundling your web apps directly as part of @ionic/portals-react-native. Please follow the [native guides](https://ionic.io/docs/portals/how-to/pull-in-web-bundle#setup-the-web-asset-directory) to manage this as part of the native build process.
-
 
 ## Registration
 
