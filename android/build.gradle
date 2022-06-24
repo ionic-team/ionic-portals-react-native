@@ -124,7 +124,7 @@ dependencies {
     //noinspection GradleDynamicVersion
     api 'com.facebook.react:react-native:+'
     //noinspection GradleDynamicVersion
-    api "io.ionic:portals:0.5.+"
+    api "io.ionic:portals:0.6.+"
     //noinspection GradleDynamicVersion
     api "io.ionic:liveupdates:0.0.+"
 
