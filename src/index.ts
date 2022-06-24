@@ -73,6 +73,7 @@ export interface LiveUpdateError {
 
 export interface Portal {
   name: string;
+  androidPlugins?: string[];
   startDir?: string;
   initialContext?: {
     [key: string]: any;

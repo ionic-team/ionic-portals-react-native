@@ -11,6 +11,7 @@ import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactProp
 import com.getcapacitor.JSObject
+import com.getcapacitor.Plugin
 import io.ionic.liveupdates.LiveUpdate
 import io.ionic.liveupdates.LiveUpdateManager
 import io.ionic.liveupdates.network.FailStep
@@ -25,7 +26,6 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.concurrent.Executors
-import kotlin.coroutines.coroutineContext
 
 internal class PortalManagerModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
@@ -54,6 +54,15 @@ internal class PortalManagerModule(reactContext: ReactApplicationContext) :
             if (initialContext != null) {
                 portalBuilder.setInitialContext(initialContext)
             }
+
+            map.getArray("androidPlugins")
+                ?.toArrayList()
+                ?.mapNotNull { it as? String }
+                ?.map {
+                    val clazz = Class.forName(it)
+                    clazz.asSubclass(Plugin::class.java)
+                }
+                ?.forEach(portalBuilder::addPlugin)
 
             if (liveUpdateConfig != null) {
                 portalBuilder.setLiveUpdateConfig(
