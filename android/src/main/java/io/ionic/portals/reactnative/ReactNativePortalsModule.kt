@@ -1,5 +1,6 @@
 package io.ionic.portals.reactnative
 
+import android.util.Log
 import android.view.Choreographer
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import io.ionic.portals.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import java.lang.IllegalStateException
 
 internal class PortalManagerModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
@@ -147,20 +149,38 @@ private fun JSONArray.toReactArray(): ReadableArray =
 
 private fun ReadableMap.toJSObject(): JSObject = JSObject.fromJSONObject(JSONObject(toHashMap()))
 
+private data class PortalViewState(
+    var fragment: PortalFragment?,
+    var portal: Portal?,
+    var initialContext: HashMap<String, Any>?)
+
 internal class PortalViewManager(private val context: ReactApplicationContext) :
     ViewGroupManager<FrameLayout>() {
     private val createId = 1
-    private var portal: Portal? = null
-    private var initialContext: HashMap<String, Any>? = null
+    private val fragmentMap = mutableMapOf<Int, PortalViewState>()
 
     @ReactProp(name = "name")
     fun setPortal(viewGroup: ViewGroup, portalName: String) {
-        portal = PortalManager.getPortal(portalName)
+        when (val viewState = fragmentMap[viewGroup.id]) {
+            null -> fragmentMap[viewGroup.id] = PortalViewState(
+                fragment = null,
+                portal = PortalManager.getPortal(portalName),
+                initialContext = null
+            )
+            else -> viewState.portal = PortalManager.getPortal(portalName)
+        }
     }
 
     @ReactProp(name = "initialContext")
     fun setInitialContext(viewGroup: ViewGroup, initialContext: ReadableMap) {
-        this.initialContext = initialContext.toHashMap()
+        when (val viewState = fragmentMap[viewGroup.id]) {
+            null -> fragmentMap[viewGroup.id] = PortalViewState(
+                fragment = null,
+                portal = null,
+                initialContext = initialContext.toHashMap()
+            )
+            else -> viewState.initialContext = initialContext.toHashMap()
+        }
     }
 
     override fun getName() = "AndroidPortalView"
@@ -186,21 +206,40 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
     }
 
     private fun createFragment(root: FrameLayout, viewId: Int) {
-        val portal = portal ?: return
+        val viewState = fragmentMap[viewId] ?: return
+        val portal = viewState.portal ?: return
+
         val parentView = root.findViewById<ViewGroup>(viewId)
         setupLayout(parentView)
 
         val portalFragment = PortalFragment(portal)
-        initialContext?.let(portalFragment::setInitialContext)
+        viewState.initialContext?.let(portalFragment::setInitialContext)
+
+        viewState.fragment = portalFragment
 
         val fragmentActivity = context.currentActivity as? FragmentActivity ?: return
         fragmentActivity.supportFragmentManager
             .beginTransaction()
             .replace(viewId, portalFragment, "$viewId")
             .commit()
+    }
 
-        this.portal = null
-        this.initialContext = null
+    override fun onDropViewInstance(view: FrameLayout) {
+        super.onDropViewInstance(view)
+        val viewState = fragmentMap[view.id] ?: return
+
+        try {
+            viewState.fragment
+                ?.parentFragmentManager
+                ?.beginTransaction()
+                ?.remove(viewState.fragment!!)
+                ?.commit()
+        } catch (e: IllegalStateException) {
+            Log.i("io.ionic.portals.rn", "Parent fragment manager not available")
+        }
+
+
+        fragmentMap.remove(view.id)
     }
 
     private fun setupLayout(view: ViewGroup) {
