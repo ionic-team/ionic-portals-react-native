@@ -151,6 +151,7 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
     ViewGroupManager<FrameLayout>() {
     private val createId = 1
     private var portal: Portal? = null
+    private var initialContext: HashMap<String, Any>? = null
 
     @ReactProp(name = "name")
     fun setPortal(viewGroup: ViewGroup, portalName: String) {
@@ -159,7 +160,7 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
 
     @ReactProp(name = "initialContext")
     fun setInitialContext(viewGroup: ViewGroup, initialContext: ReadableMap) {
-        portal?.setInitialContext(initialContext.toHashMap())
+        this.initialContext = initialContext.toHashMap()
     }
 
     override fun getName() = "AndroidPortalView"
@@ -190,11 +191,16 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         setupLayout(parentView)
 
         val portalFragment = PortalFragment(portal)
+        initialContext?.let(portalFragment::setInitialContext)
+
         val fragmentActivity = context.currentActivity as? FragmentActivity ?: return
         fragmentActivity.supportFragmentManager
             .beginTransaction()
             .replace(viewId, portalFragment, "$viewId")
             .commit()
+
+        this.portal = null
+        this.initialContext = null
     }
 
     private fun setupLayout(view: ViewGroup) {
