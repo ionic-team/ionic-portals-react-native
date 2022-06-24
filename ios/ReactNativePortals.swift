@@ -211,6 +211,8 @@ public class LiveUpdatesManager: NSObject {
             resolver(syncResult.dict)
         }
     }
+
+    @objc static func requiresMainQueueSetup() -> Bool { true }
 }
 
 extension LiveUpdateManager {
