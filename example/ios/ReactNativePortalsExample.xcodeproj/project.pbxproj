@@ -12,8 +12,8 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		9D4FC5608FB667D3FA8A412C /* Pods_ReactNativePortalsExample_ReactNativePortalsExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA6C7F91AF5EEE6253B91F3 /* Pods_ReactNativePortalsExample_ReactNativePortalsExampleTests.framework */; };
-		F7F5D153911B22C78E40FD78 /* Pods_ReactNativePortalsExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9957406FF0583A0C1E998F8B /* Pods_ReactNativePortalsExample.framework */; };
+		9617A909669D4B08923F1074 /* libPods-ReactNativePortalsExample-ReactNativePortalsExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C6ACBC94986BC9CD1EF01D6 /* libPods-ReactNativePortalsExample-ReactNativePortalsExampleTests.a */; };
+		C2BD1FD70C36D25C833E7696 /* libPods-ReactNativePortalsExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7671939F4723538F1A0F10D2 /* libPods-ReactNativePortalsExample.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,12 +38,12 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ReactNativePortalsExample/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ReactNativePortalsExample/main.m; sourceTree = "<group>"; };
 		58BC2BDEE7DD265343E7CEFC /* Pods-ReactNativePortalsExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativePortalsExample.release.xcconfig"; path = "Target Support Files/Pods-ReactNativePortalsExample/Pods-ReactNativePortalsExample.release.xcconfig"; sourceTree = "<group>"; };
+		5C6ACBC94986BC9CD1EF01D6 /* libPods-ReactNativePortalsExample-ReactNativePortalsExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactNativePortalsExample-ReactNativePortalsExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7671939F4723538F1A0F10D2 /* libPods-ReactNativePortalsExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactNativePortalsExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ReactNativePortalsExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		9957406FF0583A0C1E998F8B /* Pods_ReactNativePortalsExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReactNativePortalsExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B320C02CFFB296C4BA72A25C /* Pods-ReactNativePortalsExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativePortalsExample.debug.xcconfig"; path = "Target Support Files/Pods-ReactNativePortalsExample/Pods-ReactNativePortalsExample.debug.xcconfig"; sourceTree = "<group>"; };
 		CB5B7EF71230DB8A65A8A41B /* Pods-ReactNativePortalsExample-ReactNativePortalsExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativePortalsExample-ReactNativePortalsExampleTests.release.xcconfig"; path = "Target Support Files/Pods-ReactNativePortalsExample-ReactNativePortalsExampleTests/Pods-ReactNativePortalsExample-ReactNativePortalsExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		FCA6C7F91AF5EEE6253B91F3 /* Pods_ReactNativePortalsExample_ReactNativePortalsExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReactNativePortalsExample_ReactNativePortalsExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,7 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D4FC5608FB667D3FA8A412C /* Pods_ReactNativePortalsExample_ReactNativePortalsExampleTests.framework in Frameworks */,
+				9617A909669D4B08923F1074 /* libPods-ReactNativePortalsExample-ReactNativePortalsExampleTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,7 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F7F5D153911B22C78E40FD78 /* Pods_ReactNativePortalsExample.framework in Frameworks */,
+				C2BD1FD70C36D25C833E7696 /* libPods-ReactNativePortalsExample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,8 +100,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				9957406FF0583A0C1E998F8B /* Pods_ReactNativePortalsExample.framework */,
-				FCA6C7F91AF5EEE6253B91F3 /* Pods_ReactNativePortalsExample_ReactNativePortalsExampleTests.framework */,
+				7671939F4723538F1A0F10D2 /* libPods-ReactNativePortalsExample.a */,
+				5C6ACBC94986BC9CD1EF01D6 /* libPods-ReactNativePortalsExample-ReactNativePortalsExampleTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -160,6 +160,7 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				CC98929DAD470860BA30737F /* [CP] Embed Pods Frameworks */,
+				CF3337D567A117AA4D364384 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -183,6 +184,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				A7B96F7627FCCCAE00426633 /* Copy Capacitor App */,
 				9521AEC63FE7C4D561D3EE4F /* [CP] Embed Pods Frameworks */,
+				CDE1933E7704A26558D81BD9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -357,6 +359,40 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ReactNativePortalsExample-ReactNativePortalsExampleTests/Pods-ReactNativePortalsExample-ReactNativePortalsExampleTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CDE1933E7704A26558D81BD9 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ReactNativePortalsExample/Pods-ReactNativePortalsExample-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ReactNativePortalsExample/Pods-ReactNativePortalsExample-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ReactNativePortalsExample/Pods-ReactNativePortalsExample-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CF3337D567A117AA4D364384 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ReactNativePortalsExample-ReactNativePortalsExampleTests/Pods-ReactNativePortalsExample-ReactNativePortalsExampleTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ReactNativePortalsExample-ReactNativePortalsExampleTests/Pods-ReactNativePortalsExample-ReactNativePortalsExampleTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ReactNativePortalsExample-ReactNativePortalsExampleTests/Pods-ReactNativePortalsExample-ReactNativePortalsExampleTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
