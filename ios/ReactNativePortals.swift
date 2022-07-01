@@ -74,6 +74,7 @@ class PortalViewManager: RCTViewManager {
 
 class PortalView: UIView {
     private var webView: PortalUIView?
+    private var _initialContext: [String: JSValue]?
     
     @objc var name: String? {
         get {
@@ -88,21 +89,22 @@ class PortalView: UIView {
     }
     
     @objc var initialContext: [String: Any]? {
-        get {
-            guard let portal = _portal else { return nil }
-            return portal.initialContext
-        }
-        
+        get { _initialContext }
         set {
-            guard let name = name else { return }
-            _portal = PortalManager.getPortal(named: name)
-            _portal?.initialContext = JSTypes.coerceDictionaryToJSObject(newValue) ?? [:]
+            _initialContext = JSTypes.coerceDictionaryToJSObject(newValue)
+            // If the Portal is already present then we need to set the initialContext so it's the `didSet` property observer is fired
+            _portal?.initialContext = _initialContext ?? [:]
         }
     }
     
     private var _portal: Portal? {
         didSet {
-            guard let portal = _portal else { return }
+            guard var portal = _portal else { return }
+            
+            if let initialContext = _initialContext {
+                portal.initialContext = initialContext
+            }
+            
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.webView?.removeFromSuperview()
