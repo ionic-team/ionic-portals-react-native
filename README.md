@@ -102,6 +102,7 @@ int main(int argc, char *argv[])
 There are two methods you may use to ensure Portals can integrate into your React Native application: a custom `pre_install` hook or adding `use_frameworks!` to your Podfile. Only one of these approaches is needed to ensure that Capacitor is compiled as a dynamic framework.
 
 **pre_install**
+
 Using the `pre_install` hook allows you to keep all the other React Native dependencies as static frameworks:
 ```ruby
 # These frameworks are required to be dynamic. 
@@ -122,6 +123,7 @@ end
 ```
 
 **use_frameworks**
+
 Alternative to the `pre_install` hook, you can add `use_frameworks!` to your Podfile application target. Using this approach requires removing `use_flipper!()` from the Podfile.
 
 ### Communicating between React Native and Web
