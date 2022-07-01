@@ -90,7 +90,11 @@ class PortalView: UIView {
     
     @objc var initialContext: [String: Any]? {
         get { _initialContext }
-        set { _initialContext = JSTypes.coerceDictionaryToJSObject(newValue) }
+        set {
+            _initialContext = JSTypes.coerceDictionaryToJSObject(newValue)
+            // If the Portal is already present then we need to set the initialContext so it's the `didSet` property observer is fired
+            _portal?.initialContext = _initialContext ?? [:]
+        }
     }
     
     private var _portal: Portal? {
