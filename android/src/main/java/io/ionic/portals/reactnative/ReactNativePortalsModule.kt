@@ -241,23 +241,22 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         fragmentMap.remove(view.id)
     }
 
-    private fun setupLayout(view: ViewGroup) {
-        Choreographer.getInstance().postFrameCallback {
-            layoutChildren(view)
-            view.viewTreeObserver.dispatchOnGlobalLayout()
-        }
+    private fun setupLayout(view: View) {
+        Choreographer.getInstance().postFrameCallback(object : Choreographer.FrameCallback {
+            override fun doFrame(frameTimeNanos: Long) {
+                layoutPortal(view)
+                view.viewTreeObserver.dispatchOnGlobalLayout()
+                Choreographer.getInstance().postFrameCallback(this)
+            }
+        })
     }
 
-    private fun layoutChildren(view: ViewGroup) {
-        for (i in 0 until view.childCount) {
-            val child = view.getChildAt(i)
+    private fun layoutPortal(view: View) {
+        view.measure(
+            View.MeasureSpec.makeMeasureSpec(view.measuredWidth, View.MeasureSpec.EXACTLY),
+            View.MeasureSpec.makeMeasureSpec(view.measuredHeight, View.MeasureSpec.EXACTLY)
+        )
 
-            child.measure(
-                View.MeasureSpec.makeMeasureSpec(view.measuredWidth, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(view.measuredHeight, View.MeasureSpec.EXACTLY)
-            )
-
-            child.layout(0, 0, child.measuredWidth, child.measuredHeight)
-        }
+        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
     }
 }
