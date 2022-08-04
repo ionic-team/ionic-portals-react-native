@@ -11,6 +11,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactProp
+import com.getcapacitor.CapConfig
 import com.getcapacitor.JSObject
 import com.getcapacitor.Plugin
 import io.ionic.liveupdates.LiveUpdate
@@ -19,16 +20,12 @@ import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 
-internal class PortalManagerModule(reactContext: ReactApplicationContext) :
-    ReactContextBaseJavaModule(reactContext) {
-    override fun getName() = "IONPortalManager"
+internal object RNPortalManager {
+    private val manager = PortalManager
+    internal var indexMap: MutableMap<String, String> = mutableMapOf()
+    lateinit var reactApplicationContext: ReactApplicationContext
 
-    @ReactMethod
-    fun register(key: String) {
-        PortalManager.register(key)
-    }
-
-    @ReactMethod
+    fun register(key: String) = manager.register(key)
     fun addPortal(map: ReadableMap) {
         val name = map.getString("name") ?: return
         val portalBuilder = PortalBuilder(name)
@@ -39,6 +36,9 @@ internal class PortalManagerModule(reactContext: ReactApplicationContext) :
         map.getMap("initialContext")
             ?.toHashMap()
             ?.let(portalBuilder::setInitialContext)
+
+        map.getString("index")
+            ?.let { indexMap[name] = "/$it" }
 
         map.getArray("androidPlugins")
             ?.toArrayList()
@@ -69,6 +69,25 @@ internal class PortalManagerModule(reactContext: ReactApplicationContext) :
             .create()
 
         PortalManager.addPortal(portal)
+    }
+}
+
+internal class PortalManagerModule(reactContext: ReactApplicationContext) :
+    ReactContextBaseJavaModule(reactContext) {
+    override fun getName() = "IONPortalManager"
+
+    init {
+        RNPortalManager.reactApplicationContext = reactContext
+    }
+
+    @ReactMethod
+    fun register(key: String) {
+        RNPortalManager.register(key)
+    }
+
+    @ReactMethod
+    fun addPortal(map: ReadableMap) {
+        RNPortalManager.addPortal(map)
     }
 }
 
@@ -213,6 +232,15 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         setupLayout(parentView)
 
         val portalFragment = PortalFragment(portal)
+
+        val configBuilder = CapConfig.Builder(context)
+            .setInitialFocus(false)
+
+        RNPortalManager.indexMap[portal.name]
+            ?.let(configBuilder::setStartPath)
+
+        portalFragment.setConfig(configBuilder.create())
+
         viewState.initialContext?.let(portalFragment::setInitialContext)
 
         viewState.fragment = portalFragment

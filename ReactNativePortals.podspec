@@ -16,5 +16,5 @@ Pod::Spec.new do |s|
   s.source_files = "ios/**/*.{h,m,mm,swift}"
 
   s.dependency "React-Core"
-  s.dependency "IonicPortals", "~> 0.6.1"
+  s.dependency "IonicPortals", "~> 0.6.3"
 end
