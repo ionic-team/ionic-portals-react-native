@@ -63,6 +63,7 @@ export interface Portal {
   name: string;
   androidPlugins?: string[];
   startDir?: string;
+  index?: string;
   initialContext?: {
     [key: string]: any;
   };

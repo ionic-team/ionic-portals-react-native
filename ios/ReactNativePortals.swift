@@ -129,6 +129,7 @@ extension Portal {
         self.init(
             name: name,
             startDir: dict["startDir"] as? String,
+            index: dict["index"] as? String ?? "index.html",
             initialContext: JSTypes.coerceDictionaryToJSObject(dict["initialContext"] as? [String: Any]) ?? [:],
             liveUpdateConfig: (dict["liveUpdate"] as? [String: Any]).flatMap(LiveUpdate.init)
         )
