@@ -70,7 +70,11 @@ export interface Portal {
   liveUpdate?: LiveUpdateConfig;
 }
 
-export type PortalProps = Pick<Portal, 'name' | 'initialContext'> & ViewProps;
+export type PortalProp = {
+  portal: Pick<Portal, 'name' | 'initialContext'>;
+};
+
+export type PortalProps = PortalProp & ViewProps;
 
 export const addPortal = (portal: Portal) => {
   IONPortalManager.addPortal(portal);

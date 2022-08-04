@@ -74,36 +74,33 @@ class PortalViewManager: RCTViewManager {
 
 class PortalView: UIView {
     private var webView: PortalUIView?
-    private var _initialContext: [String: JSValue]?
     
-    @objc var name: String? {
+    @objc var portal: [String: Any]? {
         get {
             guard let _portal = _portal else { return nil }
-            return _portal.name
+            return [
+                "name": _portal.name,
+                "initialContext": _portal.initialContext
+            ]
         }
         
         set {
-            guard let portalName = newValue else { return }
-            _portal = PortalManager.getPortal(named: portalName)
-        }
-    }
-    
-    @objc var initialContext: [String: Any]? {
-        get { _initialContext }
-        set {
-            _initialContext = JSTypes.coerceDictionaryToJSObject(newValue)
-            // If the Portal is already present then we need to set the initialContext so it's the `didSet` property observer is fired
-            _portal?.initialContext = _initialContext ?? [:]
+            guard let portalDict = newValue,
+                  let name = portalDict["name"] as? String
+            else { return }
+
+            var portal = PortalManager.getPortal(named: name)
+            if let initialContext = portalDict["initialContext"] as? [String: Any] {
+                portal?.initialContext = JSTypes.coerceDictionaryToJSObject(initialContext) ?? [:]
+            }
+            
+            _portal = portal
         }
     }
     
     private var _portal: Portal? {
         didSet {
-            guard var portal = _portal else { return }
-            
-            if let initialContext = _initialContext {
-                portal.initialContext = initialContext
-            }
+            guard let portal = _portal else { return }
             
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
