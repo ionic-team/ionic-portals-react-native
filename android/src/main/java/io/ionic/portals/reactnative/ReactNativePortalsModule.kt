@@ -257,7 +257,7 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         fragmentMap.remove(view.id)
     }
 
-    private fun setupLayout(view: View) {
+    private fun setupLayout(view: ViewGroup) {
         Choreographer.getInstance().postFrameCallback(object : Choreographer.FrameCallback {
             override fun doFrame(frameTimeNanos: Long) {
                 layoutPortal(view)
@@ -267,12 +267,16 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         })
     }
 
-    private fun layoutPortal(view: View) {
-        view.measure(
-            View.MeasureSpec.makeMeasureSpec(view.measuredWidth, View.MeasureSpec.EXACTLY),
-            View.MeasureSpec.makeMeasureSpec(view.measuredHeight, View.MeasureSpec.EXACTLY)
-        )
+    private fun layoutPortal(view: ViewGroup) {
+        for (i in 0 until view.childCount) {
+            val child = view.getChildAt(i)
 
-        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
+            child.measure(
+                View.MeasureSpec.makeMeasureSpec(view.measuredWidth, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(view.measuredHeight, View.MeasureSpec.EXACTLY)
+            )
+
+            child.layout(0, 0, child.measuredWidth, child.measuredHeight)
+        }
     }
 }
