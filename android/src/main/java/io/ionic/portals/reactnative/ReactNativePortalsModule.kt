@@ -178,27 +178,15 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
     private val createId = 1
     private val fragmentMap = mutableMapOf<Int, PortalViewState>()
 
-    @ReactProp(name = "name")
-    fun setPortal(viewGroup: ViewGroup, portalName: String) {
+    @ReactProp(name = "portal")
+    fun setPortal(viewGroup: ViewGroup, portal: ReadableMap) {
+        val name = portal.getString("name") ?: return
         when (val viewState = fragmentMap[viewGroup.id]) {
-            null -> fragmentMap[viewGroup.id] = PortalViewState(
-                fragment = null,
-                portal = PortalManager.getPortal(portalName),
-                initialContext = null
-            )
-            else -> viewState.portal = PortalManager.getPortal(portalName)
-        }
-    }
-
-    @ReactProp(name = "initialContext")
-    fun setInitialContext(viewGroup: ViewGroup, initialContext: ReadableMap) {
-        when (val viewState = fragmentMap[viewGroup.id]) {
-            null -> fragmentMap[viewGroup.id] = PortalViewState(
-                fragment = null,
-                portal = null,
-                initialContext = initialContext.toHashMap()
-            )
-            else -> viewState.initialContext = initialContext.toHashMap()
+           null -> fragmentMap[viewGroup.id] = PortalViewState(
+               fragment = null,
+               portal = PortalManager.getPortal(name),
+               initialContext = portal.getMap("initialContext")?.toHashMap()
+           )
         }
     }
 
@@ -208,7 +196,7 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         return FrameLayout(reactContext)
     }
 
-    override fun getCommandsMap(): MutableMap<String, Int>? {
+    override fun getCommandsMap(): MutableMap<String, Int> {
         return mutableMapOf("create" to createId)
     }
 
@@ -269,7 +257,7 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         fragmentMap.remove(view.id)
     }
 
-    private fun setupLayout(view: View) {
+    private fun setupLayout(view: ViewGroup) {
         Choreographer.getInstance().postFrameCallback(object : Choreographer.FrameCallback {
             override fun doFrame(frameTimeNanos: Long) {
                 layoutPortal(view)
@@ -279,12 +267,16 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         })
     }
 
-    private fun layoutPortal(view: View) {
-        view.measure(
-            View.MeasureSpec.makeMeasureSpec(view.measuredWidth, View.MeasureSpec.EXACTLY),
-            View.MeasureSpec.makeMeasureSpec(view.measuredHeight, View.MeasureSpec.EXACTLY)
-        )
+    private fun layoutPortal(view: ViewGroup) {
+        for (i in 0 until view.childCount) {
+            val child = view.getChildAt(i)
 
-        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
+            child.measure(
+                View.MeasureSpec.makeMeasureSpec(view.measuredWidth, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(view.measuredHeight, View.MeasureSpec.EXACTLY)
+            )
+
+            child.layout(0, 0, child.measuredWidth, child.measuredHeight)
+        }
     }
 }

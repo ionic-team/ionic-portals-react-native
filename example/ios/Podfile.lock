@@ -1,8 +1,8 @@
 PODS:
   - boost (1.76.0)
-  - Capacitor (3.6.0):
+  - Capacitor (3.7.0):
     - CapacitorCordova
-  - CapacitorCordova (3.6.0)
+  - CapacitorCordova (3.7.0)
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.68.1)
@@ -76,10 +76,10 @@ PODS:
     - FlipperKit/FlipperKitNetworkPlugin
   - fmt (6.2.1)
   - glog (0.3.5)
-  - IonicLiveUpdates (0.1.1)
-  - IonicPortals (0.6.1):
-    - Capacitor (~> 3.5)
-    - IonicLiveUpdates (~> 0.1.0)
+  - IonicLiveUpdates (0.1.3)
+  - IonicPortals (0.6.3):
+    - Capacitor (~> 3.7)
+    - IonicLiveUpdates (~> 0.1.2)
   - libevent (2.1.12)
   - OpenSSL-Universal (1.1.1100)
   - RCT-Folly (2021.06.28.00-v2):
@@ -354,8 +354,8 @@ PODS:
     - React-jsi (= 0.68.1)
     - React-logger (= 0.68.1)
     - React-perflogger (= 0.68.1)
-  - ReactNativePortals (0.0.5):
-    - IonicPortals (~> 0.6.1)
+  - ReactNativePortals (0.0.6):
+    - IonicPortals (~> 0.6.3)
     - React-Core
   - SocketRocket (0.6.0)
   - Yoga (1.14.0)
@@ -510,8 +510,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost: a7c83b31436843459a1961bfd74b96033dc77234
-  Capacitor: 28d6f7c3b02858b0696c98d27527ffb1ac8aba8f
-  CapacitorCordova: 23b4def1cd6a8c463074916376f511d7446d683e
+  Capacitor: 747a1e47077e8f82abf2209867c440d7366ad68c
+  CapacitorCordova: e6b42a8e8d5986c1eb8f02ac0be205fafc32ac33
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
   FBLazyVector: 2c76493a346ef8cacf1f442926a39f805fffec1f
@@ -527,8 +527,8 @@ SPEC CHECKSUMS:
   FlipperKit: cbdee19bdd4e7f05472a66ce290f1b729ba3cb86
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 476ee3e89abb49e07f822b48323c51c57124b572
-  IonicLiveUpdates: 5fb89c6faed266d083691e64f33710211edb3839
-  IonicPortals: 17b9ee9ae513fc3906b062bdd0b7492db94e38ce
+  IonicLiveUpdates: 91481e88b9a9a9bc02aecc589ed4bcfd658c4854
+  IonicPortals: 752f740cfaf84fafd45c0d9ab7b06c6b2a281993
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   RCT-Folly: 4d8508a426467c48885f1151029bc15fa5d7b3b8
@@ -556,7 +556,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 9e344c840176b0af9c84d5019eb4fed8b3c105a1
   React-runtimeexecutor: 7285b499d0339104b2813a1f58ad1ada4adbd6c0
   ReactCommon: bf2888a826ceedf54b99ad1b6182d1bc4a8a3984
-  ReactNativePortals: 46e0ecc1d6d3c6470ff3064d49026a6b9e34c942
+  ReactNativePortals: 7927307bd03ea67e166c0a093288bfd03189e8dd
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   Yoga: 17cd9a50243093b547c1e539c749928dd68152da
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
