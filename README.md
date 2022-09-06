@@ -22,7 +22,7 @@
 
 ---
 
-Ionic Portals is a supercharged native Web View component for ReactNative that lets you add web-based experiences to native mobile apps. It enables native and web teams to better collaborate and bring new and existing web experiences to mobile in a safe, controlled way.
+Ionic Portals is a supercharged native Web View component for React Native that lets you add web-based experiences to native mobile apps. It enables native and web teams to better collaborate and bring new and existing web experiences to mobile in a safe, controlled way.
 
 ## Getting Started
 
