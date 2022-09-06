@@ -8,7 +8,7 @@
 <br />
 <p align="center">
   <img src="https://img.shields.io/badge/platform-iOS%2013%2B-lightgrey?style=flat-square" alt="Supports iOS 13 and up" />
-  <img src="https://img.shields.io/badge/platform-Android%20SDK%2021%2B-green?style=flat-square" alt="Supports Android SDK 21 and up" />
+  <img src="https://img.shields.io/badge/platform-Android%20SDK%2021%2B-brightgreen?style=flat-square" alt="Supports Android SDK 21 and up" />
   <img src="https://img.shields.io/badge/platform-React%20Native%200.63.3%2B-blue?style=flat-square" alt="Supports React Native 0.63.3 and up" />
 </p>
 <p align="center">
