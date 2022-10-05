@@ -22,10 +22,10 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - IonicLiveUpdates (0.1.3)
-  - IonicPortals (0.6.3):
+  - IonicLiveUpdates (0.2.0)
+  - IonicPortals (0.6.4):
     - Capacitor (~> 3.7)
-    - IonicLiveUpdates (~> 0.1.2)
+    - IonicLiveUpdates (< 0.3.0, >= 0.1.2)
   - RCTRequired (0.63.4)
   - RCTTypeSafety (0.63.4):
     - FBLazyVector (= 0.63.4)
@@ -260,7 +260,8 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - IonicPortals (~> 0.6.3)
+  - IonicLiveUpdates (~> 0.2.0)
+  - IonicPortals (~> 0.6.4)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
   - React (from `../node_modules/react-native/`)
@@ -356,8 +357,8 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: f2c97f2529dd79c083355182cc158c9f98f4bd6e
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
-  IonicLiveUpdates: 91481e88b9a9a9bc02aecc589ed4bcfd658c4854
-  IonicPortals: 752f740cfaf84fafd45c0d9ab7b06c6b2a281993
+  IonicLiveUpdates: e9cfcb6cbcf67d7b171eae417fa2802cc5826d72
+  IonicPortals: 50634da3bd7a3cf9127bbad5f21fd23afde4f0ff
   RCTRequired: 082f10cd3f905d6c124597fd1c14f6f2655ff65e
   RCTTypeSafety: 8c9c544ecbf20337d069e4ae7fd9a377aadf504b
   React: b0a957a2c44da4113b0c4c9853d8387f8e64e615
@@ -380,6 +381,6 @@ SPEC CHECKSUMS:
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: d6df5af67dbc83914b551c00dd0fbfac38c74589
+PODFILE CHECKSUM: 9dce8640a99e055a2e7fad56d00e49829114eae1
 
 COCOAPODS: 1.11.2

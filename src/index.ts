@@ -5,8 +5,7 @@ import {
   ViewProps,
 } from 'react-native';
 
-const { IONPortalPubSub, IONPortalManager, IONLiveUpdatesManager } =
-  NativeModules;
+const { IONPortalPubSub, IONPortalsReactNative } = NativeModules;
 
 export { default as PortalView } from './PortalView';
 
@@ -83,8 +82,8 @@ export const publish = (topic: string, data: any) => {
  * Validates that a valid registration key has been procured from http://ionic.io/register-portals
  * @param key The registration key
  */
-export const register = (key: string) => {
-  IONPortalManager.register(key);
+export const register = async (key: string): Promise<void> => {
+  return IONPortalsReactNative.register(key);
 };
 
 /**
@@ -127,8 +126,12 @@ export type PortalProps = PortalProp & ViewProps;
  *
  * @param portal The portal to add to the internal registry.
  */
-export const addPortal = (portal: Portal) => {
-  IONPortalManager.addPortal(portal);
+export const addPortal = async (portal: Portal): Promise<Portal> => {
+  return IONPortalsReactNative.addPortal(portal);
+};
+
+export const addPortals = async (portals: Portal[]): Promise<Portal[]> => {
+  return IONPortalsReactNative.addPortals(portals);
 };
 
 export interface LiveUpdate {
@@ -157,13 +160,26 @@ export interface SyncResults {
 }
 
 /**
+ * Configures LiveUpdates to cyrptographically verify the contents of the downloaded bundles.
+ * This method must be called before any LiveUpdates are registered otherwise they will no longer be tracked.
+ *
+ * @param pathToKey The *relative* path to the public key for verification.
+ * This path should be the same relatibe to the main application bundle on iOS and the assets directory on Android.
+ */
+export const enableSecureLiveUpdates = async (
+  pathToKey: string
+): Promise<void> => {
+  return IONPortalsReactNative.enableSecureLiveUpdates(pathToKey);
+};
+
+/**
  * Syncs a single live update.
  *
  * @param appId The AppFlow application ID to sync.
  * @returns A Promise<LiveUpdate>. A failure should result in a {@link LiveUpdateError}.
  */
-export const syncOne = (appId: string): Promise<LiveUpdate> => {
-  return IONLiveUpdatesManager.syncOne(appId);
+export const syncOne = async (appId: string): Promise<LiveUpdate> => {
+  return IONPortalsReactNative.syncOne(appId);
 };
 
 /**
@@ -172,14 +188,14 @@ export const syncOne = (appId: string): Promise<LiveUpdate> => {
  * @param appIds The AppFlow application IDs to sync.
  * @returns Promise<SyncResults>
  */
-export const syncSome = (appIds: string[]): Promise<SyncResults> => {
-  return IONLiveUpdatesManager.syncSome(appIds);
+export const syncSome = async (appIds: string[]): Promise<SyncResults> => {
+  return IONPortalsReactNative.syncSome(appIds);
 };
 
 /**
  * Syncs all registered LiveUpdates
  * @returns Promise<SyncResults>
  */
-export const syncAll = (): Promise<SyncResults> => {
-  return IONLiveUpdatesManager.syncAll();
+export const syncAll = async (): Promise<SyncResults> => {
+  return IONPortalsReactNative.syncAll();
 };
