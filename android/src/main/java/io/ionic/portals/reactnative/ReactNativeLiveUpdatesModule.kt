@@ -1,5 +1,6 @@
 package io.ionic.portals.reactnative
 
+import android.content.Context
 import com.facebook.react.bridge.*
 import io.ionic.liveupdates.LiveUpdate
 import io.ionic.liveupdates.LiveUpdateManager
@@ -11,11 +12,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.fold
 import java.util.concurrent.Executors
 
-internal class LiveUpdatesModule(reactContext: ReactApplicationContext) :
-    ReactContextBaseJavaModule(reactContext) {
-
-    override fun getName() = "IONLiveUpdatesManager"
-
+internal object LiveUpdatesModule {
     private val liveUpdateScope = CoroutineScope(
         Executors.newFixedThreadPool(4)
             .asCoroutineDispatcher()
@@ -51,22 +48,9 @@ internal class LiveUpdatesModule(reactContext: ReactApplicationContext) :
             LiveUpdateSuccess(liveUpdate)
         }
 
-
-    @ReactMethod
-    fun addLiveUpdate(map: ReadableMap) {
-        val appId = map.getString("appId") ?: return
-        val channel = map.getString("channel") ?: return
-
-        LiveUpdateManager.addLiveUpdateInstance(
-            context = reactApplicationContext,
-            liveUpdate = LiveUpdate(appId, channel)
-        )
-    }
-
-    @ReactMethod
-    fun syncOne(appId: String, promise: Promise) {
+    fun syncOne(appId: String, context: Context, promise: Promise) {
         LiveUpdateManager.sync(
-            context = reactApplicationContext,
+            context = context,
             appId = appId,
             callback = object : SyncCallback {
                 override fun onAppComplete(
@@ -85,27 +69,25 @@ internal class LiveUpdatesModule(reactContext: ReactApplicationContext) :
         )
     }
 
-    @ReactMethod
-    fun syncSome(appIds: ReadableArray, promise: Promise) {
+    fun syncSome(appIds: ReadableArray, context: Context, promise: Promise) {
         @Suppress("NAME_SHADOWING")
         val appIds = (0 until appIds.size())
             .mapNotNull(appIds::getString)
             .toTypedArray()
 
-        sync(appIds, promise)
+        sync(appIds, context, promise)
     }
 
-    @ReactMethod
-    fun syncAll(promise: Promise) {
-        sync(emptyArray(), promise)
+    fun syncAll(context: Context, promise: Promise) {
+        sync(emptyArray(), context, promise)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun sync(appIds: Array<String>, promise: Promise) {
+    private fun sync(appIds: Array<String>, context: Context, promise: Promise) {
         liveUpdateScope.launch {
             val results = callbackFlow {
                 LiveUpdateManager.sync(
-                    context = reactApplicationContext,
+                    context = context,
                     appIds = appIds,
                     callback = object : SyncCallback {
                         override fun onAppComplete(
