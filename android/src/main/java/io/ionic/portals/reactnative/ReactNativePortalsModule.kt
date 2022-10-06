@@ -14,7 +14,7 @@ internal class PortalManagerModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun register(key: String, promise: Promise) {
         RNPortalManager.register(key)
-        promise.resolve(Unit)
+        promise.resolve(null)
     }
 
     @ReactMethod
@@ -53,7 +53,7 @@ internal class PortalManagerModule(reactContext: ReactApplicationContext) :
     @ReactMethod
     fun enableSecureLiveUpdates(keyPath: String, promise: Promise) {
         RNPortalManager.enableSecureLiveUpdates(keyPath)
-        promise.resolve(Unit)
+        promise.resolve(null)
     }
 
     @ReactMethod

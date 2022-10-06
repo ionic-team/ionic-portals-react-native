@@ -67,7 +67,7 @@ internal object RNPortalManager {
         return portal
     }
 
-    fun getPortal(name: String): Portal = manager.getPortal("name")
+    fun getPortal(name: String): Portal = manager.getPortal(name)
 
     fun enableSecureLiveUpdates(keyPath: String) {
         LiveUpdateManager.secureLiveUpdatePEM = keyPath
