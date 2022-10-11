@@ -3,7 +3,7 @@
 //  ReactNativePortals
 //
 //  Created by Steven Sherry on 4/1/22.
-//  Copyright © 2022 Facebook. All rights reserved.
+//  Copyright © 2022 Ionic. All rights reserved.
 //
 
 #import <React/RCTViewManager.h>

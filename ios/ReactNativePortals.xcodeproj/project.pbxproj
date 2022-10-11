@@ -8,12 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		24F0245B69703967E2679F6A /* Pods_ReactNativePortals.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0529BADF230AAE24E9A25425 /* Pods_ReactNativePortals.framework */; };
-		A7128A0627F7A16200DADDF3 /* ReactNativePortals.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF95D6245B92E800C19C63 /* ReactNativePortals.swift */; };
+		A7128A0627F7A16200DADDF3 /* PortalsReactNative.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF95D6245B92E800C19C63 /* PortalsReactNative.swift */; };
 		A7128A0727F7A16200DADDF3 /* PortalManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A71289F927F79EB200DADDF3 /* PortalManager.m */; };
 		A7128A0827F7A16200DADDF3 /* ReactNativePortals-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FF95D5245B92E700C19C63 /* ReactNativePortals-Bridging-Header.h */; };
 		A7128A0927F7A16200DADDF3 /* PortalsPubSub.m in Sources */ = {isa = PBXBuildFile; fileRef = A71289F827F79D4000DADDF3 /* PortalsPubSub.m */; };
 		A7128A0A27F7A16200DADDF3 /* PortalView.m in Sources */ = {isa = PBXBuildFile; fileRef = A71289F727F79CDC00DADDF3 /* PortalView.m */; };
-		A748ABFC28626EC300F26852 /* LiveUpdatesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A748ABFB28626EC300F26852 /* LiveUpdatesManager.m */; };
+		A795AE1928EDEB6D0092B4B1 /* PortalsConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795AE1828EDEB6D0092B4B1 /* PortalsConfig.swift */; };
+		A795AE1B28EDEBF20092B4B1 /* PortalsPubSub.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795AE1A28EDEBF20092B4B1 /* PortalsPubSub.swift */; };
+		A795AE1D28EDEC7A0092B4B1 /* PortalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795AE1C28EDEC7A0092B4B1 /* PortalView.swift */; };
+		A795AE1F28EDED0F0092B4B1 /* Portal+Dict.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795AE1E28EDED0F0092B4B1 /* Portal+Dict.swift */; };
+		A795AE2128EDED710092B4B1 /* LiveUpdate+Dict.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795AE2028EDED710092B4B1 /* LiveUpdate+Dict.swift */; };
+		A795AE2328EDEDCC0092B4B1 /* LiveUpdateManagerError+Dict.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795AE2228EDEDCC0092B4B1 /* LiveUpdateManagerError+Dict.swift */; };
+		A795AE2528EDEE4E0092B4B1 /* LiveUpdateManager+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795AE2428EDEE4E0092B4B1 /* LiveUpdateManager+Async.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,10 +28,16 @@
 		A71289F827F79D4000DADDF3 /* PortalsPubSub.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PortalsPubSub.m; sourceTree = "<group>"; };
 		A71289F927F79EB200DADDF3 /* PortalManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PortalManager.m; sourceTree = "<group>"; };
 		A71289FF27F7A14900DADDF3 /* ReactNativePortals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReactNativePortals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A748ABFB28626EC300F26852 /* LiveUpdatesManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiveUpdatesManager.m; sourceTree = "<group>"; };
+		A795AE1828EDEB6D0092B4B1 /* PortalsConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalsConfig.swift; sourceTree = "<group>"; };
+		A795AE1A28EDEBF20092B4B1 /* PortalsPubSub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalsPubSub.swift; sourceTree = "<group>"; };
+		A795AE1C28EDEC7A0092B4B1 /* PortalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalView.swift; sourceTree = "<group>"; };
+		A795AE1E28EDED0F0092B4B1 /* Portal+Dict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Portal+Dict.swift"; sourceTree = "<group>"; };
+		A795AE2028EDED710092B4B1 /* LiveUpdate+Dict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiveUpdate+Dict.swift"; sourceTree = "<group>"; };
+		A795AE2228EDEDCC0092B4B1 /* LiveUpdateManagerError+Dict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiveUpdateManagerError+Dict.swift"; sourceTree = "<group>"; };
+		A795AE2428EDEE4E0092B4B1 /* LiveUpdateManager+Async.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiveUpdateManager+Async.swift"; sourceTree = "<group>"; };
 		CB9439A9444D2E97DA3B8149 /* Pods-ReactNativePortals.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativePortals.debug.xcconfig"; path = "Target Support Files/Pods-ReactNativePortals/Pods-ReactNativePortals.debug.xcconfig"; sourceTree = "<group>"; };
 		F4FF95D5245B92E700C19C63 /* ReactNativePortals-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ReactNativePortals-Bridging-Header.h"; sourceTree = "<group>"; };
-		F4FF95D6245B92E800C19C63 /* ReactNativePortals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactNativePortals.swift; sourceTree = "<group>"; };
+		F4FF95D6245B92E800C19C63 /* PortalsReactNative.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalsReactNative.swift; sourceTree = "<group>"; };
 		F8836E0DEEAAB66F82FCC5C9 /* Pods-ReactNativePortals.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativePortals.release.xcconfig"; path = "Target Support Files/Pods-ReactNativePortals/Pods-ReactNativePortals.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -59,8 +71,14 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				A748ABFB28626EC300F26852 /* LiveUpdatesManager.m */,
-				F4FF95D6245B92E800C19C63 /* ReactNativePortals.swift */,
+				F4FF95D6245B92E800C19C63 /* PortalsReactNative.swift */,
+				A795AE2428EDEE4E0092B4B1 /* LiveUpdateManager+Async.swift */,
+				A795AE2228EDEDCC0092B4B1 /* LiveUpdateManagerError+Dict.swift */,
+				A795AE2028EDED710092B4B1 /* LiveUpdate+Dict.swift */,
+				A795AE1E28EDED0F0092B4B1 /* Portal+Dict.swift */,
+				A795AE1C28EDEC7A0092B4B1 /* PortalView.swift */,
+				A795AE1A28EDEBF20092B4B1 /* PortalsPubSub.swift */,
+				A795AE1828EDEB6D0092B4B1 /* PortalsConfig.swift */,
 				A71289F727F79CDC00DADDF3 /* PortalView.m */,
 				A71289F927F79EB200DADDF3 /* PortalManager.m */,
 				A71289F827F79D4000DADDF3 /* PortalsPubSub.m */,
@@ -186,11 +204,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A748ABFC28626EC300F26852 /* LiveUpdatesManager.m in Sources */,
 				A7128A0A27F7A16200DADDF3 /* PortalView.m in Sources */,
 				A7128A0927F7A16200DADDF3 /* PortalsPubSub.m in Sources */,
-				A7128A0627F7A16200DADDF3 /* ReactNativePortals.swift in Sources */,
+				A795AE1D28EDEC7A0092B4B1 /* PortalView.swift in Sources */,
+				A795AE2128EDED710092B4B1 /* LiveUpdate+Dict.swift in Sources */,
+				A795AE1B28EDEBF20092B4B1 /* PortalsPubSub.swift in Sources */,
+				A7128A0627F7A16200DADDF3 /* PortalsReactNative.swift in Sources */,
+				A795AE1F28EDED0F0092B4B1 /* Portal+Dict.swift in Sources */,
+				A795AE2328EDEDCC0092B4B1 /* LiveUpdateManagerError+Dict.swift in Sources */,
 				A7128A0727F7A16200DADDF3 /* PortalManager.m in Sources */,
+				A795AE1928EDEB6D0092B4B1 /* PortalsConfig.swift in Sources */,
+				A795AE2528EDEE4E0092B4B1 /* LiveUpdateManager+Async.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
