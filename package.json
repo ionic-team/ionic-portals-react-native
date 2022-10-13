@@ -29,6 +29,7 @@
     "typescript": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "lint:fix": "eslint \"**/*.{js,ts,tsx}\" --fix",
+    "docs": "typedoc --out ./docs/documentation ./src --tsconfig ./tsconfig.build.json",
     "prepare": "bob build",
     "release": "release-it",
     "example": "yarn --cwd example",
@@ -68,6 +69,7 @@
     "react": "16.13.1",
     "react-native": "0.63.4",
     "react-native-builder-bob": "^0.18.2",
+    "typedoc": "^0.23.16",
     "typescript": "^4.1.3"
   },
   "peerDependencies": {
