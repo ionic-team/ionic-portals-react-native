@@ -45,7 +45,7 @@ public class PortalsReactNative: NSObject {
         resolver(())
     }
     
-    @objc func enableSecureLiveUpdates(_ publicKeyPath: String, resolver: RCTPromiseResolveBlock) {
+    @objc func enableSecureLiveUpdates(_ publicKeyPath: String, resolver: RCTPromiseResolveBlock, rejector: RCTPromiseRejectBlock) {
         guard let publicKeyUrl = Bundle.main.url(forResource: publicKeyPath, withExtension: nil) else { fatalError("Public key not found at \(publicKeyPath)") }
         lum = SecureLiveUpdateManager(named: "secure-updates", publicKeyUrl: publicKeyUrl)
         resolver(())
@@ -69,7 +69,7 @@ public class PortalsReactNative: NSObject {
     
     static func getPortal(named name: String) -> Portal? { portals[name] }
     
-    @objc func getPortalNamed(name: String, resolver: RCTPromiseResolveBlock, rejector: RCTPromiseRejectBlock) {
+    @objc func getPortal(_ name: String, resolver: RCTPromiseResolveBlock, rejector: RCTPromiseRejectBlock) {
         guard let portal = Self.getPortal(named: name) else { return rejector(nil, "Portal named \(name) not registered", nil) }
         resolver(portal.dict)
     }

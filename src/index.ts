@@ -81,6 +81,7 @@ export const publish = (topic: string, data: any) => {
 /**
  * Validates that a valid registration key has been procured from http://ionic.io/register-portals
  * @param key The registration key
+ * @returns Promise<void>
  */
 export const register = async (key: string): Promise<void> => {
   return IONPortalsReactNative.register(key);
@@ -125,13 +126,30 @@ export type PortalProps = PortalProp & ViewProps;
  * Adds a Portal to an internal registry. Must be called before attempting to render a {@link PortalView}.
  *
  * @param portal The portal to add to the internal registry.
+ * @returns Promise containing the Portal that was added to the registry.
  */
 export const addPortal = async (portal: Portal): Promise<Portal> => {
   return IONPortalsReactNative.addPortal(portal);
 };
 
+/**
+ * Adds all portals to an internal registry. This or {@link addPortal} must be called before attempting to render a {@link PortalView}
+ *
+ * @param portals The portals to add to the internal registry.
+ * @returns Promise containing the Portals that were added to the registry.
+ */
 export const addPortals = async (portals: Portal[]): Promise<Portal[]> => {
   return IONPortalsReactNative.addPortals(portals);
+};
+
+/**
+ * Gets a {@link Portal} previously registered via {@link addPortal} or {@link addPortals}.
+ *
+ * @param name The portal name to retrieve from the internal registry.
+ * @returns Promise containing the registered {@link Portal}. If the {@link Portal} was not registered, the Promise will fail.
+ */
+export const getPortal = async (name: string): Promise<Portal> => {
+  return IONPortalsReactNative.getPortal(name);
 };
 
 export interface LiveUpdate {
@@ -165,6 +183,7 @@ export interface SyncResults {
  *
  * @param pathToKey The *relative* path to the public key for verification.
  * This path should be the same relatibe to the main application bundle on iOS and the assets directory on Android.
+ * @returns Promise<void>
  */
 export const enableSecureLiveUpdates = async (
   pathToKey: string
