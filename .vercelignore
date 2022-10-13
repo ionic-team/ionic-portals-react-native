@@ -1,0 +1,5 @@
+docs/
+.github/
+example/
+node_modules/
+*.tgz

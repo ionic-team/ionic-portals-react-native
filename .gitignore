@@ -69,3 +69,5 @@ lib/
 
 # ignore asset folders generated during build time
 example/android/app/src/main/assets
+.vercel
+docs/
