@@ -45,13 +45,12 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
     targetCompatibility = JavaVersion.VERSION_1_8
 
     kotlinOptions {
-        freeCompilerArgs += '-Xopt-in=kotlin.RequiresOptIn'
+        freeCompilerArgs += '-opt-in=kotlin.RequiresOptIn'
     }
 }
 
 repositories {
     mavenCentral()
-    jcenter()
     google()
 
     def found = false
@@ -124,9 +123,9 @@ dependencies {
     //noinspection GradleDynamicVersion
     api 'com.facebook.react:react-native:+'
     //noinspection GradleDynamicVersion
-    api "io.ionic:portals:0.6.+"
+    api "io.ionic:portals:0.7.+"
     //noinspection GradleDynamicVersion
-    api "io.ionic:liveupdates:0.1.+"
+    api "io.ionic:liveupdates:0.2.+"
 
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3"
 }
