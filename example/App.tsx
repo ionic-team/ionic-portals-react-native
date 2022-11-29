@@ -8,7 +8,7 @@
  * @format
  */
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import {
   SafeAreaView,
@@ -50,7 +50,7 @@ const portal = {
 
 addPortal(portal);
 
-const PubSubLabel: React.FC<{initialNumber: number}> = ({initialNumber}) => {
+const PubSubLabel: React.FC<{ initialNumber: number }> = ({ initialNumber }) => {
   const isDarkMode = useColorScheme() === 'dark';
   const [immutableNumber, setNumber] = useState(initialNumber);
   const [subRef, setSubRef] = useState(0);
@@ -87,7 +87,7 @@ const PubSubLabel: React.FC<{initialNumber: number}> = ({initialNumber}) => {
       <Text
         style={[
           styles.sectionDescription,
-          {color: isDarkMode ? Colors.white : Colors.black},
+          { color: isDarkMode ? Colors.white : Colors.black },
         ]}>
         React Native Current Number: {immutableNumber}
       </Text>
@@ -97,7 +97,7 @@ const PubSubLabel: React.FC<{initialNumber: number}> = ({initialNumber}) => {
 
 const Section: React.FC<{
   title: string;
-}> = ({children, title}) => {
+}> = ({ children, title }) => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -142,7 +142,7 @@ const App = () => {
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
           <PubSubLabel initialNumber={1} />
-          <PortalView portal={{ name: "button" }} style={{flex: 1, height: 150}} />
+          <PortalView portal={{ name: "button" }} style={{ flex: 1, height: 150 }} />
           <Section title="Step One">
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this
             screen and then come back to see your edits.
