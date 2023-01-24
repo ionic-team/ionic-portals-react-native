@@ -13,7 +13,6 @@
 </p>
 <p align="center">
   <a href="https://github.com/ionic-team/react-native-ionic-portals/actions/workflows/verify.yml"><img src="https://img.shields.io/github/actions/workflow/status/ionic-team/react-native-ionic-portals/verify.yml?branch=main&style=flat-square" /></a>
-  <a href="https://github.com/ionic-team/ionic-portals/actions?query=workflow%3ACI"><img src="https://img.shields.io/github/workflow/status/ionic-team/react-native-ionic-portals/Verify?style=flat-square" /></a>
   <a href="https://www.npmjs.com/package/@ionic/portals-react-native"><img src="https://img.shields.io/npm/l/@ionic/portals-react-native?style=flat-square" /></a>
 </p>
 <p align="center">
