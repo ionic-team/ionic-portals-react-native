@@ -184,10 +184,10 @@ export interface SyncResult {
   /** The {@link Snapshot} that was sync'd */
   snapshot: Snapshot;
   /** Whether the snapshot was downloaded or already on disk */
-  source: "download" | "cache";
-  /** If the active application path was changed. A `false` value would indicate 
-  * the application was already on the latest snapshot.
-  */
+  source: 'download' | 'cache';
+  /** If the active application path was changed. A `false` value would indicate
+   * the application was already on the latest snapshot.
+   */
   activeApplicationPathChanged: boolean;
 }
 
