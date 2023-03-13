@@ -17,5 +17,5 @@ Pod::Spec.new do |s|
 
   s.dependency 'React-Core'
   s.dependency 'IonicPortals', '~> 0.7.0'
-  s.dependency 'IonicLiveUpdates', '~> 0.2.0'
+  s.dependency 'IonicLiveUpdates', '~> 0.4.0'
 end
