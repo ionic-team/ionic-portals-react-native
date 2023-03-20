@@ -182,11 +182,12 @@ export interface SyncResult {
   /** The {@link LiveUpdate} associated with the result  */
   liveUpdate: LiveUpdate;
   /** The {@link Snapshot} that was sync'd */
-  snapshot: Snapshot;
+  snapshot?: Snapshot;
   /** Whether the snapshot was downloaded or already on disk */
   source: 'download' | 'cache';
   /** If the active application path was changed. A `false` value would indicate
-   * the application was already on the latest snapshot.
+   * the application already has the latest code for the associated {@link LiveUpdate}
+   * configuration.
    */
   activeApplicationPathChanged: boolean;
 }
