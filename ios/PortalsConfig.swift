@@ -20,16 +20,21 @@ struct PortalsConfig {
         var startDir: String?
         var index: String?
         var initialContext: JSObject?
+        var plugins: [ReactNativePortals.Portal.Plugin]?
         var liveUpdate: LiveUpdate?
         
-        func portal(with liveUpdateManager: LiveUpdateManager) -> IonicPortals.Portal {
+        func portal(with liveUpdateManager: LiveUpdateManager) -> ReactNativePortals.Portal {
             return .init(
-                name: name,
-                startDir: startDir,
-                index: index ?? "index.html",
-                initialContext: initialContext ?? [:],
-                liveUpdateManager: liveUpdateManager,
-                liveUpdateConfig: liveUpdate.map { .init(appId: $0.appId, channel: $0.channel, syncOnAdd: $0.syncOnAdd) }
+                _portal: .init(
+                    name: name,
+                    startDir: startDir,
+                    index: index ?? "index.html",
+                    initialContext: initialContext ?? [:],
+                    pluginRegistrationMode: .manual(plugins?.toCapPlugin ?? []),
+                    liveUpdateManager: liveUpdateManager,
+                    liveUpdateConfig: liveUpdate.map { .init(appId: $0.appId, channel: $0.channel, syncOnAdd: $0.syncOnAdd) }
+                ),
+                plugins: plugins ?? []
             )
         }
         
@@ -72,6 +77,8 @@ extension PortalsConfig.Portal {
         index = dict["index"] as? String
         initialContext = (dict["initialContext"] as? [String: Any])
             .flatMap { JSTypes.coerceDictionaryToJSObject($0) }
+        plugins = (dict["plugins"] as? Array<[String: String]>)
+            .flatMap { $0.compactMap(ReactNativePortals.Portal.Plugin.init) }
         liveUpdate = (dict["liveUpdate"] as? [String: Any])
             .flatMap(LiveUpdate.init)
     }

@@ -93,8 +93,8 @@ export const register = async (key: string): Promise<void> => {
 export interface Portal {
   /** The name of the Portal to be referenced. Must be **unique** */
   name: string;
-  /** The classpath of all Capacitor plugins used in Android. (e.g. com.capacitorjs.plugins.camera.CameraPlugin) */
-  androidPlugins?: string[];
+  /** Any Capacitor plugins to be made available to the Portal */
+  plugins?: CapacitorPlugin[];
   /**
    * The root directory of the web application relative to Bundle.main on iOS
    * and src/main/assets on Android. If omitted, `name` is used.
@@ -107,6 +107,16 @@ export interface Portal {
     [key: string]: any;
   };
   liveUpdate?: LiveUpdateConfig;
+}
+
+export interface CapacitorPlugin {
+  /** The classpath of the plugin to be used in Android. (e.g. com.capacitorjs.plugins.camera.CameraPlugin) */
+  androidClassPath: string;
+  /** The class name of the plugin to be used in iOS. 
+   * This must be the name as it is exposed to the Objective-C runtime.
+   * For example, The CameraPlugin swift class is exposed to Objective-C as CAPCameraPlugin.
+   */
+  iosClassName: string;
 }
 
 /**

@@ -16,7 +16,7 @@
 		A795AE1928EDEB6D0092B4B1 /* PortalsConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795AE1828EDEB6D0092B4B1 /* PortalsConfig.swift */; };
 		A795AE1B28EDEBF20092B4B1 /* PortalsPubSub.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795AE1A28EDEBF20092B4B1 /* PortalsPubSub.swift */; };
 		A795AE1D28EDEC7A0092B4B1 /* PortalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795AE1C28EDEC7A0092B4B1 /* PortalView.swift */; };
-		A795AE1F28EDED0F0092B4B1 /* Portal+Dict.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795AE1E28EDED0F0092B4B1 /* Portal+Dict.swift */; };
+		A795AE1F28EDED0F0092B4B1 /* Portal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795AE1E28EDED0F0092B4B1 /* Portal.swift */; };
 		A795AE2128EDED710092B4B1 /* LiveUpdate+Dict.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795AE2028EDED710092B4B1 /* LiveUpdate+Dict.swift */; };
 		A795AE2328EDEDCC0092B4B1 /* LiveUpdateManagerError+Dict.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795AE2228EDEDCC0092B4B1 /* LiveUpdateManagerError+Dict.swift */; };
 		A795AE2528EDEE4E0092B4B1 /* LiveUpdateManager+Async.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795AE2428EDEE4E0092B4B1 /* LiveUpdateManager+Async.swift */; };
@@ -31,7 +31,7 @@
 		A795AE1828EDEB6D0092B4B1 /* PortalsConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalsConfig.swift; sourceTree = "<group>"; };
 		A795AE1A28EDEBF20092B4B1 /* PortalsPubSub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalsPubSub.swift; sourceTree = "<group>"; };
 		A795AE1C28EDEC7A0092B4B1 /* PortalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalView.swift; sourceTree = "<group>"; };
-		A795AE1E28EDED0F0092B4B1 /* Portal+Dict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Portal+Dict.swift"; sourceTree = "<group>"; };
+		A795AE1E28EDED0F0092B4B1 /* Portal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Portal.swift; sourceTree = "<group>"; };
 		A795AE2028EDED710092B4B1 /* LiveUpdate+Dict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiveUpdate+Dict.swift"; sourceTree = "<group>"; };
 		A795AE2228EDEDCC0092B4B1 /* LiveUpdateManagerError+Dict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiveUpdateManagerError+Dict.swift"; sourceTree = "<group>"; };
 		A795AE2428EDEE4E0092B4B1 /* LiveUpdateManager+Async.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiveUpdateManager+Async.swift"; sourceTree = "<group>"; };
@@ -75,7 +75,7 @@
 				A795AE2428EDEE4E0092B4B1 /* LiveUpdateManager+Async.swift */,
 				A795AE2228EDEDCC0092B4B1 /* LiveUpdateManagerError+Dict.swift */,
 				A795AE2028EDED710092B4B1 /* LiveUpdate+Dict.swift */,
-				A795AE1E28EDED0F0092B4B1 /* Portal+Dict.swift */,
+				A795AE1E28EDED0F0092B4B1 /* Portal.swift */,
 				A795AE1C28EDEC7A0092B4B1 /* PortalView.swift */,
 				A795AE1A28EDEBF20092B4B1 /* PortalsPubSub.swift */,
 				A795AE1828EDEB6D0092B4B1 /* PortalsConfig.swift */,
@@ -210,7 +210,7 @@
 				A795AE2128EDED710092B4B1 /* LiveUpdate+Dict.swift in Sources */,
 				A795AE1B28EDEBF20092B4B1 /* PortalsPubSub.swift in Sources */,
 				A7128A0627F7A16200DADDF3 /* PortalsReactNative.swift in Sources */,
-				A795AE1F28EDED0F0092B4B1 /* Portal+Dict.swift in Sources */,
+				A795AE1F28EDED0F0092B4B1 /* Portal.swift in Sources */,
 				A795AE2328EDEDCC0092B4B1 /* LiveUpdateManagerError+Dict.swift in Sources */,
 				A7128A0727F7A16200DADDF3 /* PortalManager.m in Sources */,
 				A795AE1928EDEB6D0092B4B1 /* PortalsConfig.swift in Sources */,
