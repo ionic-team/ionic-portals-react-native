@@ -89,35 +89,32 @@ fun Map<*, *>.toReadableMap(): ReadableMap {
     }
 }
 
-fun List<*>.toReadableArray(): ReadableArray {
-    return (0 until size).fold(WritableNativeArray()) { array, index ->
-        when (val value = get(index)) {
-            is String -> array.pushString(value)
-            is Boolean -> array.pushBoolean(value)
-            is Int -> array.pushInt(value)
-            is Double -> array.pushDouble(value)
-            is Map<*, *> -> array.pushMap(value.toReadableMap())
-            is List<*> -> array.pushArray(value.toReadableArray())
-            null -> array.pushNull()
-            else -> array.pushString(value.toString())
-        }
-
-        return@fold array
+fun List<*>.toReadableArray(): ReadableArray = fold(WritableNativeArray()) { array, value ->
+    when (value) {
+        is String -> array.pushString(value)
+        is Boolean -> array.pushBoolean(value)
+        is Int -> array.pushInt(value)
+        is Double -> array.pushDouble(value)
+        is PortalPlugin -> array.pushMap(value.toReadableMap())
+        is Map<*, *> -> array.pushMap(value.toReadableMap())
+        is List<*> -> array.pushArray(value.toReadableArray())
+        null -> array.pushNull()
+        else -> array.pushString(value.toString())
     }
+    return@fold array
 }
 
-@Suppress("UNCHECKED_CAST")
-fun Portal.toReadableMap(): ReadableMap {
+internal fun RNPortal.toReadableMap(): ReadableMap {
     val map = WritableNativeMap()
-    map.putString("name", name)
-    map.putString("startDir", startDir)
-    RNPortalManager.indexMap[name]?.let { map.putString("index", it) }
-
-    initialContext?.let {
+    map.putString("name", portal.name)
+    map.putString("startDir", portal.startDir)
+    map.putArray("plugins", plugins.toReadableArray())
+    index?.let { map.putString("index", it) }
+    portal.initialContext?.let {
         if (it is Map<*, *>) map.putMap("initialContext", it.toReadableMap())
     }
 
-    liveUpdateConfig?.let { map.putMap("liveUpdate", it.toReadableMap()) }
+    portal.liveUpdateConfig?.let { map.putMap("liveUpdate", it.toReadableMap()) }
 
     return map
 }
