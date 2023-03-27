@@ -112,7 +112,7 @@ export interface Portal {
 export interface CapacitorPlugin {
   /** The classpath of the plugin to be used in Android. (e.g. com.capacitorjs.plugins.camera.CameraPlugin) */
   androidClassPath: string;
-  /** The class name of the plugin to be used in iOS. 
+  /** The class name of the plugin to be used in iOS.
    * This must be the name as it is exposed to the Objective-C runtime.
    * For example, The CameraPlugin swift class is exposed to Objective-C as CAPCameraPlugin.
    */
