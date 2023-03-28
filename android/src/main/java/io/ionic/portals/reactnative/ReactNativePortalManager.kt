@@ -14,14 +14,36 @@ import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.IOException
 
+
+internal data class RNPortal(val portal: Portal, val index: String?, val plugins: List<PortalPlugin>)
+internal data class PortalPlugin(val androidClassPath: String, val iosClassName: String) {
+    companion object {
+        const val iosClassNameKey = "iosClassName"
+        const val androidClassPathKey = "androidClassPath"
+        fun fromReadableMap(map: ReadableMap): PortalPlugin? {
+            val androidClassPath = map.getString(androidClassPathKey) ?: return null
+            val iosClassName = map.getString(iosClassNameKey) ?: return null
+            return PortalPlugin(androidClassPath, iosClassName)
+        }
+    }
+
+    fun toReadableMap(): ReadableMap {
+        val map = WritableNativeMap()
+        map.putString(iosClassNameKey, iosClassName)
+        map.putString(androidClassPathKey, androidClassPath)
+        return map
+    }
+}
+
 internal object RNPortalManager {
     private val manager = PortalManager
-    internal val indexMap: MutableMap<String, String> = mutableMapOf()
+    private val portals: MutableMap<String, RNPortal> = mutableMapOf()
     private lateinit var reactApplicationContext: ReactApplicationContext
     private var usesSecureLiveUpdates = false
 
     fun register(key: String) = manager.register(key)
-    fun addPortal(map: ReadableMap): Portal? {
+
+    fun addPortal(map: ReadableMap): RNPortal? {
         val name = map.getString("name") ?: return null
         val portalBuilder = PortalBuilder(name)
 
@@ -32,28 +54,34 @@ internal object RNPortalManager {
             ?.toHashMap()
             ?.let(portalBuilder::setInitialContext)
 
-        map.getString("index")
-            ?.let { indexMap[name] = "/$it" }
 
-        map.getArray("androidPlugins")
-            ?.toArrayList()
-            ?.mapNotNull { it as? String }
-            ?.map {
-                Class.forName(it)
-                    .asSubclass(Plugin::class.java)
-            }
-            ?.forEach(portalBuilder::addPlugin)
+        val plugins: List<PortalPlugin> = map.getArray("plugins")
+            ?.let {
+                val list = mutableListOf<PortalPlugin>()
+                for (idx in 0 until it.size()) {
+                    it.getMap(idx)
+                        ?.let(PortalPlugin.Companion::fromReadableMap)
+                        ?.let(list::add)
+                }
+                return@let list
+            } ?: listOf()
+
+        plugins.map {
+            Class.forName(it.androidClassPath)
+                .asSubclass(Plugin::class.java)
+        }
+            .forEach(portalBuilder::addPlugin)
 
         map.getMap("liveUpdate")
             ?.let { readableMap ->
                 val appId = readableMap.getString("appId") ?: return@let null
                 val channel = readableMap.getString("channel") ?: return@let null
                 val syncOnAdd = readableMap.getBoolean("syncOnAdd")
-                Pair(LiveUpdate(appId, channel, usesSecureLiveUpdates), syncOnAdd)
+                Pair(LiveUpdate(appId, channel, RNPortalManager.usesSecureLiveUpdates), syncOnAdd)
             }
             ?.let { (liveUpdate, updateOnAppLoad) ->
                 portalBuilder.setLiveUpdateConfig(
-                    context = reactApplicationContext,
+                    context = RNPortalManager.reactApplicationContext,
                     liveUpdateConfig = liveUpdate,
                     updateOnAppLoad = updateOnAppLoad
                 )
@@ -63,11 +91,18 @@ internal object RNPortalManager {
             .addPlugin(PortalsPlugin::class.java)
             .create()
 
-        manager.addPortal(portal)
-        return portal
+        val rnPortal = RNPortal(
+            portal = portal,
+            index = map.getString("index"),
+            plugins = plugins
+        )
+
+        portals[rnPortal.portal.name] = rnPortal
+        return rnPortal
     }
 
-    fun getPortal(name: String): Portal = manager.getPortal(name)
+    fun getPortal(name: String): RNPortal = portals[name]
+        ?: throw IllegalStateException("Portal with portalId $name not found in RNPortalManager")
 
     fun enableSecureLiveUpdates(keyPath: String) {
         LiveUpdateManager.secureLiveUpdatePEM = keyPath

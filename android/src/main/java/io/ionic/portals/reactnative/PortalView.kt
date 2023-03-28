@@ -19,7 +19,7 @@ import io.ionic.portals.PortalManager
 
 private data class PortalViewState(
     var fragment: PortalFragment?,
-    var portal: Portal?,
+    var portal: RNPortal?,
     var initialContext: HashMap<String, Any>?
 )
 
@@ -34,7 +34,7 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         when (val viewState = fragmentMap[viewGroup.id]) {
             null -> fragmentMap[viewGroup.id] = PortalViewState(
                 fragment = null,
-                portal = PortalManager.getPortal(name),
+                portal = RNPortalManager.getPortal(name),
                 initialContext = portal.getMap("initialContext")?.toHashMap()
             )
         }
@@ -69,12 +69,12 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         val parentView = root.findViewById<ViewGroup>(viewId)
         setupLayout(parentView)
 
-        val portalFragment = PortalFragment(portal)
+        val portalFragment = PortalFragment(portal.portal)
 
         val configBuilder = CapConfig.Builder(context)
             .setInitialFocus(false)
 
-        RNPortalManager.indexMap[portal.name]
+        portal.index
             ?.let(configBuilder::setStartPath)
 
         portalFragment.setConfig(configBuilder.create())

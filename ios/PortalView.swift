@@ -51,7 +51,7 @@ class PortalView: UIView {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.webView?.removeFromSuperview()
-                let webView = PortalUIView(portal: portal)
+                let webView = PortalUIView(portal: portal._portal)
                 webView.translatesAutoresizingMaskIntoConstraints = false
                 self.addSubview(webView)
                 NSLayoutConstraint.activate([
