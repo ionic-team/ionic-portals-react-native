@@ -16,5 +16,5 @@ RCT_EXTERN_METHOD(addPortals: (NSArray) portals resolver: (RCTPromiseResolveBloc
 RCT_EXTERN_METHOD(getPortal: (NSString *) name resolver: (RCTPromiseResolveBlock) resolver rejector: (RCTPromiseRejectBlock) rejector)
 RCT_EXTERN_METHOD(syncOne: (NSString *) appId resolver: (RCTPromiseResolveBlock) resolver rejector: (RCTPromiseRejectBlock) rejector)
 RCT_EXTERN_METHOD(syncSome: (NSArray) appIds resolver: (RCTPromiseResolveBlock) resolver rejector: (RCTPromiseRejectBlock) rejector)
-RCT_EXTERN_METHOD(syncAll: (RCTPromiseResolveBlock) resolver)
+RCT_EXTERN_METHOD(syncAll: (RCTPromiseResolveBlock) resolver rejector: (RCTPromiseRejectBlock) rejector)
 @end

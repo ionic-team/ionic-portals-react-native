@@ -58,7 +58,7 @@ extension Portal {
             "startDir": self.startDir,
             "index": self.index,
             "initialContext": self.initialContext,
-            "liveUpdateConfig": self.liveUpdateConfig?.dict as Any
+            "liveUpdate": self.liveUpdateConfig?.dict as Any
         ]
 
         if !plugins.isEmpty {
