@@ -4,10 +4,7 @@ import com.facebook.react.bridge.*
 import com.getcapacitor.Plugin
 import io.ionic.liveupdates.LiveUpdate
 import io.ionic.liveupdates.LiveUpdateManager
-import io.ionic.portals.Portal
-import io.ionic.portals.PortalBuilder
-import io.ionic.portals.PortalManager
-import io.ionic.portals.PortalsPlugin
+import io.ionic.portals.*
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -71,6 +68,28 @@ internal object RNPortalManager {
                 .asSubclass(Plugin::class.java)
         }
             .forEach(portalBuilder::addPlugin)
+
+        val assetMaps: List<AssetMap> = map.getArray("assetMaps")
+            ?.let {
+                val list = mutableListOf<AssetMap>()
+                for (idx in 0 until it.size()) {
+                   it.getMap(idx)
+                       ?.let assetMap@{ map ->
+                           val name = map.getString("name") ?: return@assetMap null
+                           AssetMap(
+                               name = name,
+                               virtualPath = map.getString("virtualPath") ?: "/$name",
+                               path = map.getString("startDir") ?: ""
+                           )
+                       }
+                       ?.let(list::add)
+                   return@let list
+                }
+
+                return@let list
+            } ?: listOf()
+
+        assetMaps.forEach(portalBuilder::addAssetMap)
 
         map.getMap("liveUpdate")
             ?.let { readableMap ->

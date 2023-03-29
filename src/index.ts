@@ -106,6 +106,7 @@ export interface Portal {
   initialContext?: {
     [key: string]: any;
   };
+  assetMaps?: AssetMap[];
   liveUpdate?: LiveUpdateConfig;
 }
 
@@ -117,6 +118,18 @@ export interface CapacitorPlugin {
    * For example, The CameraPlugin swift class is exposed to Objective-C as CAPCameraPlugin.
    */
   iosClassName: string;
+}
+
+export interface AssetMap {
+  /** The name to index the asset map by */
+  name: string;
+  /** Any path to match via the web. If omitted, {@link AssetMap#name} will be used. */
+  virtualPath?: string;
+  /** The root directory of the assets relative to Bundle.main on iOS
+  * and src/main/assets on Android. If omitted, the root of Bundle.main
+  * and src/main/assets will be used.
+  */
+  startDir?: string;
 }
 
 /**
