@@ -20,6 +20,7 @@ struct PortalsConfig {
         var startDir: String?
         var index: String?
         var initialContext: JSObject?
+        var assetMaps: [AssetMap]?
         var plugins: [ReactNativePortals.Portal.Plugin]?
         var liveUpdate: LiveUpdate?
         
@@ -30,6 +31,7 @@ struct PortalsConfig {
                     startDir: startDir,
                     index: index ?? "index.html",
                     initialContext: initialContext ?? [:],
+                    assetMaps: assetMaps ?? [],
                     pluginRegistrationMode: .manual(plugins?.toCapPlugin ?? []),
                     liveUpdateManager: liveUpdateManager,
                     liveUpdateConfig: liveUpdate.map { .init(appId: $0.appId, channel: $0.channel, syncOnAdd: $0.syncOnAdd) }
@@ -79,6 +81,8 @@ extension PortalsConfig.Portal {
             .flatMap { JSTypes.coerceDictionaryToJSObject($0) }
         plugins = (dict["plugins"] as? Array<[String: String]>)
             .flatMap { $0.compactMap(ReactNativePortals.Portal.Plugin.init) }
+        assetMaps = (dict["assetMaps"] as? Array<[String: String]>)
+            .flatMap { $0.compactMap(AssetMap.init) }
         liveUpdate = (dict["liveUpdate"] as? [String: Any])
             .flatMap(LiveUpdate.init)
     }
