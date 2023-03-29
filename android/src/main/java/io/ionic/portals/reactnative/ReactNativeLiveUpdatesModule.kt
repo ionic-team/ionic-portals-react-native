@@ -145,7 +145,7 @@ fun SyncResult.toReadableMap(): ReadableMap {
 
 fun FailResult.toReadableMap(): ReadableMap {
     val map = WritableNativeMap()
-    map.putMap("liveUpdate", liveUpdate.toReadableMap())
+    map.putString("appId", liveUpdate.appId)
     map.putString("failStep", failStep.name)
     map.putString("message", failMsg ?: "Sync failed for unknown reason.")
     return map
