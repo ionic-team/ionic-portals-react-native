@@ -83,7 +83,6 @@ internal object RNPortalManager {
                            )
                        }
                        ?.let(list::add)
-                   return@let list
                 }
 
                 return@let list
