@@ -12,7 +12,12 @@ import java.io.BufferedReader
 import java.io.IOException
 
 
-internal data class RNPortal(val portal: Portal, val index: String?, val plugins: List<PortalPlugin>)
+internal data class RNPortal(
+    val portal: Portal,
+    val index: String?,
+    val plugins: List<PortalPlugin>
+)
+
 internal data class PortalPlugin(val androidClassPath: String, val iosClassName: String) {
     companion object {
         const val iosClassNameKey = "iosClassName"
@@ -53,10 +58,10 @@ internal object RNPortalManager {
 
 
         val plugins: List<PortalPlugin> = map.getArray("plugins")
-            ?.let {
+            ?.let { rnArray ->
                 val list = mutableListOf<PortalPlugin>()
-                for (idx in 0 until it.size()) {
-                    it.getMap(idx)
+                for (idx in 0 until rnArray.size()) {
+                    rnArray.getMap(idx)
                         ?.let(PortalPlugin.Companion::fromReadableMap)
                         ?.let(list::add)
                 }
@@ -70,19 +75,20 @@ internal object RNPortalManager {
             .forEach(portalBuilder::addPlugin)
 
         val assetMaps: List<AssetMap> = map.getArray("assetMaps")
-            ?.let {
+            ?.let { rnArray ->
                 val list = mutableListOf<AssetMap>()
-                for (idx in 0 until it.size()) {
-                   it.getMap(idx)
-                       ?.let assetMap@{ map ->
-                           val name = map.getString("name") ?: return@assetMap null
-                           AssetMap(
-                               name = name,
-                               virtualPath = map.getString("virtualPath") ?: "/$name",
-                               path = map.getString("startDir") ?: ""
-                           )
-                       }
-                       ?.let(list::add)
+
+                for (idx in 0 until rnArray.size()) {
+                    rnArray.getMap(idx)
+                        ?.let assetMap@{ map ->
+                            val name = map.getString("name") ?: return@assetMap null
+                            AssetMap(
+                                name = name,
+                                virtualPath = map.getString("virtualPath") ?: "/$name",
+                                path = map.getString("startDir") ?: ""
+                            )
+                        }
+                        ?.let(list::add)
                 }
 
                 return@let list
