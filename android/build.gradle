@@ -125,7 +125,7 @@ dependencies {
     //noinspection GradleDynamicVersion
     api "io.ionic:portals:0.7.+"
     //noinspection GradleDynamicVersion
-    api "io.ionic:liveupdates:0.2.+"
+    api "io.ionic:liveupdates:0.4.+"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3"
 }
