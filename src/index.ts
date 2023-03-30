@@ -181,9 +181,30 @@ export interface LiveUpdateError {
   message: string;
 }
 
+export interface Snapshot {
+  /** The snapshot id as found in AppFlow */
+  id: string;
+  /** The AppFlow build id that produced the snapshot */
+  buildId: string;
+}
+
+export interface SyncResult {
+  /** The {@link LiveUpdate} associated with the result  */
+  liveUpdate: LiveUpdate;
+  /** The {@link Snapshot} that was sync'd */
+  snapshot: Snapshot | null;
+  /** Whether the snapshot was downloaded or already on disk */
+  source: 'download' | 'cache';
+  /** If the active application path was changed. A `false` value would indicate
+   * the application already has the latest code for the associated {@link LiveUpdate}
+   * configuration.
+   */
+  activeApplicationPathChanged: boolean;
+}
+
 /** Used for communicating sync results of multiple live updates */
 export interface SyncResults {
-  liveUpdates: LiveUpdate[];
+  results: SyncResult[];
   errors: LiveUpdateError[];
 }
 
@@ -207,7 +228,7 @@ export const enableSecureLiveUpdates = async (
  * @param appId The AppFlow application ID to sync.
  * @returns A Promise<LiveUpdate>. A failure should result in a {@link LiveUpdateError}.
  */
-export const syncOne = async (appId: string): Promise<LiveUpdate> => {
+export const syncOne = async (appId: string): Promise<SyncResult> => {
   return IONPortalsReactNative.syncOne(appId);
 };
 

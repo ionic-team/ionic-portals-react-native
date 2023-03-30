@@ -9,14 +9,14 @@
 import IonicLiveUpdates
 
 struct SyncResults {
-    var liveUpdates: [LiveUpdate]
+    var results: [LiveUpdateManager.SyncResult]
     var errors: [LiveUpdateManager.Error]
 }
 
 extension SyncResults {
     var dict: [String: Any] {
         return [
-            "liveUpdates": liveUpdates.map(\.dict),
+            "results": results.map(\.dict),
             "errors": errors.map(\.dict)
         ]
     }
@@ -27,7 +27,7 @@ extension LiveUpdateManager {
         await _syncSome(appIds).syncResults
     }
     
-    private func _syncSome(_ appIds: [String]) -> AsyncStream<Result<LiveUpdate, LiveUpdateManager.Error>> {
+    private func _syncSome(_ appIds: [String]) -> AsyncStream<Result<LiveUpdateManager.SyncResult, LiveUpdateManager.Error>> {
         AsyncStream { continuation in
             sync(appIds: appIds, isParallel: true) {
                 continuation.finish()
@@ -42,7 +42,7 @@ extension LiveUpdateManager {
     }
     
     
-    private func _syncAll() -> AsyncStream<Result<LiveUpdate, LiveUpdateManager.Error>> {
+    private func _syncAll() -> AsyncStream<Result<LiveUpdateManager.SyncResult, LiveUpdateManager.Error>> {
         AsyncStream { continuation in
             sync(isParallel: true) {
                 continuation.finish()
@@ -53,13 +53,13 @@ extension LiveUpdateManager {
     }
 }
 
-extension AsyncStream where Element == Result<LiveUpdate, LiveUpdateManager.Error> {
+extension AsyncStream where Element == Result<LiveUpdateManager.SyncResult, LiveUpdateManager.Error> {
     var syncResults: SyncResults {
         get async {
-            await reduce(into: SyncResults(liveUpdates: [], errors: [])) { acc, next in
+            await reduce(into: SyncResults(results: [], errors: [])) { acc, next in
                 switch next {
                 case .success(let liveUpdate):
-                    acc.liveUpdates.append(liveUpdate)
+                    acc.results.append(liveUpdate)
                 case .failure(let error):
                     acc.errors.append(error)
                 }
