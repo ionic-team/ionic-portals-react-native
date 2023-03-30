@@ -126,9 +126,9 @@ export interface AssetMap {
   /** Any path to match via the web. If omitted, {@link AssetMap#name} will be used. */
   virtualPath?: string;
   /** The root directory of the assets relative to Bundle.main on iOS
-  * and src/main/assets on Android. If omitted, the root of Bundle.main
-  * and src/main/assets will be used.
-  */
+   * and src/main/assets on Android. If omitted, the root of Bundle.main
+   * and src/main/assets will be used.
+   */
   startDir?: string;
 }
 
