@@ -6,7 +6,8 @@ import {
   ViewProps,
 } from 'react-native';
 
-const { IONPortalPubSub, IONPortalsReactNative, IONPortalsWebVitals } = NativeModules;
+const { IONPortalPubSub, IONPortalsReactNative, IONPortalsWebVitals } =
+  NativeModules;
 
 export { default as PortalView } from './PortalView';
 
@@ -71,7 +72,7 @@ export const onFirstContentfulPaint = async (
         callback(event.duration);
       }
     }
-  )
+  );
 
   await IONPortalsWebVitals.registerOnFirstContentfulPaint(portalName);
 
@@ -90,7 +91,7 @@ export const onFirstInputDelay = async (
           callback(event.duration);
         }
       }
-    )
+    );
 
     await IONPortalsWebVitals.registerOnFirstInputDelay(portalName);
 
@@ -110,13 +111,13 @@ export const onTimeToFirstByte = async (
           callback(event.duration);
         }
       }
-    )
+    );
 
     await IONPortalsWebVitals.registerOnTimeToFirstByte(portalName);
 
     webVitalsMap.set(`${portalName}-vitals:ttfb`, listener);
   }
-}
+};
 
 export const registerWebVitals = async (
   portalName: string,
@@ -127,8 +128,7 @@ export const registerWebVitals = async (
   onFirstContentfulPaint(portalName, firstContentfulPaint);
   onFirstInputDelay(portalName, firstInputDelay);
   onTimeToFirstByte(portalName, timeToFirstByte);
-}
-
+};
 
 /**
  * Unsubscribes from events for the provided topic and subscription reference
@@ -341,4 +341,3 @@ export const syncSome = async (appIds: string[]): Promise<SyncResults> => {
 export const syncAll = async (): Promise<SyncResults> => {
   return IONPortalsReactNative.syncAll();
 };
-
