@@ -1,6 +1,6 @@
 {
   "name": "@ionic/portals-react-native",
-  "version": "0.3.0",
+  "version": "0.3.16",
   "description": "Ionic Portals for React Native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
