@@ -15,7 +15,10 @@ import java.io.IOException
 internal data class RNPortal(
     val portal: Portal,
     val index: String?,
-    val plugins: List<PortalPlugin>
+    val plugins: List<PortalPlugin>,
+    var onFCP: ((Long) -> Unit)? = null,
+    var onTTFB: ((Long) -> Unit)? = null,
+    var onFID: ((Long) -> Unit)? = null
 )
 
 internal data class PortalPlugin(val androidClassPath: String, val iosClassName: String) {

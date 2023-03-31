@@ -11,6 +11,7 @@ class ReactNativePortalsPackage : ReactPackage {
         return listOf(
             PortalManagerModule(reactContext),
             PortalsPubSubModule(reactContext),
+            PortalWebVitalsModule(reactContext)
         )
     }
 
