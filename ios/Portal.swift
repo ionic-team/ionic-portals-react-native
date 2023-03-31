@@ -38,12 +38,19 @@ extension Portal {
         if let capPlugins = dict["plugins"] as? Array<[String: String]> {
             plugins = capPlugins.compactMap(Portal.Plugin.init)
         }
+        
+        var assetMaps: [AssetMap] = []
+        
+        if let maps = dict["assetMaps"] as? Array<[String: String]> {
+            assetMaps = maps.compactMap(AssetMap.init)
+        }
 
         self._portal = IonicPortals.Portal(
             name: name,
             startDir: dict["startDir"] as? String,
             index: dict["index"] as? String ?? "index.html",
             initialContext: JSTypes.coerceDictionaryToJSObject(dict["initialContext"] as? [String: Any]) ?? [:],
+            assetMaps: assetMaps,
             pluginRegistrationMode: .manual(plugins.toCapPlugin),
             liveUpdateManager: liveUpdateManager,
             liveUpdateConfig: (dict["liveUpdate"] as? [String: Any]).flatMap(LiveUpdate.init)
