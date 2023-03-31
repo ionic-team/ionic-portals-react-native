@@ -13,10 +13,11 @@
 		A7128A0827F7A16200DADDF3 /* ReactNativePortals-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FF95D5245B92E700C19C63 /* ReactNativePortals-Bridging-Header.h */; };
 		A7128A0927F7A16200DADDF3 /* PortalsPubSub.m in Sources */ = {isa = PBXBuildFile; fileRef = A71289F827F79D4000DADDF3 /* PortalsPubSub.m */; };
 		A7128A0A27F7A16200DADDF3 /* PortalView.m in Sources */ = {isa = PBXBuildFile; fileRef = A71289F727F79CDC00DADDF3 /* PortalView.m */; };
-		A71E306E29D4C8710073D47A /* AssetMap+Dict.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71E306D29D4C8710073D47A /* AssetMap+Dict.swift */; };
 		A71E306C29D392DF0073D47A /* SyncResult+Dict.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71E306B29D392DF0073D47A /* SyncResult+Dict.swift */; };
+		A71E306E29D4C8710073D47A /* AssetMap+Dict.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71E306D29D4C8710073D47A /* AssetMap+Dict.swift */; };
 		A71E307229D5FC450073D47A /* WebVitals.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71E307129D5FC450073D47A /* WebVitals.swift */; };
 		A71E307429D5FF650073D47A /* PortalWebVitals.m in Sources */ = {isa = PBXBuildFile; fileRef = A71E307329D5FF650073D47A /* PortalWebVitals.m */; };
+		A71E307629D771C90073D47A /* ConcurrentDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71E307529D771C90073D47A /* ConcurrentDictionary.swift */; };
 		A795AE1928EDEB6D0092B4B1 /* PortalsConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795AE1828EDEB6D0092B4B1 /* PortalsConfig.swift */; };
 		A795AE1B28EDEBF20092B4B1 /* PortalsPubSub.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795AE1A28EDEBF20092B4B1 /* PortalsPubSub.swift */; };
 		A795AE1D28EDEC7A0092B4B1 /* PortalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795AE1C28EDEC7A0092B4B1 /* PortalView.swift */; };
@@ -32,10 +33,11 @@
 		A71289F827F79D4000DADDF3 /* PortalsPubSub.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PortalsPubSub.m; sourceTree = "<group>"; };
 		A71289F927F79EB200DADDF3 /* PortalManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PortalManager.m; sourceTree = "<group>"; };
 		A71289FF27F7A14900DADDF3 /* ReactNativePortals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReactNativePortals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A71E306D29D4C8710073D47A /* AssetMap+Dict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AssetMap+Dict.swift"; sourceTree = "<group>"; };
 		A71E306B29D392DF0073D47A /* SyncResult+Dict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SyncResult+Dict.swift"; sourceTree = "<group>"; };
+		A71E306D29D4C8710073D47A /* AssetMap+Dict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AssetMap+Dict.swift"; sourceTree = "<group>"; };
 		A71E307129D5FC450073D47A /* WebVitals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebVitals.swift; sourceTree = "<group>"; };
 		A71E307329D5FF650073D47A /* PortalWebVitals.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PortalWebVitals.m; sourceTree = "<group>"; };
+		A71E307529D771C90073D47A /* ConcurrentDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcurrentDictionary.swift; sourceTree = "<group>"; };
 		A795AE1828EDEB6D0092B4B1 /* PortalsConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalsConfig.swift; sourceTree = "<group>"; };
 		A795AE1A28EDEBF20092B4B1 /* PortalsPubSub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalsPubSub.swift; sourceTree = "<group>"; };
 		A795AE1C28EDEC7A0092B4B1 /* PortalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalView.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				A71E307529D771C90073D47A /* ConcurrentDictionary.swift */,
 				A71E307129D5FC450073D47A /* WebVitals.swift */,
 				A71E306D29D4C8710073D47A /* AssetMap+Dict.swift */,
 				A71E306B29D392DF0073D47A /* SyncResult+Dict.swift */,
@@ -223,6 +226,7 @@
 				A71E306E29D4C8710073D47A /* AssetMap+Dict.swift in Sources */,
 				A71E306C29D392DF0073D47A /* SyncResult+Dict.swift in Sources */,
 				A71E307229D5FC450073D47A /* WebVitals.swift in Sources */,
+				A71E307629D771C90073D47A /* ConcurrentDictionary.swift in Sources */,
 				A795AE2128EDED710092B4B1 /* LiveUpdate+Dict.swift in Sources */,
 				A795AE1B28EDEBF20092B4B1 /* PortalsPubSub.swift in Sources */,
 				A7128A0627F7A16200DADDF3 /* PortalsReactNative.swift in Sources */,

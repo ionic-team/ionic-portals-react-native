@@ -10,6 +10,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.IOException
+import java.util.concurrent.ConcurrentHashMap
 
 
 internal data class RNPortal(
@@ -42,7 +43,7 @@ internal data class PortalPlugin(val androidClassPath: String, val iosClassName:
 
 internal object RNPortalManager {
     private val manager = PortalManager
-    private val portals: MutableMap<String, RNPortal> = mutableMapOf()
+    private val portals: ConcurrentHashMap<String, RNPortal> = ConcurrentHashMap()
     private lateinit var reactApplicationContext: ReactApplicationContext
     private var usesSecureLiveUpdates = false
 

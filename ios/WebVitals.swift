@@ -12,14 +12,12 @@ import React
 @objc(IONPortalsWebVitals)
 class WebVitals: RCTEventEmitter {
     private let fcp = "vitals:fcp"
-//    private let fid = "vitals:fid"
-//    private let ttfb = "vitals:ttfb"
     
     override func supportedEvents() -> [String] {
         [fcp]
     }
     
-    @objc func registerOnFirstContentfulPaint(_ portalName: String, resolver: RCTPromiseResolveBlock, rejector: RCTPromiseRejectBlock) {
+    @objc func registerOnFirstContentfulPaint(_ portalName: String, resolver: @escaping RCTPromiseResolveBlock, rejector: RCTPromiseRejectBlock) {
         PortalsReactNative.portals[portalName]?.performanceReporter = WebPerformanceReporter { [weak self] _, duration in
             guard let self = self else { return }
             self.sendEvent(
@@ -29,9 +27,8 @@ class WebVitals: RCTEventEmitter {
                     "duration": duration
                 ]
             )
-            
-            resolver(())
         }
+        resolver(())
     }
     
     override class func requiresMainQueueSetup() -> Bool { true }
