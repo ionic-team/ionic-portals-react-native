@@ -2,10 +2,12 @@ import {
   EmitterSubscription,
   NativeEventEmitter,
   NativeModules,
+  Platform,
   ViewProps,
 } from 'react-native';
 
-const { IONPortalPubSub, IONPortalsReactNative } = NativeModules;
+const { IONPortalPubSub, IONPortalsReactNative, IONPortalsWebVitals } =
+  NativeModules;
 
 export { default as PortalView } from './PortalView';
 
@@ -49,6 +51,83 @@ export const subscribe = async (
   subscriptionMap.set(subscriptionRef, subscriber);
 
   return subscriptionRef;
+};
+
+const webVitalsMap = new Map<string, EmitterSubscription>();
+const WebVitals = new NativeEventEmitter(IONPortalsWebVitals);
+
+interface WebVitalsEvent {
+  portalName: string;
+  duration: number;
+}
+
+export const onFirstContentfulPaint = async (
+  portalName: string,
+  callback: (duration: number) => void
+): Promise<void> => {
+  const listener = WebVitals.addListener(
+    'vitals:fcp',
+    (event: WebVitalsEvent) => {
+      if (event.portalName === portalName) {
+        callback(event.duration);
+      }
+    }
+  );
+
+  await IONPortalsWebVitals.registerOnFirstContentfulPaint(portalName);
+
+  webVitalsMap.set(`${portalName}-vitals:fcp`, listener);
+};
+
+export const onFirstInputDelay = async (
+  portalName: string,
+  callback: (duration: number) => void
+) => {
+  if (Platform.OS === 'android') {
+    const listener = WebVitals.addListener(
+      'vitals:fid',
+      (event: WebVitalsEvent) => {
+        if (event.portalName === portalName) {
+          callback(event.duration);
+        }
+      }
+    );
+
+    await IONPortalsWebVitals.registerOnFirstInputDelay(portalName);
+
+    webVitalsMap.set(`${portalName}-vitals:fcp`, listener);
+  }
+};
+
+export const onTimeToFirstByte = async (
+  portalName: string,
+  callback: (duration: number) => void
+) => {
+  if (Platform.OS === 'android') {
+    const listener = WebVitals.addListener(
+      'vitals:ttfb',
+      (event: WebVitalsEvent) => {
+        if (event.portalName === portalName) {
+          callback(event.duration);
+        }
+      }
+    );
+
+    await IONPortalsWebVitals.registerOnTimeToFirstByte(portalName);
+
+    webVitalsMap.set(`${portalName}-vitals:ttfb`, listener);
+  }
+};
+
+export const registerWebVitals = async (
+  portalName: string,
+  firstContentfulPaint: (duration: number) => void,
+  firstInputDelay: (duration: number) => void,
+  timeToFirstByte: (duration: number) => void
+) => {
+  onFirstContentfulPaint(portalName, firstContentfulPaint);
+  onFirstInputDelay(portalName, firstInputDelay);
+  onTimeToFirstByte(portalName, timeToFirstByte);
 };
 
 /**

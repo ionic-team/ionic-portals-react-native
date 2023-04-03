@@ -45,3 +45,4 @@ class PortalsPubSub: RCTEventEmitter {
     
     override class func requiresMainQueueSetup() -> Bool { true }
 }
+

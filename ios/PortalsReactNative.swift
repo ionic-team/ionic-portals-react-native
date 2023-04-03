@@ -6,7 +6,7 @@ import React
 @objc(IONPortalsReactNative)
 public class PortalsReactNative: NSObject {
     private var lum: LiveUpdateManager
-    private static var portals: [String: Portal] = [:]
+    internal static var portals = ConcurrentDictionary<String, Portal>(label: "com.portals.reactnative", dict: [:])
     
     public override init() {
         guard let configUrl = Bundle.main.url(forResource: "portals.config.json", withExtension: nil) else {

@@ -16,6 +16,7 @@ import com.getcapacitor.CapConfig
 import io.ionic.portals.Portal
 import io.ionic.portals.PortalFragment
 import io.ionic.portals.PortalManager
+import io.ionic.portals.WebVitals
 
 private data class PortalViewState(
     var fragment: PortalFragment?,
@@ -70,6 +71,15 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         setupLayout(parentView)
 
         val portalFragment = PortalFragment(portal.portal)
+        if (portal.onFCP != null || portal.onFID != null || portal.onTTFB != null) {
+            portalFragment.webVitalsCallback = { metric, duration ->
+                when (metric) {
+                    WebVitals.Metric.FCP -> portal.onFCP?.let { it(duration) }
+                    WebVitals.Metric.FID -> portal.onFID?.let { it(duration) }
+                    WebVitals.Metric.TTFB -> portal.onTTFB?.let { it(duration) }
+                }
+            }
+        }
 
         val configBuilder = CapConfig.Builder(context)
             .setInitialFocus(false)
