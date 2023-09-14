@@ -12,10 +12,7 @@ import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactProp
-import com.getcapacitor.CapConfig
-import io.ionic.portals.Portal
 import io.ionic.portals.PortalFragment
-import io.ionic.portals.PortalManager
 import io.ionic.portals.WebVitals
 
 private data class PortalViewState(
@@ -32,7 +29,7 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
     @ReactProp(name = "portal")
     fun setPortal(viewGroup: ViewGroup, portal: ReadableMap) {
         val name = portal.getString("name") ?: return
-        when (val viewState = fragmentMap[viewGroup.id]) {
+        when (fragmentMap[viewGroup.id]) {
             null -> fragmentMap[viewGroup.id] = PortalViewState(
                 fragment = null,
                 portal = RNPortalManager.getPortal(name),
@@ -81,16 +78,7 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
             }
         }
 
-        val configBuilder = CapConfig.Builder(context)
-            .setInitialFocus(false)
-
-        portal.index
-            ?.let(configBuilder::setStartPath)
-
-        portalFragment.setConfig(configBuilder.create())
-
         viewState.initialContext?.let(portalFragment::setInitialContext)
-
         viewState.fragment = portalFragment
 
         val fragmentActivity = context.currentActivity as? FragmentActivity ?: return
