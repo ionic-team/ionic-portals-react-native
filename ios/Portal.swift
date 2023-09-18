@@ -51,7 +51,7 @@ extension Portal {
             index: dict["index"] as? String ?? "index.html",
             initialContext: JSTypes.coerceDictionaryToJSObject(dict["initialContext"] as? [String: Any]) ?? [:],
             assetMaps: assetMaps,
-            pluginRegistrationMode: .manual(plugins.toCapPlugin),
+            plugins: plugins.toCapPlugin,
             liveUpdateManager: liveUpdateManager,
             liveUpdateConfig: (dict["liveUpdate"] as? [String: Any]).flatMap(LiveUpdate.init)
         )

@@ -11,6 +11,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import {
+  EmitterSubscription,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -32,7 +33,6 @@ import {
   register,
   addPortal,
   subscribe,
-  unsubscribe,
   publish,
   Message,
   PortalView,
@@ -53,32 +53,25 @@ addPortal(portal);
 const PubSubLabel: React.FC<{ initialNumber: number }> = ({ initialNumber }) => {
   const isDarkMode = useColorScheme() === 'dark';
   const [immutableNumber, setNumber] = useState(initialNumber);
-  const [subRef, setSubRef] = useState(0);
+  const subRef = useRef<EmitterSubscription | null>(null);
   const number = useRef(initialNumber);
 
   useEffect(() => {
-    const subscribeToButtonTapped = async () => {
-      console.log('subscribing');
-      const subRef = await subscribe('button:tapped', (message: Message) => {
-        console.log(`Received message ${JSON.stringify(message.data, null, 2)} on topic ${message.topic} from IonicPortals`);
+    subRef.current = subscribe('button:tapped', (message: Message) => {
+      console.log(`Received message ${JSON.stringify(message.data, null, 2)} on topic ${message.topic} from IonicPortals`);
 
-        number.current = number.current + 1;
-        setNumber(number.current);
+      number.current = number.current + 1;
+      setNumber(number.current);
 
-        publish('button:received', number.current + 1);
-      });
-
-      console.log('subscribed with subRef ', subRef);
-      setSubRef(subRef);
-    };
-
-    subscribeToButtonTapped().catch(reason =>
-      console.log('Failed for ', reason),
-    );
+      publish('button:received', number.current + 1);
+      if (number.current >= 5) {
+        subRef.current?.remove();
+      }
+    });
 
     return () => {
       console.log('Unsubscribing from ref ', subRef);
-      unsubscribe('button:tapped', subRef);
+      subRef.current?.remove();
     };
   }, []);
 

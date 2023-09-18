@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap
 
 
 internal data class RNPortal(
-    val portal: Portal,
+    val builder: PortalBuilder,
     val index: String?,
     val plugins: List<PortalPlugin>,
     var onFCP: ((Long) -> Unit)? = null,
@@ -115,17 +115,16 @@ internal object RNPortalManager {
                 )
             }
 
-        val portal = portalBuilder
+         portalBuilder
             .addPlugin(PortalsPlugin::class.java)
-            .create()
 
         val rnPortal = RNPortal(
-            portal = portal,
+            builder = portalBuilder,
             index = map.getString("index"),
             plugins = plugins
         )
 
-        portals[rnPortal.portal.name] = rnPortal
+        portals[name] = rnPortal
         return rnPortal
     }
 

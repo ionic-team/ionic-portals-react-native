@@ -3,38 +3,31 @@ package io.ionic.portals.reactnative
 import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.getcapacitor.JSObject
-import io.ionic.portals.PortalsPlugin
+import io.ionic.portals.PortalsPubSub
 import org.json.JSONObject
+import java.util.concurrent.ConcurrentHashMap
 
 internal class PortalsPubSubModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
     override fun getName() = "IONPortalPubSub"
-
-    @ReactMethod
-    fun subscribe(topic: String, promise: Promise) {
-        val reference = PortalsPlugin.subscribe(topic) { result ->
-            reactApplicationContext
-                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                .emit("PortalsSubscription", result.toJSObject().toReactMap())
-        }
-
-        promise.resolve(reference)
-    }
+    private val subscriptionRefs = ConcurrentHashMap<String, Int>()
 
     @ReactMethod
     fun publish(topic: String, data: ReadableMap) {
-        PortalsPlugin.publish(topic, data.toJSObject())
+        PortalsPubSub.shared.publish(topic, data.toJSObject())
     }
-
-    @ReactMethod
-    fun unsubscribe(topic: String, reference: Int) {
-        PortalsPlugin.unsubscribe(topic, reference)
-    }
-
-    // These are required to be an EventEmitter in javascript
 
     @ReactMethod
     fun addListener(eventName: String) {
+        val topic = eventName.removePrefix("PortalsSubscription:")
+        if (subscriptionRefs[topic] != null) { return }
+        val ref = PortalsPubSub.shared.subscribe(topic) { result ->
+            reactApplicationContext
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                .emit("PortalsSubscription:$eventName", result.toJSObject().toReactMap())
+        }
+
+        subscriptionRefs[eventName] = ref
     }
 
     @ReactMethod

@@ -62,21 +62,25 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
 
     private fun createFragment(root: FrameLayout, viewId: Int) {
         val viewState = fragmentMap[viewId] ?: return
-        val portal = viewState.portal ?: return
+        val rnPortal = viewState.portal ?: return
 
         val parentView = root.findViewById<ViewGroup>(viewId)
         setupLayout(parentView)
 
-        val portalFragment = PortalFragment(portal.portal)
-        if (portal.onFCP != null || portal.onFID != null || portal.onTTFB != null) {
-            portalFragment.webVitalsCallback = { metric, duration ->
+        val portal = rnPortal.builder.create()
+
+        if (rnPortal.onFCP != null || rnPortal.onFID != null || rnPortal.onTTFB != null) {
+            val vitalsPlugin = WebVitals { _, metric, duration ->
                 when (metric) {
-                    WebVitals.Metric.FCP -> portal.onFCP?.let { it(duration) }
-                    WebVitals.Metric.FID -> portal.onFID?.let { it(duration) }
-                    WebVitals.Metric.TTFB -> portal.onTTFB?.let { it(duration) }
+                    WebVitals.Metric.FCP -> rnPortal.onFCP?.let { it(duration) }
+                    WebVitals.Metric.FID -> rnPortal.onFID?.let { it(duration) }
+                    WebVitals.Metric.TTFB -> rnPortal.onTTFB?.let { it(duration) }
                 }
             }
+            portal.addPluginInstance(vitalsPlugin)
         }
+
+        val portalFragment = PortalFragment(portal)
 
         viewState.initialContext?.let(portalFragment::setInitialContext)
         viewState.fragment = portalFragment

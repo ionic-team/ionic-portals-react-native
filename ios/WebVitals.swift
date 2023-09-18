@@ -12,13 +12,27 @@ import React
 @objc(IONPortalsWebVitals)
 class WebVitals: RCTEventEmitter {
     private let fcp = "vitals:fcp"
-    
+
     override func supportedEvents() -> [String] {
         [fcp]
     }
     
     @objc func registerOnFirstContentfulPaint(_ portalName: String, resolver: @escaping RCTPromiseResolveBlock, rejector: RCTPromiseRejectBlock) {
-        PortalsReactNative.portals[portalName]?.performanceReporter = WebPerformanceReporter { [weak self] _, duration in
+        guard var portal = PortalsReactNative.portals[portalName] else {
+            return resolver(())
+        }
+
+        var portalPlugins = portal._portal.plugins.filter { plugin in
+            switch plugin {
+            case .instance(let plugin):
+                return type(of: plugin) != WebVitalsPlugin.self
+            case .type:
+                return true
+            }
+        }
+
+
+        var vitalsPlugin = WebVitalsPlugin { [weak self] _, duration in
             guard let self = self else { return }
             self.sendEvent(
                 withName: self.fcp,
@@ -28,6 +42,12 @@ class WebVitals: RCTEventEmitter {
                 ]
             )
         }
+
+        portalPlugins.append(.instance(vitalsPlugin))
+        portal._portal.plugins = portalPlugins
+
+        PortalsReactNative.portals[portalName] = portal
+
         resolver(())
     }
     

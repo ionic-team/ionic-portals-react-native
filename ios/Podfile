@@ -9,6 +9,6 @@ target 'ReactNativePortals' do
   use_frameworks!
   use_react_native!(path: config['reactNativePath'])
   # Pods for ReactNativePortals
-  pod 'IonicPortals', '~> 0.7.3'
+  pod 'IonicPortals', '~> 0.8.0'
   pod 'IonicLiveUpdates', '~> 0.4.0'
 end

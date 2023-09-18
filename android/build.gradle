@@ -41,8 +41,8 @@ android {
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 
     kotlinOptions {
         freeCompilerArgs += '-opt-in=kotlin.RequiresOptIn'
@@ -123,7 +123,7 @@ dependencies {
     //noinspection GradleDynamicVersion
     api 'com.facebook.react:react-native:+'
     //noinspection GradleDynamicVersion
-    api "io.ionic:portals:0.7.+"
+    api "io.ionic:portals:0.8.+"
     //noinspection GradleDynamicVersion
     api "io.ionic:liveupdates:0.4.+"
 
