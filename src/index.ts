@@ -37,9 +37,12 @@ export const subscribe = (
   topic: string,
   onMessageReceived: (message: Message) => void
 ): EmitterSubscription => {
-  return PortalsPubSub.addListener(`PortalsSubscription:${topic}`, (message: Message) => {
-    onMessageReceived(message)
-  });
+  return PortalsPubSub.addListener(
+    `PortalsSubscription:${topic}`,
+    (message: Message) => {
+      onMessageReceived(message);
+    }
+  );
 };
 
 /**

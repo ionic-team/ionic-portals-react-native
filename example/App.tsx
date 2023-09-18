@@ -50,7 +50,9 @@ const portal = {
 
 addPortal(portal);
 
-const PubSubLabel: React.FC<{ initialNumber: number }> = ({ initialNumber }) => {
+const PubSubLabel: React.FC<{ initialNumber: number }> = ({
+  initialNumber,
+}) => {
   const isDarkMode = useColorScheme() === 'dark';
   const [immutableNumber, setNumber] = useState(initialNumber);
   const subRef = useRef<EmitterSubscription | null>(null);
@@ -58,7 +60,11 @@ const PubSubLabel: React.FC<{ initialNumber: number }> = ({ initialNumber }) => 
 
   useEffect(() => {
     subRef.current = subscribe('button:tapped', (message: Message) => {
-      console.log(`Received message ${JSON.stringify(message.data, null, 2)} on topic ${message.topic} from IonicPortals`);
+      console.log(
+        `Received message ${JSON.stringify(message.data, null, 2)} on topic ${
+          message.topic
+        } from IonicPortals`,
+      );
 
       number.current = number.current + 1;
       setNumber(number.current);
@@ -135,7 +141,10 @@ const App = () => {
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
           <PubSubLabel initialNumber={1} />
-          <PortalView portal={{ name: "button" }} style={{ flex: 1, height: 150 }} />
+          <PortalView
+            portal={{ name: 'button' }}
+            style={{ flex: 1, height: 150 }}
+          />
           <Section title="Step One">
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this
             screen and then come back to see your edits.
