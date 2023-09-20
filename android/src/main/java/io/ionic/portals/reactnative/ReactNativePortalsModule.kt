@@ -106,6 +106,7 @@ fun List<*>.toReadableArray(): ReadableArray = fold(WritableNativeArray()) { arr
 
 internal fun RNPortal.toReadableMap(): ReadableMap {
     val map = WritableNativeMap()
+    val portal = builder.create()
     map.putString("name", portal.name)
     map.putString("startDir", portal.startDir)
     map.putArray("plugins", plugins.toReadableArray())

@@ -24,7 +24,7 @@ export interface Message {
 
 const PortalsPubSub = new NativeEventEmitter(IONPortalPubSub);
 
-const subscriptionMap = new Map<number, EmitterSubscription>();
+// const subscriptionMap = new Map<number, EmitterSubscription>();
 
 /**
  * Subscribes to messages for a topic
@@ -33,24 +33,27 @@ const subscriptionMap = new Map<number, EmitterSubscription>();
  * @param onMessageReceived The callback to invoke when a message is received
  * @returns A Promise<number> containing the unique subscription reference. This will need to be stored for calling {@link unsubscribe}.
  */
-export const subscribe = async (
+export const subscribe = (
   topic: string,
   onMessageReceived: (message: Message) => void
-): Promise<number> => {
-  const subscriptionRef = await IONPortalPubSub.subscribe(topic);
-
-  const subscriber = PortalsPubSub.addListener(
-    'PortalsSubscription',
+): EmitterSubscription => {
+  return PortalsPubSub.addListener(
+    `PortalsSubscription:${topic}`,
     (message: Message) => {
-      if (message.subscriptionRef === subscriptionRef) {
-        onMessageReceived(message);
-      }
+      onMessageReceived(message);
     }
   );
+};
 
-  subscriptionMap.set(subscriptionRef, subscriber);
-
-  return subscriptionRef;
+/**
+ * Publishes a message to the provided topic
+ *
+ * @param topic The topic to publish the message to
+ * @param data The data to publish to subscribers
+ */
+export const publish = (topic: string, data: any) => {
+  const msg = { message: data };
+  IONPortalPubSub.publish(topic, msg);
 };
 
 const webVitalsMap = new Map<string, EmitterSubscription>();
@@ -75,7 +78,6 @@ export const onFirstContentfulPaint = async (
   );
 
   await IONPortalsWebVitals.registerOnFirstContentfulPaint(portalName);
-
   webVitalsMap.set(`${portalName}-vitals:fcp`, listener);
 };
 
@@ -94,8 +96,7 @@ export const onFirstInputDelay = async (
     );
 
     await IONPortalsWebVitals.registerOnFirstInputDelay(portalName);
-
-    webVitalsMap.set(`${portalName}-vitals:fcp`, listener);
+    webVitalsMap.set(`${portalName}-vitals:fid`, listener);
   }
 };
 
@@ -114,7 +115,6 @@ export const onTimeToFirstByte = async (
     );
 
     await IONPortalsWebVitals.registerOnTimeToFirstByte(portalName);
-
     webVitalsMap.set(`${portalName}-vitals:ttfb`, listener);
   }
 };
@@ -128,33 +128,6 @@ export const registerWebVitals = async (
   onFirstContentfulPaint(portalName, firstContentfulPaint);
   onFirstInputDelay(portalName, firstInputDelay);
   onTimeToFirstByte(portalName, timeToFirstByte);
-};
-
-/**
- * Unsubscribes from events for the provided topic and subscription reference
- *
- * @param topic The topic to unsubscribe from
- * @param subRef The unique subscription reference received when initially calling {@link subscribe}
- */
-export const unsubscribe = (topic: string, subRef: number) => {
-  IONPortalPubSub.unsubscribe(topic, subRef);
-
-  const subscription = subscriptionMap.get(subRef);
-  if (subscription !== undefined) {
-    subscription.remove();
-    subscriptionMap.delete(subRef);
-  }
-};
-
-/**
- * Publishes a message to the provided topic
- *
- * @param topic The topic to publish the message to
- * @param data The data to publish to subscribers
- */
-export const publish = (topic: string, data: any) => {
-  const msg = { message: data };
-  IONPortalPubSub.publish(topic, msg);
 };
 
 /**

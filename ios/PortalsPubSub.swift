@@ -8,36 +8,39 @@
 
 import IonicPortals
 import React
+import Combine
 
 @objc(IONPortalPubSub)
 class PortalsPubSub: RCTEventEmitter {
-    private let eventName = "PortalsSubscription"
+    private let eventPrefix = "PortalsSubscription:"
+    private var events: Set<String> = []
     
-    override func supportedEvents() -> [String]! {
-        [eventName]
+    override func supportedEvents() -> [String] {
+        Array(events)
     }
-    
-    @objc func subscribe(_ topic: String, resolver: RCTPromiseResolveBlock, rejector: RCTPromiseRejectBlock) {
-        let subRef = IonicPortals.PortalsPubSub.subscribe(topic) { [weak self] result in
-            guard let self = self else { return }
-            self.sendEvent(
-                withName: self.eventName,
+
+    private let publishers = ConcurrentDictionary<String, AnyCancellable>(label: "io.ionic.rn.portalspubsub")
+
+    override func addListener(_ eventName: String) {
+        var topic = eventName
+        if topic.hasPrefix(eventPrefix) {
+            topic = String(eventName.suffix(from: eventPrefix.endIndex))
+        }
+        events.insert(eventName)
+        super.addListener(eventName)
+
+        if let _ = publishers[topic] { return }
+        publishers[topic] = IonicPortals.PortalsPubSub.subscribe(to: topic) { [weak self] result in
+            self?.sendEvent(
+                withName: eventName,
                 body: [
-                    "subscriptionRef": result.subscriptionRef,
                     "topic": result.topic,
                     "data": result.data
                 ]
             )
         }
-        
-        resolver(subRef)
     }
-    
-    @objc func unsubscribe(_ topic: String, subscriptionRef: NSNumber, resolver: RCTPromiseResolveBlock, rejector: RCTPromiseRejectBlock) {
-        IonicPortals.PortalsPubSub.unsubscribe(from: topic, subscriptionRef: subscriptionRef.intValue)
-        resolver(())
-    }
-    
+
     @objc func publish(_ topic: String, data: Any, resolver: RCTPromiseResolveBlock, rejector: RCTPromiseRejectBlock) {
         IONPortalsPubSub.publish(message: data, topic: topic)
         resolver(())

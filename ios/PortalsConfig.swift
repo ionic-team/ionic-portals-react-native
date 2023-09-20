@@ -32,7 +32,7 @@ struct PortalsConfig {
                     index: index ?? "index.html",
                     initialContext: initialContext ?? [:],
                     assetMaps: assetMaps ?? [],
-                    pluginRegistrationMode: .manual(plugins?.toCapPlugin ?? []),
+                    plugins: plugins?.toCapPlugin ?? [],
                     liveUpdateManager: liveUpdateManager,
                     liveUpdateConfig: liveUpdate.map { .init(appId: $0.appId, channel: $0.channel, syncOnAdd: $0.syncOnAdd) }
                 ),
