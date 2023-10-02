@@ -24,7 +24,7 @@ internal class PortalsPubSubModule(reactContext: ReactApplicationContext) :
         val ref = PortalsPubSub.shared.subscribe(topic) { result ->
             reactApplicationContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                .emit("PortalsSubscription:$eventName", result.toJSObject().toReactMap())
+                .emit(eventName, result.toJSObject().toReactMap())
         }
 
         subscriptionRefs[eventName] = ref
