@@ -71,3 +71,5 @@ lib/
 example/android/app/src/main/assets
 .vercel
 docs/
+
+package-lock.json
