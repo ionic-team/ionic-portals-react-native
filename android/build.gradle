@@ -123,9 +123,9 @@ dependencies {
     //noinspection GradleDynamicVersion
     api 'com.facebook.react:react-native:+'
     //noinspection GradleDynamicVersion
-    api "io.ionic:portals:0.8.+"
+    api "io.ionic:portals:0.10.+"
     //noinspection GradleDynamicVersion
-    api "io.ionic:liveupdates:0.4.+"
+    api "io.ionic:liveupdates:0.5.+"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3"
 }
