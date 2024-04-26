@@ -182,7 +182,7 @@ internal fun JSONObject.toReactMap(): ReadableMap =
                 is Int -> map.putInt(key, value)
                 is Double -> map.putDouble(key, value)
                 is String -> map.putString(key, value)
-                null -> map.putNull(key)
+                null, JSONObject.NULL -> map.putNull(key)
                 else -> map.putString(key, value.toString())
             }
         } catch (_: JSONException) {
@@ -201,7 +201,7 @@ private fun JSONArray.toReactArray(): ReadableArray =
                 is Int -> array.pushInt(value)
                 is Double -> array.pushDouble(value)
                 is String -> array.pushString(value)
-                null -> array.pushNull()
+                null, JSONObject.NULL -> array.pushNull()
                 else -> array.pushString(value.toString())
             }
         } catch (_: JSONException) {
