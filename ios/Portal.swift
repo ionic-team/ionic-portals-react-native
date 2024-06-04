@@ -31,6 +31,9 @@ struct Portal {
 }
 
 extension Portal {
+    private static let encoder = JSValueEncoder(optionalEncodingStrategy: .undefined)
+    private static let decoder = JSValueDecoder()
+
     init?(_ dict: [String: Any], _ liveUpdateManager: LiveUpdateManager) {
         guard let name = dict["name"] as? String else { return nil }
         var plugins: [Portal.Plugin] = []
@@ -53,7 +56,7 @@ extension Portal {
             assetMaps: assetMaps,
             plugins: plugins.toCapPlugin,
             liveUpdateManager: liveUpdateManager,
-            liveUpdateConfig: (dict["liveUpdate"] as? [String: Any]).flatMap(LiveUpdate.init)
+            liveUpdateConfig: (dict["liveUpdate"] as? JSObject).flatMap { try? Self.decoder.decode(LiveUpdate.self, from: $0) }
         )
 
         self.plugins = plugins
@@ -65,7 +68,7 @@ extension Portal {
             "startDir": self.startDir,
             "index": self.index,
             "initialContext": self.initialContext,
-            "liveUpdate": self.liveUpdateConfig?.dict as Any
+            "liveUpdate": self.liveUpdateConfig.flatMap { try? Self.encoder.encode($0) } as Any
         ]
 
         if !plugins.isEmpty {

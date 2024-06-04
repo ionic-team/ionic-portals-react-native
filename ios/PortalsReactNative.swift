@@ -1,4 +1,5 @@
 import Foundation
+import Capacitor
 import IonicPortals
 import IonicLiveUpdates
 import React
@@ -75,11 +76,11 @@ public class PortalsReactNative: NSObject {
     }
     
     @objc func syncOne(_ appId: String, resolver: @escaping RCTPromiseResolveBlock, rejector: @escaping RCTPromiseRejectBlock) {
-        lum.sync(appId: appId, isParallel: true) { result in
-            switch result {
-            case .success(let update):
-                resolver(update.dict)
-            case .failure(let error):
+        Task {
+            do {
+                let result = try await lum.sync(appId: appId)
+                resolver(try? JSValueEncoder(optionalEncodingStrategy: .undefined).encode(result))
+            } catch {
                 rejector(nil, nil, error)
             }
         }
@@ -88,14 +89,14 @@ public class PortalsReactNative: NSObject {
     @objc func syncSome(_ appIds: [String], resolver: @escaping RCTPromiseResolveBlock, rejector: RCTPromiseRejectBlock) {
         Task {
             let syncResult = await lum.syncSome(appIds)
-            resolver(syncResult.dict)
+            resolver(try? syncResult.dict)
         }
     }
     
     @objc func syncAll(_ resolver: @escaping RCTPromiseResolveBlock, rejector: RCTPromiseRejectBlock) {
         Task {
             let syncResult = await lum.syncAll()
-            resolver(syncResult.dict)
+            resolver(try? syncResult.dict)
         }
     }
     

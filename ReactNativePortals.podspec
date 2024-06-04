@@ -16,6 +16,6 @@ Pod::Spec.new do |s|
   s.source_files = 'ios/**/*.{h,m,mm,swift}'
 
   s.dependency 'React-Core'
-  s.dependency 'IonicPortals', '~> 0.8.0'
-  s.dependency 'IonicLiveUpdates', '~> 0.4.0'
+  s.dependency 'IonicPortals', '~> 0.11.0'
+  s.dependency 'IonicLiveUpdates', '~> 0.5.2'
 end
