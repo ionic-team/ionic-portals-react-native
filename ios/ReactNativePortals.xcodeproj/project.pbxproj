@@ -7,16 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E4E75DD2C10EB5A005BB47C /* IonicPortals+Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4E75DC2C10EB5A005BB47C /* IonicPortals+Codable.swift */; };
 		9095DD38F929D001864E1714 /* libPods-ReactNativePortals.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 67166EB73DFDC54AE4A38E7E /* libPods-ReactNativePortals.a */; };
 		A7128A0627F7A16200DADDF3 /* PortalsReactNative.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FF95D6245B92E800C19C63 /* PortalsReactNative.swift */; };
-		A7128A0727F7A16200DADDF3 /* PortalManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A71289F927F79EB200DADDF3 /* PortalManager.m */; };
+		A7128A0727F7A16200DADDF3 /* PortalManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = A71289F927F79EB200DADDF3 /* PortalManager.mm */; };
 		A7128A0827F7A16200DADDF3 /* ReactNativePortals-Bridging-Header.h in Headers */ = {isa = PBXBuildFile; fileRef = F4FF95D5245B92E700C19C63 /* ReactNativePortals-Bridging-Header.h */; };
-		A7128A0927F7A16200DADDF3 /* PortalsPubSub.m in Sources */ = {isa = PBXBuildFile; fileRef = A71289F827F79D4000DADDF3 /* PortalsPubSub.m */; };
-		A7128A0A27F7A16200DADDF3 /* PortalView.m in Sources */ = {isa = PBXBuildFile; fileRef = A71289F727F79CDC00DADDF3 /* PortalView.m */; };
+		A7128A0927F7A16200DADDF3 /* PortalsPubSub.mm in Sources */ = {isa = PBXBuildFile; fileRef = A71289F827F79D4000DADDF3 /* PortalsPubSub.mm */; };
+		A7128A0A27F7A16200DADDF3 /* PortalView.mm in Sources */ = {isa = PBXBuildFile; fileRef = A71289F727F79CDC00DADDF3 /* PortalView.mm */; };
 		A71E306C29D392DF0073D47A /* SyncResult+SyncError+Encodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71E306B29D392DF0073D47A /* SyncResult+SyncError+Encodable.swift */; };
 		A71E306E29D4C8710073D47A /* AssetMap+Dict.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71E306D29D4C8710073D47A /* AssetMap+Dict.swift */; };
 		A71E307229D5FC450073D47A /* WebVitals.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71E307129D5FC450073D47A /* WebVitals.swift */; };
-		A71E307429D5FF650073D47A /* PortalWebVitals.m in Sources */ = {isa = PBXBuildFile; fileRef = A71E307329D5FF650073D47A /* PortalWebVitals.m */; };
+		A71E307429D5FF650073D47A /* PortalWebVitals.mm in Sources */ = {isa = PBXBuildFile; fileRef = A71E307329D5FF650073D47A /* PortalWebVitals.mm */; };
 		A71E307629D771C90073D47A /* ConcurrentDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71E307529D771C90073D47A /* ConcurrentDictionary.swift */; };
 		A795AE1928EDEB6D0092B4B1 /* PortalsConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795AE1828EDEB6D0092B4B1 /* PortalsConfig.swift */; };
 		A795AE1B28EDEBF20092B4B1 /* PortalsPubSub.swift in Sources */ = {isa = PBXBuildFile; fileRef = A795AE1A28EDEBF20092B4B1 /* PortalsPubSub.swift */; };
@@ -27,16 +28,17 @@
 
 /* Begin PBXFileReference section */
 		024852BD0B1500CD4E0D0FD2 /* Pods-ReactNativePortals.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativePortals.release.xcconfig"; path = "Target Support Files/Pods-ReactNativePortals/Pods-ReactNativePortals.release.xcconfig"; sourceTree = "<group>"; };
+		2E4E75DC2C10EB5A005BB47C /* IonicPortals+Codable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IonicPortals+Codable.swift"; sourceTree = "<group>"; };
 		61F6753D8EA38C25A10A612B /* Pods-ReactNativePortals.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativePortals.debug.xcconfig"; path = "Target Support Files/Pods-ReactNativePortals/Pods-ReactNativePortals.debug.xcconfig"; sourceTree = "<group>"; };
 		67166EB73DFDC54AE4A38E7E /* libPods-ReactNativePortals.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactNativePortals.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A71289F727F79CDC00DADDF3 /* PortalView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PortalView.m; sourceTree = "<group>"; };
-		A71289F827F79D4000DADDF3 /* PortalsPubSub.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PortalsPubSub.m; sourceTree = "<group>"; };
-		A71289F927F79EB200DADDF3 /* PortalManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PortalManager.m; sourceTree = "<group>"; };
+		A71289F727F79CDC00DADDF3 /* PortalView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PortalView.mm; sourceTree = "<group>"; };
+		A71289F827F79D4000DADDF3 /* PortalsPubSub.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PortalsPubSub.mm; sourceTree = "<group>"; };
+		A71289F927F79EB200DADDF3 /* PortalManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PortalManager.mm; sourceTree = "<group>"; };
 		A71289FF27F7A14900DADDF3 /* ReactNativePortals.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReactNativePortals.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A71E306B29D392DF0073D47A /* SyncResult+SyncError+Encodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SyncResult+SyncError+Encodable.swift"; sourceTree = "<group>"; };
 		A71E306D29D4C8710073D47A /* AssetMap+Dict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AssetMap+Dict.swift"; sourceTree = "<group>"; };
 		A71E307129D5FC450073D47A /* WebVitals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebVitals.swift; sourceTree = "<group>"; };
-		A71E307329D5FF650073D47A /* PortalWebVitals.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PortalWebVitals.m; sourceTree = "<group>"; };
+		A71E307329D5FF650073D47A /* PortalWebVitals.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PortalWebVitals.mm; sourceTree = "<group>"; };
 		A71E307529D771C90073D47A /* ConcurrentDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcurrentDictionary.swift; sourceTree = "<group>"; };
 		A795AE1828EDEB6D0092B4B1 /* PortalsConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalsConfig.swift; sourceTree = "<group>"; };
 		A795AE1A28EDEBF20092B4B1 /* PortalsPubSub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortalsPubSub.swift; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				2E4E75DC2C10EB5A005BB47C /* IonicPortals+Codable.swift */,
 				A71E307529D771C90073D47A /* ConcurrentDictionary.swift */,
 				A71E307129D5FC450073D47A /* WebVitals.swift */,
 				A71E306D29D4C8710073D47A /* AssetMap+Dict.swift */,
@@ -87,10 +90,10 @@
 				A795AE1C28EDEC7A0092B4B1 /* PortalView.swift */,
 				A795AE1A28EDEBF20092B4B1 /* PortalsPubSub.swift */,
 				A795AE1828EDEB6D0092B4B1 /* PortalsConfig.swift */,
-				A71289F727F79CDC00DADDF3 /* PortalView.m */,
-				A71E307329D5FF650073D47A /* PortalWebVitals.m */,
-				A71289F927F79EB200DADDF3 /* PortalManager.m */,
-				A71289F827F79D4000DADDF3 /* PortalsPubSub.m */,
+				A71289F727F79CDC00DADDF3 /* PortalView.mm */,
+				A71E307329D5FF650073D47A /* PortalWebVitals.mm */,
+				A71289F927F79EB200DADDF3 /* PortalManager.mm */,
+				A71289F827F79D4000DADDF3 /* PortalsPubSub.mm */,
 				F4FF95D5245B92E700C19C63 /* ReactNativePortals-Bridging-Header.h */,
 				134814211AA4EA7D00B7C361 /* Products */,
 				6D8E164A6A9206E2166C7202 /* Pods */,
@@ -231,9 +234,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7128A0A27F7A16200DADDF3 /* PortalView.m in Sources */,
-				A71E307429D5FF650073D47A /* PortalWebVitals.m in Sources */,
-				A7128A0927F7A16200DADDF3 /* PortalsPubSub.m in Sources */,
+				A7128A0A27F7A16200DADDF3 /* PortalView.mm in Sources */,
+				A71E307429D5FF650073D47A /* PortalWebVitals.mm in Sources */,
+				A7128A0927F7A16200DADDF3 /* PortalsPubSub.mm in Sources */,
 				A795AE1D28EDEC7A0092B4B1 /* PortalView.swift in Sources */,
 				A71E306E29D4C8710073D47A /* AssetMap+Dict.swift in Sources */,
 				A71E306C29D392DF0073D47A /* SyncResult+SyncError+Encodable.swift in Sources */,
@@ -242,7 +245,8 @@
 				A795AE1B28EDEBF20092B4B1 /* PortalsPubSub.swift in Sources */,
 				A7128A0627F7A16200DADDF3 /* PortalsReactNative.swift in Sources */,
 				A795AE1F28EDED0F0092B4B1 /* Portal.swift in Sources */,
-				A7128A0727F7A16200DADDF3 /* PortalManager.m in Sources */,
+				2E4E75DD2C10EB5A005BB47C /* IonicPortals+Codable.swift in Sources */,
+				A7128A0727F7A16200DADDF3 /* PortalManager.mm in Sources */,
 				A795AE1928EDEB6D0092B4B1 /* PortalsConfig.swift in Sources */,
 				A795AE2528EDEE4E0092B4B1 /* LiveUpdateManager+Async.swift in Sources */,
 			);

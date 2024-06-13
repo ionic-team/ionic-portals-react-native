@@ -22,7 +22,9 @@
         "!ios/**/xcuserdata",
         "!**/__tests__",
         "!**/__fixtures__",
-        "!**/__mocks__"
+        "!**/__mocks__",
+        "!module",
+        "!PortalsExample"
     ],
     "scripts": {
         "test": "jest",
