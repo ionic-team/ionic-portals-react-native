@@ -18,8 +18,7 @@ public class PortalsReactNative: NSObject {
         }
         
         guard let configData = try? Data(contentsOf: configUrl),
-              let jsonData = try? JSONSerialization.jsonObject(with: configData) as? [String: Any],
-              let portalsConfig = PortalsConfig(jsonData)
+              let portalsConfig = try? JSONDecoder().decode(PortalsConfig.self, from: configData)
         else { fatalError("Portals config data is malformed. Aborting.") }
         
         if let registrationKey = portalsConfig.registrationKey {
@@ -29,12 +28,6 @@ public class PortalsReactNative: NSObject {
         if let publicKeyPath = portalsConfig.secureLiveUpdatesPublicKey {
             guard let publicKeyUrl = Bundle.main.url(forResource: publicKeyPath, withExtension: nil) else { fatalError("Public key not found at \(publicKeyPath)") }
             Self.lum = SecureLiveUpdateManager(named: "secure-updates", publicKeyUrl: publicKeyUrl)
-        }
-        
-        let portals = portalsConfig.portals.map { $0.portal(with: Self.lum) }
-        
-        for portal in portals {
-            Self.portals[portal.name] = portal
         }
     }
     
@@ -52,7 +45,7 @@ public class PortalsReactNative: NSObject {
     @available(*, deprecated, message: "This will be removed in the next release")
     @objc func addPortal(_ portalDict: [String: Any], resolver: RCTPromiseResolveBlock, rejector: RCTPromiseRejectBlock) {
         do {
-            let portal = try decoder.decode(Portal.self, from: JSTypes.coerceDictionaryToJSObject(portalDict) ?? [:])
+            let portal = try Portal.decode(from: JSTypes.coerceDictionaryToJSObject(portalDict) ?? [:], with: decoder)
             Self.portals[portal.name] = portal
             resolver(try encoder.encode(portal))
         } catch {

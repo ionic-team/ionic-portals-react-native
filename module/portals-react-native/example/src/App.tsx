@@ -24,9 +24,11 @@ var portal: Portal = {
 // addPortal(portal);
 
 export default function App() {
+  const initialNumber = 0;
+  portal.initialContext!.initialNumber += 2;
   return (
     <View style={styles.container}>
-      <PubSubLabel initialNumber={0} />
+      <PubSubLabel initialNumber={initialNumber} />
       <PortalView portal={portal} style={styles.portalView} />
     </View>
   );
@@ -36,15 +38,12 @@ const styles = StyleSheet.create({
   portalView: {
     width: 300,
     height: 150,
+    borderWidth: 2,
+    borderColor: 'black'
   },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
   },
 });

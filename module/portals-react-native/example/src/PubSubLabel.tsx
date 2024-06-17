@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useColorScheme, View, Text, StyleSheet } from 'react-native';
-import type { EmitterSubscription } from 'react-native';
+import type { EmitterSubscription, ViewProps } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { type Message, subscribe, publish } from '@ionic/portals-react-native';
 
-const PubSubLabel: React.FC<{ initialNumber: number }> = ({
+const PubSubLabel: React.FC<{ initialNumber: number } & ViewProps> = ({
   initialNumber,
 }) => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -15,8 +15,7 @@ const PubSubLabel: React.FC<{ initialNumber: number }> = ({
   useEffect(() => {
     subRef.current = subscribe('button:tapped', (message: Message) => {
       console.log(
-        `Received message ${JSON.stringify(message.data, null, 2)} on topic ${
-          message.topic
+        `Received message ${JSON.stringify(message.data, null, 2)} on topic ${message.topic
         } from IonicPortals`
       );
 

@@ -23,7 +23,7 @@ class PortalView: UIView {
     @objc var portal: [String: Any]? {
         get {
             guard let _portal = _portal else { return nil }
-            return try? JSValueEncoder(optionalEncodingStrategy: .undefined).encodeJSObject(_portal)
+            return try? _portal.encode(to: JSValueEncoder(optionalEncodingStrategy: .undefined))
         }
         
         set {
@@ -38,7 +38,7 @@ class PortalView: UIView {
                 _portal = portal
             } else {
                 let jsObject = JSTypes.coerceDictionaryToJSObject(portalDict) ?? [:]
-                _portal = try? JSValueDecoder().decode(Portal.self, from: jsObject)
+                _portal = try? Portal.decode(from: jsObject, with: JSValueDecoder())
             }
         }
     }

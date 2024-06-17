@@ -73,3 +73,6 @@ example/android/app/src/main/assets
 docs/
 
 package-lock.json
+
+.yarn
+.xcode.env.local
