@@ -17,7 +17,7 @@ var portal: Portal = {
   name: 'button',
   startDir: 'portals/buttonapp',
   initialContext: {
-    initialNumber: 2,
+    initialNumber: 1,
   },
 };
 
@@ -25,7 +25,6 @@ var portal: Portal = {
 
 export default function App() {
   const initialNumber = 0;
-  portal.initialContext!.initialNumber += 2;
   return (
     <View style={styles.container}>
       <PubSubLabel initialNumber={initialNumber} />
