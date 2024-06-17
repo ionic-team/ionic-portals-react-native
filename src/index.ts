@@ -1,9 +1,9 @@
 import {
-  EmitterSubscription,
+  type EmitterSubscription,
   NativeEventEmitter,
   NativeModules,
   Platform,
-  ViewProps,
+  type ViewProps,
 } from 'react-native';
 
 const { IONPortalPubSub, IONPortalsReactNative, IONPortalsWebVitals } =
@@ -185,17 +185,9 @@ export interface AssetMap {
 }
 
 /**
- * A subset of {@link Portal} properties needed for rendering a Portal. `initialContext` can be used to override
- * any initialContext defined in the original {@link Portal} definition.
- */
-export type PortalProp = {
-  portal: Pick<Portal, 'name' | 'initialContext'>;
-};
-
-/**
  * Props needed for rendering a {@link Portal}
  */
-export type PortalProps = PortalProp & ViewProps;
+export type PortalProps = { portal: Portal } & ViewProps;
 
 /**
  * Adds a Portal to an internal registry. Must be called before attempting to render a {@link PortalView}.

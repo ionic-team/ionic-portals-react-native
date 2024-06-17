@@ -23,10 +23,7 @@ class PortalView: UIView {
     @objc var portal: [String: Any]? {
         get {
             guard let _portal = _portal else { return nil }
-            return [
-                "name": _portal.name,
-                "initialContext": _portal.initialContext
-            ]
+            return try? _portal.encode(to: JSValueEncoder(optionalEncodingStrategy: .undefined))
         }
         
         set {
@@ -34,13 +31,15 @@ class PortalView: UIView {
                   let name = portalDict["name"] as? String
             else { return }
             
-            var portal = PortalsReactNative.getPortal(named: name)
-            
-            if let initialContext = portalDict["initialContext"] as? [String: Any] {
-                portal?.initialContext = JSTypes.coerceDictionaryToJSObject(initialContext) ?? [:]
+            if var portal = PortalsReactNative.getPortal(named: name) {
+                if let initialContext = portalDict["initialContext"] as? [String: Any] {
+                    portal.initialContext = JSTypes.coerceDictionaryToJSObject(initialContext) ?? [:]
+                }
+                _portal = portal
+            } else {
+                let jsObject = JSTypes.coerceDictionaryToJSObject(portalDict) ?? [:]
+                _portal = try? Portal.decode(from: jsObject, with: JSValueDecoder())
             }
-            
-            _portal = portal
         }
     }
     
