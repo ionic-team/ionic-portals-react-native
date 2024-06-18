@@ -4,7 +4,6 @@ import {
   requireNativeComponent,
   UIManager,
 } from 'react-native';
-import type { PortalProps } from '.';
 
 const PortalViewManager = requireNativeComponent('AndroidPortalView');
 
@@ -17,7 +16,7 @@ const createFragment = (viewId: number | null) =>
     [viewId]
   );
 
-const PortalView = (props: PortalProps) => {
+const BasePortalView = (props: any) => {
   const ref = useRef(null);
 
   useEffect(() => {
@@ -28,4 +27,4 @@ const PortalView = (props: PortalProps) => {
   return <PortalViewManager {...props} ref={ref} />;
 };
 
-export default PortalView;
+export default BasePortalView;

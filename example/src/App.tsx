@@ -6,6 +6,7 @@ import {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   addPortal,
   register,
+  registerWebVitals,
   type Portal,
 } from '@ionic/portals-react-native';
 
@@ -22,13 +23,33 @@ var portal: Portal = {
 };
 
 // addPortal(portal);
+// registerWebVitals(
+//   portal.name,
+//   (duration: number) => console.log('firstContentfulPaint', duration),
+//   (duration: number) => console.log('firstInputDelay', duration),
+//   (duration: number) => {
+//     console.log('timeToFirstByte', duration);
+//   }
+// );
 
 export default function App() {
   const initialNumber = 0;
   return (
     <View style={styles.container}>
       <PubSubLabel initialNumber={initialNumber} />
-      <PortalView portal={portal} style={styles.portalView} />
+      <PortalView
+        portal={portal}
+        style={styles.portalView}
+        webVitals={{
+          firstContentfulPaint: (duration: number) =>
+            console.log('firstContentfulPaint', duration),
+          firstInputDelay: (duration: number) =>
+            console.log('firstInputDelay', duration),
+          timeToFirstByte: (duration: number) => {
+            console.log('timeToFirstByte', duration);
+          },
+        }}
+      />
     </View>
   );
 }
@@ -38,7 +59,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 150,
     borderWidth: 2,
-    borderColor: 'black'
+    borderColor: 'black',
   },
   container: {
     flex: 1,

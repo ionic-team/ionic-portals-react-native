@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   type EmitterSubscription,
   NativeEventEmitter,
@@ -5,11 +6,39 @@ import {
   Platform,
   type ViewProps,
 } from 'react-native';
+import BasePortalView from './PortalView';
 
 const { IONPortalPubSub, IONPortalsReactNative, IONPortalsWebVitals } =
   NativeModules;
 
-export { default as PortalView } from './PortalView';
+export const PortalView = (props: PortalProps) => {
+  let webVitals: string[] | undefined;
+  if (props.webVitals) {
+    webVitals = [];
+    if (props.webVitals.firstContentfulPaint) {
+      webVitals.push('fcp');
+      registerVital(
+        props.portal.name,
+        'fcp',
+        props.webVitals.firstContentfulPaint
+      );
+    }
+    if (props.webVitals.firstInputDelay) {
+      webVitals.push('fid');
+      registerVital(props.portal.name, 'fid', props.webVitals.firstInputDelay);
+    }
+    if (props.webVitals.timeToFirstByte) {
+      webVitals.push('ttfb');
+      registerVital(props.portal.name, 'ttfb', props.webVitals.timeToFirstByte);
+    }
+  }
+
+  const newProps = { ...props, webVitals: undefined };
+  // @ts-ignore
+  newProps.portal.webVitals = webVitals;
+
+  return <BasePortalView {...newProps} />;
+};
 
 /**
  * The data that is received from a subscription event.
@@ -64,12 +93,14 @@ interface WebVitalsEvent {
   duration: number;
 }
 
-export const onFirstContentfulPaint = async (
+const registerVital = (
   portalName: string,
+  vital: 'fcp' | 'fid' | 'ttfb',
   callback: (duration: number) => void
-): Promise<void> => {
+) => {
+  if (Platform.OS === 'ios' && vital !== 'fcp') return;
   const listener = WebVitals.addListener(
-    'vitals:fcp',
+    `vitals:${vital}`,
     (event: WebVitalsEvent) => {
       if (event.portalName === portalName) {
         callback(event.duration);
@@ -77,8 +108,15 @@ export const onFirstContentfulPaint = async (
     }
   );
 
+  webVitalsMap.set(`${portalName}-vitals:${vital}`, listener);
+};
+
+export const onFirstContentfulPaint = async (
+  portalName: string,
+  callback: (duration: number) => void
+): Promise<void> => {
+  registerVital(portalName, 'fcp', callback);
   await IONPortalsWebVitals.registerOnFirstContentfulPaint(portalName);
-  webVitalsMap.set(`${portalName}-vitals:fcp`, listener);
 };
 
 export const onFirstInputDelay = async (
@@ -86,17 +124,8 @@ export const onFirstInputDelay = async (
   callback: (duration: number) => void
 ) => {
   if (Platform.OS === 'android') {
-    const listener = WebVitals.addListener(
-      'vitals:fid',
-      (event: WebVitalsEvent) => {
-        if (event.portalName === portalName) {
-          callback(event.duration);
-        }
-      }
-    );
-
+    registerVital(portalName, 'fid', callback);
     await IONPortalsWebVitals.registerOnFirstInputDelay(portalName);
-    webVitalsMap.set(`${portalName}-vitals:fid`, listener);
   }
 };
 
@@ -105,17 +134,8 @@ export const onTimeToFirstByte = async (
   callback: (duration: number) => void
 ) => {
   if (Platform.OS === 'android') {
-    const listener = WebVitals.addListener(
-      'vitals:ttfb',
-      (event: WebVitalsEvent) => {
-        if (event.portalName === portalName) {
-          callback(event.duration);
-        }
-      }
-    );
-
+    registerVital(portalName, 'ttfb', callback);
     await IONPortalsWebVitals.registerOnTimeToFirstByte(portalName);
-    webVitalsMap.set(`${portalName}-vitals:ttfb`, listener);
   }
 };
 
@@ -128,6 +148,12 @@ export const registerWebVitals = async (
   onFirstContentfulPaint(portalName, firstContentfulPaint);
   onFirstInputDelay(portalName, firstInputDelay);
   onTimeToFirstByte(portalName, timeToFirstByte);
+};
+
+export type WebVitals = {
+  firstContentfulPaint?: (duration: number) => void;
+  firstInputDelay?: (duration: number) => void;
+  timeToFirstByte?: (duration: number) => void;
 };
 
 /**
@@ -187,7 +213,7 @@ export interface AssetMap {
 /**
  * Props needed for rendering a {@link Portal}
  */
-export type PortalProps = { portal: Portal } & ViewProps;
+export type PortalProps = { portal: Portal; webVitals?: WebVitals } & ViewProps;
 
 /**
  * Adds a Portal to an internal registry. Must be called before attempting to render a {@link PortalView}.

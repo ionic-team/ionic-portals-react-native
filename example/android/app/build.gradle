@@ -1,3 +1,5 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
@@ -116,3 +118,13 @@ dependencies {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+
+task PortalsSync(type: Exec) {
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        commandLine 'cmd', '/c', 'PowerShell -Command portals.exe sync --config ../../.portals.yaml --destination ' + layout.projectDirectory.dir("src/main/assets").toString()
+    } else {
+        environment PATH: "/opt/homebrew/bin:${environment.PATH}"
+        commandLine 'bash', '-c', 'portals sync --config ../../.portals.yaml --destination ' + layout.projectDirectory.dir("src/main/assets").toString()
+    }
+}
+preBuild.dependsOn(PortalsSync)
