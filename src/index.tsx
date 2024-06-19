@@ -6,7 +6,7 @@ import {
   Platform,
   type ViewProps,
 } from 'react-native';
-import BasePortalView from './PortalView';
+import BasePortalView from './BasePortalView';
 
 const { IONPortalPubSub, IONPortalsReactNative, IONPortalsWebVitals } =
   NativeModules;
