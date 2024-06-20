@@ -74,7 +74,7 @@ docs/
 
 package-lock.json
 
-.yarn/*
+**/.yarn/*
 .xcode.env.local
 
 !.yarn/releases/

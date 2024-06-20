@@ -1,7 +1,0 @@
-{
-  "name": "RNPortals",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react"
-}

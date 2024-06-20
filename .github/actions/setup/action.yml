@@ -34,6 +34,7 @@ runs:
 
     - name: Build example web app
       run: | 
+        yarn install --immutable
         yarn build
       shell: bash
       working-directory: example/web/RNPortals 
