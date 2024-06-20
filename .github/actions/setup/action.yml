@@ -34,7 +34,6 @@ runs:
 
     - name: Build example web app
       run: | 
-        yarn
         yarn build
       shell: bash
       working-directory: example/web 
