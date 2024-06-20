@@ -31,3 +31,10 @@ runs:
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: yarn install --immutable
       shell: bash
+
+    - name: Build example web app
+      run: | 
+        yarn
+        yarn build
+      shell: bash
+      working-directory: example/web 
