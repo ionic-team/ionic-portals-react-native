@@ -37,4 +37,4 @@ runs:
         yarn install --immutable
         yarn build
       shell: bash
-      working-directory: example/web/RNPortals 
+      working-directory: web
