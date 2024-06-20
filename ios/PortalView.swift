@@ -31,15 +31,34 @@ class PortalView: UIView {
                   let name = portalDict["name"] as? String
             else { return }
             
-            if var portal = PortalsReactNative.getPortal(named: name) {
+            var portal: Portal
+            
+            if var deprecatedPortal = PortalsReactNative.getPortal(named: name) {
                 if let initialContext = portalDict["initialContext"] as? [String: Any] {
-                    portal.initialContext = JSTypes.coerceDictionaryToJSObject(initialContext) ?? [:]
+                    deprecatedPortal.initialContext = JSTypes.coerceDictionaryToJSObject(initialContext) ?? [:]
                 }
-                _portal = portal
+                portal = deprecatedPortal
             } else {
                 let jsObject = JSTypes.coerceDictionaryToJSObject(portalDict) ?? [:]
-                _portal = try? Portal.decode(from: jsObject, with: JSValueDecoder())
+                do {
+                    portal = try Portal.decode(from: jsObject, with: JSValueDecoder())
+                } catch {
+                    print(error.localizedDescription)
+                    return
+                }
             }
+            if portal.usesWebVitals {
+                var vitalsPlugin = WebVitalsPlugin { portalName, duration in
+                    IonicPortals.PortalsPubSub
+                        .shared
+                        .publish(
+                            ["portalName": portalName, "duration": duration],
+                            to: "webVitals:received"
+                        )
+                }
+                portal._portal.plugins.append(.instance(vitalsPlugin))
+            }
+            _portal = portal
         }
     }
     

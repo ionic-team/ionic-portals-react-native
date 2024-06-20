@@ -19,6 +19,19 @@ struct Portal {
 
     var _portal: IonicPortals.Portal
     var plugins: [Plugin]
+    private var webVitals: [String]?
+    var usesWebVitals: Bool {
+        get {
+            webVitals?.contains("fcp") ?? false
+        }
+        set {
+            if newValue {
+                webVitals = ["fcp"]
+            } else {
+                webVitals = nil
+            }
+        }
+    }
 
     subscript<T>(dynamicMember keypath: Swift.WritableKeyPath<IonicPortals.Portal, T>) -> T {
         get { _portal[keyPath: keypath] }
@@ -46,7 +59,7 @@ extension Portal {
 
 extension Portal: Encodable {
     enum CodingKeys: String, CodingKey {
-        case name, startDir, plugins, index, initialContext, assetMaps, liveUpdate
+        case name, startDir, plugins, index, initialContext, assetMaps, liveUpdate, webVitals
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -57,6 +70,7 @@ extension Portal: Encodable {
         try container.encode(self.index, forKey: .index)
         try container.encode(self.assetMaps, forKey: .assetMaps)
         try container.encode(self.liveUpdateConfig, forKey: .liveUpdate)
+        try container.encodeIfPresent(webVitals, forKey: .webVitals)
     }
 }
 
@@ -69,9 +83,10 @@ extension Portal: Decodable {
         let index = try container.decodeIfPresent(String.self, forKey: .index) ?? "index.html"
         let assetMaps = try container.decodeIfPresent([AssetMap].self, forKey: .assetMaps) ?? []
         let liveUpdateConfig = try container.decodeIfPresent(LiveUpdate.self, forKey: .liveUpdate)
+        let webVitals = try container.decodeIfPresent([String].self, forKey: .webVitals)
         
         let portal = IonicPortals.Portal(name: name, startDir: startDir, index: index, assetMaps: assetMaps, plugins: plugins.toCapPlugin, liveUpdateManager: PortalsReactNative.lum, liveUpdateConfig: liveUpdateConfig)
-        self.init(_portal: portal, plugins: plugins)
+        self.init(_portal: portal, plugins: plugins, webVitals: webVitals)
     }
 }
 
