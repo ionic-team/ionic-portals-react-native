@@ -1,9 +1,9 @@
+/* eslint-disable */
 import * as React from 'react';
 import PubSubLabel from './PubSubLabel';
 import { StyleSheet, View } from 'react-native';
 import {
   PortalView,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   addPortal,
   register,
   registerWebVitals,
