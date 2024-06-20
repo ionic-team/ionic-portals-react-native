@@ -36,4 +36,4 @@ runs:
       run: | 
         yarn build
       shell: bash
-      working-directory: example/web 
+      working-directory: example/web/RNPortals 
