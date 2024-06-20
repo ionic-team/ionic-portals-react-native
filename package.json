@@ -27,7 +27,7 @@
     ],
     "scripts": {
         "example": "yarn workspace @ionic/portals-react-native-example",
-        "build:webapp": "yarn workspace RNPortals build",
+        "webapp": "yarn workspace web",
         "test": "jest",
         "typecheck": "tsc --noEmit",
         "lint": "eslint \"**/*.{js,ts,tsx}\"",
@@ -85,7 +85,7 @@
     },
     "workspaces": [
         "example",
-        "example/web/RNPortals"
+        "web"
     ],
     "packageManager": "yarn@3.6.1",
     "jest": {
