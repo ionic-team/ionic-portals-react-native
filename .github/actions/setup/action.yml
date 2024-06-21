@@ -5,13 +5,14 @@ runs:
   using: composite
   steps:
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version-file: .nvmrc
     
     - run: curl -sL https://raw.githubusercontent.com/ionic-team/portals-cli-releases/main/install.sh | bash
       shell: bash
 
+    # Caching was causing broken builds. Disabled for now.
     # - name: Cache dependencies
     #   id: yarn-cache
     #   uses: actions/cache@v3
