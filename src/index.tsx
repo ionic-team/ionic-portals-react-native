@@ -111,6 +111,9 @@ const registerVital = (
   webVitalsMap.set(`${portalName}-vitals:${vital}`, listener);
 };
 
+/**
+ * @deprecated Use {@link WebVitals} prop on {@link PortalView} instead. This will be removed in the next release.
+ */
 export const onFirstContentfulPaint = async (
   portalName: string,
   callback: (duration: number) => void
@@ -119,6 +122,9 @@ export const onFirstContentfulPaint = async (
   await IONPortalsWebVitals.registerOnFirstContentfulPaint(portalName);
 };
 
+/**
+ * @deprecated Use {@link WebVitals} prop on {@link PortalView} instead. This will be removed in the next release.
+ */
 export const onFirstInputDelay = async (
   portalName: string,
   callback: (duration: number) => void
@@ -129,6 +135,9 @@ export const onFirstInputDelay = async (
   }
 };
 
+/**
+ * @deprecated Use {@link WebVitals} prop on {@link PortalView} instead. This will be removed in the next release.
+ */
 export const onTimeToFirstByte = async (
   portalName: string,
   callback: (duration: number) => void
@@ -139,6 +148,9 @@ export const onTimeToFirstByte = async (
   }
 };
 
+/**
+ * @deprecated Use {@link WebVitals} prop on {@link PortalView} instead. This will be removed in the next release.
+ */
 export const registerWebVitals = async (
   portalName: string,
   firstContentfulPaint: (duration: number) => void,
@@ -216,6 +228,7 @@ export interface AssetMap {
 export type PortalProps = { portal: Portal; webVitals?: WebVitals } & ViewProps;
 
 /**
+ * @deprecated Pass a {@link Portal} directly to {@link PortalView} instead. This will be removed in the next release.
  * Adds a Portal to an internal registry. Must be called before attempting to render a {@link PortalView}.
  *
  * @param portal The portal to add to the internal registry.
@@ -226,6 +239,7 @@ export const addPortal = async (portal: Portal): Promise<Portal> => {
 };
 
 /**
+ * @deprecated Pass a {@link Portal} directly to {@link PortalView} instead. This will be removed in the next release.
  * Adds all portals to an internal registry. This or {@link addPortal} must be called before attempting to render a {@link PortalView}
  *
  * @param portals The portals to add to the internal registry.
@@ -236,6 +250,7 @@ export const addPortals = async (portals: Portal[]): Promise<Portal[]> => {
 };
 
 /**
+ * @deprecated Portals are no longer centrally managed on the native side. This will be removed in the next release.
  * Gets a {@link Portal} previously registered via {@link addPortal} or {@link addPortals}.
  *
  * @param name The portal name to retrieve from the internal registry.
