@@ -15,7 +15,7 @@ jobs:
           node-version: 14.x
       - name: Publish package
         run: |
-          yarn
-          yarn publish
+          yarn install --immutable
+          yarn npm publish
         env:
           NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}

@@ -23,7 +23,7 @@ jobs:
         uses: EndBug/add-and-commit@v9
       - name: Validate Publish Flow
         run: |
-          yarn
-          yarn publish --dry-run
+          yarn install --immutable
+          yarn pack --dry-run
         env:
           NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
