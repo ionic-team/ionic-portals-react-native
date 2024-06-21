@@ -79,3 +79,5 @@ package-lock.json
 
 !.yarn/releases/
 !.yarn/plugins/
+.turbo/
+coverage/
