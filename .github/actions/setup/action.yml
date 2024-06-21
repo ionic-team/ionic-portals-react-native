@@ -9,9 +9,6 @@ runs:
       with:
         node-version-file: .nvmrc
     
-    - run: corepack enable
-      shell: bash
-
     - run: curl -sL https://raw.githubusercontent.com/ionic-team/portals-cli-releases/main/install.sh | bash
       shell: bash
 
