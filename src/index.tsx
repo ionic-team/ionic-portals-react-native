@@ -228,8 +228,11 @@ export interface AssetMap {
 export type PortalProps = { portal: Portal; webVitals?: WebVitals } & ViewProps;
 
 /**
- * @deprecated Pass a {@link Portal} directly to {@link PortalView} instead. This will be removed in the next release.
- * Adds a Portal to an internal registry. Must be called before attempting to render a {@link PortalView}.
+ * @deprecated Portals are no longer centrally managed natively.
+ * Pass a {@link Portal} directly to {@link PortalView} instead.
+ * This will be removed in the next release.
+ *
+ * Adds a Portal to an internal registry.
  *
  * @param portal The portal to add to the internal registry.
  * @returns Promise containing the Portal that was added to the registry.
@@ -239,8 +242,9 @@ export const addPortal = async (portal: Portal): Promise<Portal> => {
 };
 
 /**
- * @deprecated Pass a {@link Portal} directly to {@link PortalView} instead. This will be removed in the next release.
- * Adds all portals to an internal registry. This or {@link addPortal} must be called before attempting to render a {@link PortalView}
+ * @deprecated Portals are no longer centrally managed natively.
+ * Pass a {@link Portal} directly to {@link PortalView} instead.
+ * This will be removed in the next release.
  *
  * @param portals The portals to add to the internal registry.
  * @returns Promise containing the Portals that were added to the registry.
@@ -250,8 +254,9 @@ export const addPortals = async (portals: Portal[]): Promise<Portal[]> => {
 };
 
 /**
- * @deprecated Portals are no longer centrally managed on the native side. This will be removed in the next release.
- * Gets a {@link Portal} previously registered via {@link addPortal} or {@link addPortals}.
+ * @deprecated Portals are no longer centrally managed natively.
+ * Pass a {@link Portal} directly to {@link PortalView} instead.
+ * This will be removed in the next release.
  *
  * @param name The portal name to retrieve from the internal registry.
  * @returns Promise containing the registered {@link Portal}. If the {@link Portal} was not registered, the Promise will fail.
