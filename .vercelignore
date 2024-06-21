@@ -1,6 +1,4 @@
 docs/
 .github/
-example/
-web/
 node_modules/
 *.tgz
