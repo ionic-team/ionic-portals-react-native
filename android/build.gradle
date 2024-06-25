@@ -1,131 +1,101 @@
 buildscript {
-    // Buildscript is evaluated before everything else so we can't use getExtOrDefault
-    def kotlin_version = rootProject.ext.has('kotlinVersion') ? rootProject.ext.get('kotlinVersion') : project.properties['ReactNativePortals_kotlinVersion']
+  // Buildscript is evaluated before everything else so we can't use getExtOrDefault
+  def kotlin_version = rootProject.ext.has("kotlinVersion") ? rootProject.ext.get("kotlinVersion") : project.properties["PortalsReactNative_kotlinVersion"]
 
-    repositories {
-        google()
-        mavenCentral()
-    }
+  repositories {
+    google()
+    mavenCentral()
+  }
 
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.2'
-        // noinspection DifferentKotlinGradleVersion
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
+  dependencies {
+    classpath "com.android.tools.build:gradle:7.2.1"
+    // noinspection DifferentKotlinGradleVersion
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+  }
 }
 
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+def reactNativeArchitectures() {
+  def value = rootProject.getProperties().get("reactNativeArchitectures")
+  return value ? value.split(",") : ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
+}
+
+def isNewArchitectureEnabled() {
+  return rootProject.hasProperty("newArchEnabled") && rootProject.getProperty("newArchEnabled") == "true"
+}
+
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+
+if (isNewArchitectureEnabled()) {
+  apply plugin: "com.facebook.react"
+}
+
+def getExtOrDefault(name) {
+  return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties["PortalsReactNative_" + name]
+}
 
 def getExtOrIntegerDefault(name) {
-    return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties['ReactNativePortals_' + name]).toInteger()
+  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["PortalsReactNative_" + name]).toInteger()
+}
+
+def supportsNamespace() {
+  def parsed = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')
+  def major = parsed[0].toInteger()
+  def minor = parsed[1].toInteger()
+
+  // Namespace support was added in 7.3.0
+  return (major == 7 && minor >= 3) || major >= 8
 }
 
 android {
-    compileSdkVersion getExtOrIntegerDefault('compileSdkVersion')
-    defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion getExtOrIntegerDefault('targetSdkVersion')
-        versionCode 1
-        versionName "1.0"
-    }
+  if (supportsNamespace()) {
+    namespace "com.ionic.portalsreactnative"
 
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
+    sourceSets {
+      main {
+        manifest.srcFile "src/main/AndroidManifestNew.xml"
+      }
     }
-    lintOptions {
-        disable 'GradleCompatible'
-    }
-}
+  }
 
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+  compileSdkVersion getExtOrIntegerDefault("compileSdkVersion")
 
-    kotlinOptions {
-        freeCompilerArgs += '-opt-in=kotlin.RequiresOptIn'
+  defaultConfig {
+    minSdkVersion getExtOrIntegerDefault("minSdkVersion")
+    targetSdkVersion getExtOrIntegerDefault("targetSdkVersion")
+
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
     }
+  }
+
+  lintOptions {
+    disable "GradleCompatible"
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
 }
 
 repositories {
-    mavenCentral()
-    google()
-
-    def found = false
-    def defaultDir = null
-    def androidSourcesName = 'React Native sources'
-
-    if (rootProject.ext.has('reactNativeAndroidRoot')) {
-        defaultDir = rootProject.ext.get('reactNativeAndroidRoot')
-    } else {
-        defaultDir = new File(
-            projectDir,
-            '/../../../node_modules/react-native/android'
-        )
-    }
-
-    if (defaultDir.exists()) {
-        maven {
-            url defaultDir.toString()
-            name androidSourcesName
-        }
-
-        logger.info(":${project.name}:reactNativeAndroidRoot ${defaultDir.canonicalPath}")
-        found = true
-    } else {
-        def parentDir = rootProject.projectDir
-
-        1.upto(5, {
-            if (found) return true
-            parentDir = parentDir.parentFile
-
-            def androidSourcesDir = new File(
-                parentDir,
-                'node_modules/react-native'
-            )
-
-            def androidPrebuiltBinaryDir = new File(
-                parentDir,
-                'node_modules/react-native/android'
-            )
-
-            if (androidPrebuiltBinaryDir.exists()) {
-                maven {
-                    url androidPrebuiltBinaryDir.toString()
-                    name androidSourcesName
-                }
-
-                logger.info(":${project.name}:reactNativeAndroidRoot ${androidPrebuiltBinaryDir.canonicalPath}")
-                found = true
-            } else if (androidSourcesDir.exists()) {
-                maven {
-                    url androidSourcesDir.toString()
-                    name androidSourcesName
-                }
-
-                logger.info(":${project.name}:reactNativeAndroidRoot ${androidSourcesDir.canonicalPath}")
-                found = true
-            }
-        })
-    }
-
-    if (!found) {
-        throw new GradleException(
-            "${project.name}: unable to locate React Native android sources. " +
-                "Ensure you have you installed React Native as a dependency in your project and try again."
-        )
-    }
+  mavenCentral()
+  google()
 }
+
+def kotlin_version = getExtOrDefault("kotlinVersion")
 
 dependencies {
-    //noinspection GradleDynamicVersion
-    api 'com.facebook.react:react-native:+'
-    //noinspection GradleDynamicVersion
-    api "io.ionic:portals:0.8.+"
-    //noinspection GradleDynamicVersion
-    api "io.ionic:liveupdates:0.4.+"
-
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3"
+  // For < 0.71, this will be from the local maven repo
+  // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
+  //noinspection GradleDynamicVersion
+  implementation "com.facebook.react:react-native:+"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  implementation "io.ionic:portals:0.10.+"
+  implementation "io.ionic:liveupdates:0.5.+"
 }
+

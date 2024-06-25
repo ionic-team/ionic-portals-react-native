@@ -1,63 +1,33 @@
-# Ionic Portals for React Native Example
-## Getting Started
-In the root of the example project:
+# Getting Started
+
+>**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+
+## Step 1: Build the Portal
+This application depends on the web project located in `../web`. To build the web project you will need to run `yarn install` and `yarn build` from the `../web` directory.
 ```bash
-npm install
-# or 
-yarn
-```
-
-Replace `register('YOUR_PORTAL_KEY_HERE')` in `App.tsx` with your Portals key. See the main project README for how to register for a product key if you do not have one.
-
-Navigate to the web directory:
-```bash
-cd web/RNPortals
-```
-
-Install and build:
-```bash
-npm install
-# or
-yarn
-
-npm run build
-# or
+cd ../web
+yarn install
 yarn build
 ```
 
-Navigate back to the example project:
+## Step 2: Install the Portals CLI
+Install the Portals CLI according to the [documentation](https://ionic.io/docs/portals/cli/overview). This is used for syncing web app to the mobile app.
+
+## Step 3: Start the Metro Server
+
 ```bash
-cd ../../
+yarn start
 ```
 
-### iOS
-Navigate to the iOS folder and run pod install (requires Cocoapods v1.10 or higher):
+## Step 4: Start the Application
+
+### For Android
+
 ```bash
-cd ios
-pod install
+yarn android
 ```
 
-Run the iOS project:
+### For iOS
 ```bash
-npm run ios
+yarn ios
 ```
-
-### Android
-```bash
-npm run android
-```
-
-## Developing
-Currently we don't have any project setup to make building the example project with any changes to the library very seamless. To check any changes made to the React Native Module first build a tarball in the module root:
-```bash
-# navigate up to the RN module directory
-cd ../
-npm pack
-```
-
-In the example `package.json`, delete the existing entry for `@ionic/portals-react-native` and add the path to the tarball:
-```bash
-npm install file:../ionic-portals-react-native-${version}.tgz
-```
-
-After any subsequent changes to the module source, the above steps will need to be repeated.

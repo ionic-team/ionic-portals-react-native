@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
+import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.facebook.react.uimanager.ThemedReactContext
 import com.facebook.react.uimanager.ViewGroupManager
 import com.facebook.react.uimanager.annotations.ReactProp
@@ -32,7 +33,7 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         when (fragmentMap[viewGroup.id]) {
             null -> fragmentMap[viewGroup.id] = PortalViewState(
                 fragment = null,
-                portal = RNPortalManager.getPortal(name),
+                portal = RNPortalManager.getPortal(name) ?: RNPortalManager.createPortal(portal),
                 initialContext = portal.getMap("initialContext")?.toHashMap()
             )
         }
@@ -68,13 +69,15 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         setupLayout(parentView)
 
         val portal = rnPortal.builder.create()
+        val vitals: List<String>? = rnPortal.vitals
 
-        if (rnPortal.onFCP != null || rnPortal.onFID != null || rnPortal.onTTFB != null) {
-            val vitalsPlugin = WebVitals { _, metric, duration ->
-                when (metric) {
-                    WebVitals.Metric.FCP -> rnPortal.onFCP?.let { it(duration) }
-                    WebVitals.Metric.FID -> rnPortal.onFID?.let { it(duration) }
-                    WebVitals.Metric.TTFB -> rnPortal.onTTFB?.let { it(duration) }
+        if (vitals != null) {
+            val vitalsPlugin = WebVitals { name, metric, duration ->
+                val stringMetric = metric.toString().lowercase()
+                if (vitals.contains(stringMetric)) {
+                    context
+                        .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                        .emit("vitals:$stringMetric", mapOf("duration" to duration, "portalName" to name).toReadableMap())
                 }
             }
             portal.addPluginInstance(vitalsPlugin)

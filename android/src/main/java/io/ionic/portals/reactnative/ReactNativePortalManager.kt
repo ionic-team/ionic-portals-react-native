@@ -17,9 +17,7 @@ internal data class RNPortal(
     val builder: PortalBuilder,
     val index: String?,
     val plugins: List<PortalPlugin>,
-    var onFCP: ((Long) -> Unit)? = null,
-    var onTTFB: ((Long) -> Unit)? = null,
-    var onFID: ((Long) -> Unit)? = null
+    var vitals: MutableList<String>? = null
 )
 
 internal data class PortalPlugin(val androidClassPath: String, val iosClassName: String) {
@@ -43,13 +41,21 @@ internal data class PortalPlugin(val androidClassPath: String, val iosClassName:
 
 internal object RNPortalManager {
     private val manager = PortalManager
+    @Deprecated("Will be removed in the next release.")
     private val portals: ConcurrentHashMap<String, RNPortal> = ConcurrentHashMap()
     private lateinit var reactApplicationContext: ReactApplicationContext
     private var usesSecureLiveUpdates = false
 
     fun register(key: String) = manager.register(key)
 
+    @Deprecated("Will be removed in the next release.")
     fun addPortal(map: ReadableMap): RNPortal? {
+        val portal = createPortal(map) ?: return null
+        portals[portal.builder.name] = portal
+        return portal
+    }
+
+    fun createPortal(map: ReadableMap): RNPortal? {
         val name = map.getString("name") ?: return null
         val portalBuilder = PortalBuilder(name)
 
@@ -60,13 +66,16 @@ internal object RNPortalManager {
             ?.toHashMap()
             ?.let(portalBuilder::setInitialContext)
 
+        if (map.hasKey("devMode")) {
+            map.getBoolean("devMode").let(portalBuilder::setDevMode)
+        }
 
         val plugins: List<PortalPlugin> = map.getArray("plugins")
             ?.let { rnArray ->
                 val list = mutableListOf<PortalPlugin>()
                 for (idx in 0 until rnArray.size()) {
                     rnArray.getMap(idx)
-                        ?.let(PortalPlugin.Companion::fromReadableMap)
+                        .let(PortalPlugin.Companion::fromReadableMap)
                         ?.let(list::add)
                 }
                 return@let list
@@ -84,7 +93,7 @@ internal object RNPortalManager {
 
                 for (idx in 0 until rnArray.size()) {
                     rnArray.getMap(idx)
-                        ?.let assetMap@{ map ->
+                        .let assetMap@{ map ->
                             val name = map.getString("name") ?: return@assetMap null
                             AssetMap(
                                 name = name,
@@ -105,11 +114,11 @@ internal object RNPortalManager {
                 val appId = readableMap.getString("appId") ?: return@let null
                 val channel = readableMap.getString("channel") ?: return@let null
                 val syncOnAdd = readableMap.getBoolean("syncOnAdd")
-                Pair(LiveUpdate(appId, channel, RNPortalManager.usesSecureLiveUpdates), syncOnAdd)
+                Pair(LiveUpdate(appId, channel, usesSecureLiveUpdates), syncOnAdd)
             }
             ?.let { (liveUpdate, updateOnAppLoad) ->
                 portalBuilder.setLiveUpdateConfig(
-                    context = RNPortalManager.reactApplicationContext,
+                    context = reactApplicationContext,
                     liveUpdateConfig = liveUpdate,
                     updateOnAppLoad = updateOnAppLoad
                 )
@@ -118,18 +127,30 @@ internal object RNPortalManager {
          portalBuilder
             .addPlugin(PortalsPlugin::class.java)
 
-        val rnPortal = RNPortal(
+        val vitals = map.getArray("webVitals")
+        val maybeList = if (vitals != null) {
+            val size = vitals.size()
+            (0 until size).fold(mutableListOf<String>()) { list, next ->
+                val vital = vitals.getString(next)
+                list.add(vital)
+                return@fold list
+            }
+        } else {
+            null
+        }
+
+        return RNPortal(
             builder = portalBuilder,
             index = map.getString("index"),
-            plugins = plugins
+            plugins = plugins,
+            vitals = maybeList
         )
-
-        portals[name] = rnPortal
-        return rnPortal
     }
 
-    fun getPortal(name: String): RNPortal = portals[name]
-        ?: throw IllegalStateException("Portal with portalId $name not found in RNPortalManager")
+    @Deprecated("Will be removed in the next release.")
+    fun getPortal(name: String): RNPortal? {
+        return portals[name]
+    }
 
     fun enableSecureLiveUpdates(keyPath: String) {
         LiveUpdateManager.secureLiveUpdatePEM = keyPath

@@ -1,0 +1,3 @@
+sync:
+  - file-path: ../web/build
+    directory-name: portals/buttonapp

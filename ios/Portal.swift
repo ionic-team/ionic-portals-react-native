@@ -12,13 +12,26 @@ import IonicPortals
 
 @dynamicMemberLookup
 struct Portal {
-    struct Plugin {
+    struct Plugin: Codable {
         var iosClassName: String
         var androidClassPath: String
     }
 
     var _portal: IonicPortals.Portal
     var plugins: [Plugin]
+    private var webVitals: [String]?
+    var usesWebVitals: Bool {
+        get {
+            webVitals?.contains("fcp") ?? false
+        }
+        set {
+            if newValue {
+                webVitals = ["fcp"]
+            } else {
+                webVitals = nil
+            }
+        }
+    }
 
     subscript<T>(dynamicMember keypath: Swift.WritableKeyPath<IonicPortals.Portal, T>) -> T {
         get { _portal[keyPath: keypath] }
@@ -31,66 +44,49 @@ struct Portal {
 }
 
 extension Portal {
-    init?(_ dict: [String: Any], _ liveUpdateManager: LiveUpdateManager) {
-        guard let name = dict["name"] as? String else { return nil }
-        var plugins: [Portal.Plugin] = []
-
-        if let capPlugins = dict["plugins"] as? Array<[String: String]> {
-            plugins = capPlugins.compactMap(Portal.Plugin.init)
-        }
-        
-        var assetMaps: [AssetMap] = []
-        
-        if let maps = dict["assetMaps"] as? Array<[String: String]> {
-            assetMaps = maps.compactMap(AssetMap.init)
-        }
-
-        self._portal = IonicPortals.Portal(
-            name: name,
-            startDir: dict["startDir"] as? String,
-            index: dict["index"] as? String ?? "index.html",
-            initialContext: JSTypes.coerceDictionaryToJSObject(dict["initialContext"] as? [String: Any]) ?? [:],
-            assetMaps: assetMaps,
-            plugins: plugins.toCapPlugin,
-            liveUpdateManager: liveUpdateManager,
-            liveUpdateConfig: (dict["liveUpdate"] as? [String: Any]).flatMap(LiveUpdate.init)
-        )
-
-        self.plugins = plugins
+    func encode(to encoder: JSValueEncoder) throws -> JSObject {
+        var object = try encoder.encodeJSObject(self)
+        object["initialContext"] = _portal.initialContext
+        return object
     }
 
-    var dict: [String: Any] {
-        var base = [
-            "name": self.name,
-            "startDir": self.startDir,
-            "index": self.index,
-            "initialContext": self.initialContext,
-            "liveUpdate": self.liveUpdateConfig?.dict as Any
-        ]
-
-        if !plugins.isEmpty {
-            base["plugins"] = plugins.map(\.dict)
-        }
-
-        return base
+    static func decode(from jsObject: JSObject, with decoder: JSValueDecoder) throws -> Portal {
+        var portal = try decoder.decode(Portal.self, from: jsObject)
+        portal.initialContext = jsObject["initialContext"] as? JSObject ?? [:]
+        return portal
     }
 }
 
-extension Portal.Plugin {
-    init?(_ dict: [String: String]) {
-        guard let iosClassName = dict["iosClassName"],
-              let androidClassPath = dict["androidClassPath"]
-        else { return nil }
-
-        self.iosClassName = iosClassName
-        self.androidClassPath = androidClassPath
+extension Portal: Encodable {
+    enum CodingKeys: String, CodingKey {
+        case name, startDir, plugins, index, initialContext, assetMaps, liveUpdate, webVitals
     }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.name, forKey: .name)
+        try container.encode(self.startDir, forKey: .startDir)
+        try container.encode(self.plugins, forKey: .plugins)
+        try container.encode(self.index, forKey: .index)
+        try container.encode(self.assetMaps, forKey: .assetMaps)
+        try container.encode(self.liveUpdateConfig, forKey: .liveUpdate)
+        try container.encodeIfPresent(webVitals, forKey: .webVitals)
+    }
+}
 
-    var dict: [String: String] {
-        return [
-            "iosClassName": iosClassName,
-            "androidClassPath": androidClassPath
-        ]
+extension Portal: Decodable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let name = try container.decode(String.self, forKey: .name)
+        let startDir = try container.decodeIfPresent(String.self, forKey: .startDir) ?? ""
+        let plugins = try container.decodeIfPresent([Plugin].self, forKey: .plugins) ?? []
+        let index = try container.decodeIfPresent(String.self, forKey: .index) ?? "index.html"
+        let assetMaps = try container.decodeIfPresent([AssetMap].self, forKey: .assetMaps) ?? []
+        let liveUpdateConfig = try container.decodeIfPresent(LiveUpdate.self, forKey: .liveUpdate)
+        let webVitals = try container.decodeIfPresent([String].self, forKey: .webVitals)
+        
+        let portal = IonicPortals.Portal(name: name, startDir: startDir, index: index, assetMaps: assetMaps, plugins: plugins.toCapPlugin, liveUpdateManager: PortalsReactNative.lum, liveUpdateConfig: liveUpdateConfig)
+        self.init(_portal: portal, plugins: plugins, webVitals: webVitals)
     }
 }
 

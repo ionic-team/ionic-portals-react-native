@@ -1,0 +1,38 @@
+name: Setup
+description: Setup Node.js and install dependencies
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: .nvmrc
+    
+    - run: curl -sL https://raw.githubusercontent.com/ionic-team/portals-cli-releases/main/install.sh | bash
+      shell: bash
+
+    # Caching was causing broken builds. Disabled for now.
+    # - name: Cache dependencies
+    #   id: yarn-cache
+    #   uses: actions/cache@v3
+    #   with:
+    #     path: |
+    #       **/node_modules
+    #       .yarn/install-state.gz
+    #     key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}-${{ hashFiles('**/package.json', '!node_modules/**') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+    #       ${{ runner.os }}-yarn-
+
+    - name: Install dependencies
+      # if: steps.yarn-cache.outputs.cache-hit != 'true'
+      run: yarn install --immutable
+      shell: bash
+
+    - name: Build example web app
+      run: | 
+        yarn install --immutable
+        yarn build
+      shell: bash
+      working-directory: web

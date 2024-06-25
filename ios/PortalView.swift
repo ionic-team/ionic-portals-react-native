@@ -23,10 +23,7 @@ class PortalView: UIView {
     @objc var portal: [String: Any]? {
         get {
             guard let _portal = _portal else { return nil }
-            return [
-                "name": _portal.name,
-                "initialContext": _portal.initialContext
-            ]
+            return try? _portal.encode(to: JSValueEncoder(optionalEncodingStrategy: .undefined))
         }
         
         set {
@@ -34,12 +31,33 @@ class PortalView: UIView {
                   let name = portalDict["name"] as? String
             else { return }
             
-            var portal = PortalsReactNative.getPortal(named: name)
+            var portal: Portal
             
-            if let initialContext = portalDict["initialContext"] as? [String: Any] {
-                portal?.initialContext = JSTypes.coerceDictionaryToJSObject(initialContext) ?? [:]
+            if var deprecatedPortal = PortalsReactNative.getPortal(named: name) {
+                if let initialContext = portalDict["initialContext"] as? [String: Any] {
+                    deprecatedPortal.initialContext = JSTypes.coerceDictionaryToJSObject(initialContext) ?? [:]
+                }
+                portal = deprecatedPortal
+            } else {
+                let jsObject = JSTypes.coerceDictionaryToJSObject(portalDict) ?? [:]
+                do {
+                    portal = try Portal.decode(from: jsObject, with: JSValueDecoder())
+                } catch {
+                    print(error.localizedDescription)
+                    return
+                }
             }
-            
+            if portal.usesWebVitals {
+                var vitalsPlugin = WebVitalsPlugin { portalName, duration in
+                    IonicPortals.PortalsPubSub
+                        .shared
+                        .publish(
+                            ["portalName": portalName, "duration": duration],
+                            to: "webVitals:received"
+                        )
+                }
+                portal._portal.plugins.append(.instance(vitalsPlugin))
+            }
             _portal = portal
         }
     }

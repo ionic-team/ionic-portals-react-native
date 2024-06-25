@@ -1,7 +1,6 @@
 package io.ionic.portals.reactnative
 
 import com.facebook.react.bridge.*
-import io.ionic.portals.Portal
 
 internal class PortalManagerModule(reactContext: ReactApplicationContext) :
     ReactContextBaseJavaModule(reactContext) {
@@ -32,7 +31,7 @@ internal class PortalManagerModule(reactContext: ReactApplicationContext) :
         val portals = WritableNativeArray()
 
         for (i in 0 until array.size()) {
-            val map = array.getMap(i) ?: continue
+            val map = array.getMap(i)
             val portal = RNPortalManager.addPortal(map) ?: continue
             portals.pushMap(portal.toReadableMap())
         }
@@ -44,7 +43,7 @@ internal class PortalManagerModule(reactContext: ReactApplicationContext) :
     fun getPortal(name: String, promise: Promise) {
         try {
             val portal = RNPortalManager.getPortal(name)
-            promise.resolve(portal.toReadableMap())
+            promise.resolve(portal?.toReadableMap())
         } catch (e: IllegalStateException) {
             promise.reject(null, "Portal named $name not registered.")
         }
