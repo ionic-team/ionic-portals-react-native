@@ -1,21 +1,21 @@
 name: Publish NPM Package
 
 on:
-  push:
-    tags:
-      - "*"
+    push:
+        tags:
+            - "*"
 
 jobs:
-  publish-to-npm:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-           node-version-file: .nvmrc
-      - name: Publish package
-        run: |
-          yarn install --immutable
-          yarn npm publish
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+    publish-to-npm:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version-file: .nvmrc
+            - name: Publish package
+              run: |
+                  yarn install --immutable
+                  yarn npm publish
+              env:
+                  NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
