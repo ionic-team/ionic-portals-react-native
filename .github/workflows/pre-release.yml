@@ -19,12 +19,7 @@ jobs:
         run: |
           yarn install --immutable
           yarn version $RELEASE_VERSION
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
       - name: Push version bump commit
         uses: EndBug/add-and-commit@v9
       - name: Validate Publish Flow
-        run: |
-          yarn pack --dry-run
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_PUBLISH_TOKEN }}
+        run: yarn pack --dry-run
