@@ -53,8 +53,6 @@ export interface Message {
 
 const PortalsPubSub = new NativeEventEmitter(IONPortalPubSub);
 
-// const subscriptionMap = new Map<number, EmitterSubscription>();
-
 /**
  * Subscribes to messages for a topic
  *
@@ -109,57 +107,6 @@ const registerVital = (
   );
 
   webVitalsMap.set(`${portalName}-vitals:${vital}`, listener);
-};
-
-/**
- * @deprecated Use {@link WebVitals} prop on {@link PortalView} instead. This will be removed in the next release.
- */
-export const onFirstContentfulPaint = async (
-  portalName: string,
-  callback: (duration: number) => void
-): Promise<void> => {
-  registerVital(portalName, 'fcp', callback);
-  await IONPortalsWebVitals.registerOnFirstContentfulPaint(portalName);
-};
-
-/**
- * @deprecated Use {@link WebVitals} prop on {@link PortalView} instead. This will be removed in the next release.
- */
-export const onFirstInputDelay = async (
-  portalName: string,
-  callback: (duration: number) => void
-) => {
-  if (Platform.OS === 'android') {
-    registerVital(portalName, 'fid', callback);
-    await IONPortalsWebVitals.registerOnFirstInputDelay(portalName);
-  }
-};
-
-/**
- * @deprecated Use {@link WebVitals} prop on {@link PortalView} instead. This will be removed in the next release.
- */
-export const onTimeToFirstByte = async (
-  portalName: string,
-  callback: (duration: number) => void
-) => {
-  if (Platform.OS === 'android') {
-    registerVital(portalName, 'ttfb', callback);
-    await IONPortalsWebVitals.registerOnTimeToFirstByte(portalName);
-  }
-};
-
-/**
- * @deprecated Use {@link WebVitals} prop on {@link PortalView} instead. This will be removed in the next release.
- */
-export const registerWebVitals = async (
-  portalName: string,
-  firstContentfulPaint: (duration: number) => void,
-  firstInputDelay: (duration: number) => void,
-  timeToFirstByte: (duration: number) => void
-) => {
-  onFirstContentfulPaint(portalName, firstContentfulPaint);
-  onFirstInputDelay(portalName, firstInputDelay);
-  onTimeToFirstByte(portalName, timeToFirstByte);
 };
 
 export type WebVitals = {
@@ -226,44 +173,6 @@ export interface AssetMap {
  * Props needed for rendering a {@link Portal}
  */
 export type PortalProps = { portal: Portal; webVitals?: WebVitals } & ViewProps;
-
-/**
- * @deprecated Portals are no longer centrally managed natively.
- * Pass a {@link Portal} directly to {@link PortalView} instead.
- * This will be removed in the next release.
- *
- * Adds a Portal to an internal registry.
- *
- * @param portal The portal to add to the internal registry.
- * @returns Promise containing the Portal that was added to the registry.
- */
-export const addPortal = async (portal: Portal): Promise<Portal> => {
-  return IONPortalsReactNative.addPortal(portal);
-};
-
-/**
- * @deprecated Portals are no longer centrally managed natively.
- * Pass a {@link Portal} directly to {@link PortalView} instead.
- * This will be removed in the next release.
- *
- * @param portals The portals to add to the internal registry.
- * @returns Promise containing the Portals that were added to the registry.
- */
-export const addPortals = async (portals: Portal[]): Promise<Portal[]> => {
-  return IONPortalsReactNative.addPortals(portals);
-};
-
-/**
- * @deprecated Portals are no longer centrally managed natively.
- * Pass a {@link Portal} directly to {@link PortalView} instead.
- * This will be removed in the next release.
- *
- * @param name The portal name to retrieve from the internal registry.
- * @returns Promise containing the registered {@link Portal}. If the {@link Portal} was not registered, the Promise will fail.
- */
-export const getPortal = async (name: string): Promise<Portal> => {
-  return IONPortalsReactNative.getPortal(name);
-};
 
 export interface LiveUpdate {
   /** The AppFlow application ID */

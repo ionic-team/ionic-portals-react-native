@@ -48,19 +48,19 @@ export default function App() {
     <View style={styles.container}>
       <PubSubLabel initialNumber={initialNumber} />
       {/* {ready ? ( */}
-        <PortalView
-          portal={portal}
-          style={styles.portalView}
-          // webVitals={{
-          //   firstContentfulPaint: (duration: number) =>
-          //     console.log('firstContentfulPaint', duration),
-          //   firstInputDelay: (duration: number) =>
-          //     console.log('firstInputDelay', duration),
-          //   timeToFirstByte: (duration: number) => {
-          //     console.log('timeToFirstByte', duration);
-          //   },
-          // }}
-        />
+      <PortalView
+        portal={portal}
+        style={styles.portalView}
+        webVitals={{
+          firstContentfulPaint: (duration: number) =>
+            console.log('firstContentfulPaint', duration),
+          firstInputDelay: (duration: number) =>
+            console.log('firstInputDelay', duration),
+          timeToFirstByte: (duration: number) => {
+            console.log('timeToFirstByte', duration);
+          },
+        }}
+      />
       {/* ) : (
         <></>
       )} */}

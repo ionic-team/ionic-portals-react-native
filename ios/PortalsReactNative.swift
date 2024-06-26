@@ -7,8 +7,6 @@ import React
 @objc(IONPortalsReactNative)
 public class PortalsReactNative: NSObject {
     internal private(set) static var lum: LiveUpdateManager = .shared
-    @available(*, deprecated, message: "This will be removed in the next release")
-    internal static var portals = ConcurrentDictionary<String, Portal>(label: "com.portals.reactnative", dict: [:])
     let encoder = JSValueEncoder(optionalEncodingStrategy: .undefined)
     let decoder = JSValueDecoder()
     
@@ -41,44 +39,7 @@ public class PortalsReactNative: NSObject {
         Self.lum = SecureLiveUpdateManager(named: "secure-updates", publicKeyUrl: publicKeyUrl)
         resolver(())
     }
-    
-    @available(*, deprecated, message: "This will be removed in the next release")
-    @objc func addPortal(_ portalDict: [String: Any], resolver: RCTPromiseResolveBlock, rejector: RCTPromiseRejectBlock) {
-        do {
-            let portal = try Portal.decode(from: JSTypes.coerceDictionaryToJSObject(portalDict) ?? [:], with: decoder)
-            Self.portals[portal.name] = portal
-            resolver(try encoder.encode(portal))
-        } catch {
-            rejector(nil, "Invalid Portal configuration", error)
-        }
-    }
-    
-    @available(*, deprecated, message: "This will be removed in the next release")
-    @objc func addPortals(_ portalsArray: [[String: Any]], resolver: RCTPromiseResolveBlock, rejector: RCTPromiseRejectBlock) {
-        do {
-            let portals = try decoder.decode([Portal].self, from: JSTypes.coerceArrayToJSArray(portalsArray) ?? [])
-            for portal in portals {
-                Self.portals[portal.name] = portal
-            }
-            resolver(try encoder.encode(portals))
-        } catch {
-            rejector(nil, "Invalid Portal configuration", error)
-        }
-    }
-    
-    @available(*, deprecated, message: "This will be removed in the next release")
-    static func getPortal(named name: String) -> Portal? { portals[name] }
-    
-    @available(*, deprecated, message: "This will be removed in the next release")
-    @objc func getPortal(_ name: String, resolver: RCTPromiseResolveBlock, rejector: RCTPromiseRejectBlock) {
-        guard let portal = Self.getPortal(named: name) else { return rejector(nil, "Portal named \(name) not registered", nil) }
-        do {
-            resolver(try encoder.encode(portal))
-        } catch {
-            rejector(nil, "Invalid Portal configuration", error)
-        }
-    }
-    
+
     @objc func syncOne(_ appId: String, resolver: @escaping RCTPromiseResolveBlock, rejector: @escaping RCTPromiseRejectBlock) {
         Task {
             do {
