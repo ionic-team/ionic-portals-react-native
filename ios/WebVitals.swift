@@ -33,16 +33,6 @@ class WebVitals: RCTEventEmitter {
     override func supportedEvents() -> [String] {
         [fcp]
     }
-    
-    @objc func registerOnFirstContentfulPaint(_ portalName: String, resolver: @escaping RCTPromiseResolveBlock, rejector: RCTPromiseRejectBlock) {
-        guard var portal = PortalsReactNative.portals[portalName] else {
-            return resolver(())
-        }
-        
-        portal.usesWebVitals = true
-        PortalsReactNative.portals[portalName] = portal
-        resolver(())
-    }
-    
+
     override class func requiresMainQueueSetup() -> Bool { true }
 }

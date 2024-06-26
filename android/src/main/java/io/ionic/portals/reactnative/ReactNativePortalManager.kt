@@ -41,19 +41,10 @@ internal data class PortalPlugin(val androidClassPath: String, val iosClassName:
 
 internal object RNPortalManager {
     private val manager = PortalManager
-    @Deprecated("Will be removed in the next release.")
-    private val portals: ConcurrentHashMap<String, RNPortal> = ConcurrentHashMap()
     private lateinit var reactApplicationContext: ReactApplicationContext
     private var usesSecureLiveUpdates = false
 
     fun register(key: String) = manager.register(key)
-
-    @Deprecated("Will be removed in the next release.")
-    fun addPortal(map: ReadableMap): RNPortal? {
-        val portal = createPortal(map) ?: return null
-        portals[portal.builder.name] = portal
-        return portal
-    }
 
     fun createPortal(map: ReadableMap): RNPortal? {
         val name = map.getString("name") ?: return null
@@ -147,11 +138,6 @@ internal object RNPortalManager {
         )
     }
 
-    @Deprecated("Will be removed in the next release.")
-    fun getPortal(name: String): RNPortal? {
-        return portals[name]
-    }
-
     fun enableSecureLiveUpdates(keyPath: String) {
         LiveUpdateManager.secureLiveUpdatePEM = keyPath
         usesSecureLiveUpdates = true
@@ -182,13 +168,6 @@ internal object RNPortalManager {
         liveUpdatesKey?.let {
             LiveUpdateManager.secureLiveUpdatePEM = it
             usesSecureLiveUpdates = true
-        }
-
-        val portalJsonArray = configJson.getJSONArray("portals")
-
-        for (index in 0 until portalJsonArray.length()) {
-            val portalJson = portalJsonArray.getJSONObject(index)
-            addPortal(portalJson.toReactMap())
         }
     }
 }

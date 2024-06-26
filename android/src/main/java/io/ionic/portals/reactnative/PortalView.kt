@@ -33,7 +33,7 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         when (fragmentMap[viewGroup.id]) {
             null -> fragmentMap[viewGroup.id] = PortalViewState(
                 fragment = null,
-                portal = RNPortalManager.getPortal(name) ?: RNPortalManager.createPortal(portal),
+                portal = RNPortalManager.createPortal(portal),
                 initialContext = portal.getMap("initialContext")?.toHashMap()
             )
         }

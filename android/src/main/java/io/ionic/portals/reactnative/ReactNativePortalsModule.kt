@@ -17,39 +17,6 @@ internal class PortalManagerModule(reactContext: ReactApplicationContext) :
     }
 
     @ReactMethod
-    fun addPortal(map: ReadableMap, promise: Promise) {
-        val portal = RNPortalManager.addPortal(map)
-        if (portal == null) {
-            promise.reject(null, "Invalid Portal configuration.")
-        } else {
-            promise.resolve(portal.toReadableMap())
-        }
-    }
-
-    @ReactMethod
-    fun addPortals(array: ReadableArray, promise: Promise) {
-        val portals = WritableNativeArray()
-
-        for (i in 0 until array.size()) {
-            val map = array.getMap(i)
-            val portal = RNPortalManager.addPortal(map) ?: continue
-            portals.pushMap(portal.toReadableMap())
-        }
-
-        promise.resolve(portals)
-    }
-
-    @ReactMethod
-    fun getPortal(name: String, promise: Promise) {
-        try {
-            val portal = RNPortalManager.getPortal(name)
-            promise.resolve(portal?.toReadableMap())
-        } catch (e: IllegalStateException) {
-            promise.reject(null, "Portal named $name not registered.")
-        }
-    }
-
-    @ReactMethod
     fun enableSecureLiveUpdates(keyPath: String, promise: Promise) {
         RNPortalManager.enableSecureLiveUpdates(keyPath)
         promise.resolve(null)

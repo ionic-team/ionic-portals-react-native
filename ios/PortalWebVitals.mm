@@ -10,6 +10,5 @@
 #import <React/RCTEventEmitter.h>
 
 @interface RCT_EXTERN_MODULE(IONPortalsWebVitals, RCTEventEmitter)
-RCT_EXTERN_METHOD(registerOnFirstContentfulPaint: (NSString *) portalName resolver: (RCTPromiseResolveBlock) resolver rejector: (RCTPromiseRejectBlock) rejector)
 @end
 
