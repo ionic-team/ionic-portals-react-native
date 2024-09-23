@@ -43,10 +43,15 @@ const ExploreContainer: React.FC<ContainerProps> = (props: ContainerProps) => {
     publish({ topic, data: { message } });
   };
 
+  const openCameraPub = async () => {
+    publish({ topic: "openCameraButton:tapped", data: { message } });
+  };
+
   return (
     <div className="container">
       <strong>Hello from Ionic Portals</strong>
       <IonButton onClick={async () => await pub()}>Next number on tap will be {appMessage === undefined ? props.initialNumber : appMessage}</IonButton>
+      <IonButton onClick={async () => await openCameraPub()}>This button will open Camera</IonButton>
     </div>
   );
 };

@@ -34,6 +34,22 @@ const PubSubLabel: React.FC<{ initialNumber: number } & ViewProps> = ({
     };
   }, []);
 
+  useEffect(() => {
+    subRef.current = subscribe('openCameraButton:tapped', (message: Message) => {
+      console.log(
+        `Received message ${JSON.stringify(message.data, null, 2)} on topic ${message.topic
+        } from IonicPortals`
+      );
+
+      // we have to open the native device camera here
+    });
+
+    return () => {
+      console.log('Unsubscribing from ref ', subRef);
+      subRef.current?.remove();
+    };
+  }, []);
+
   return (
     <View style={styles.sectionContainer}>
       <Text
