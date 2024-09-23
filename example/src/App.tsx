@@ -21,6 +21,12 @@ var portal: Portal = {
   initialContext: {
     initialNumber: 1,
   },
+  plugins: [
+    {
+      androidClassPath: 'com.capacitorjs.plugins.camera.CameraPlugin',
+      iosClassName: 'CAPCameraPlugin',
+    },
+  ],
 };
 
 export default function App() {
