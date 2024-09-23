@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@capacitor/camera": "latest-5",
+    "@capacitor/core": "^6.1.2",
     "react": "18.2.0",
     "react-native": "0.74.2"
   },

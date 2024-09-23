@@ -1845,6 +1845,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@capacitor/core@npm:^6.1.2":
+  version: 6.1.2
+  resolution: "@capacitor/core@npm:6.1.2"
+  dependencies:
+    tslib: ^2.1.0
+  checksum: 51e5f575c4d96290902c6421fd6c4493e4e865cc95cfd1a207bf80956945cc06e724beb3fc9bfb21f44b0a3559c6a0064137b9dcf2b03b2550bb496c7043dc4e
+  languageName: node
+  linkType: hard
+
 "@commitlint/cli@npm:^17.8.1":
   version: 17.8.1
   resolution: "@commitlint/cli@npm:17.8.1"
@@ -2361,6 +2370,7 @@ __metadata:
     "@babel/preset-env": ^7.20.0
     "@babel/runtime": ^7.20.0
     "@capacitor/camera": latest-5
+    "@capacitor/core": ^6.1.2
     "@react-native/babel-preset": 0.74.84
     "@react-native/metro-config": 0.74.84
     "@react-native/typescript-config": 0.74.84
