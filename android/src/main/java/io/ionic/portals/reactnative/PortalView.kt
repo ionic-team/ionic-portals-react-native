@@ -49,6 +49,16 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         return mutableMapOf("create" to createId)
     }
 
+    @Deprecated("Deprecated, but using to support New Architecture")
+    override fun receiveCommand(root: FrameLayout, commandId: Int, args: ReadableArray?) {
+        super.receiveCommand(root, commandId, args)
+        val viewId = args?.getInt(0) ?: return
+
+        when (commandId) {
+            createId -> createFragment(root, viewId)
+        }
+    }
+
     override fun receiveCommand(root: FrameLayout, commandId: String?, args: ReadableArray?) {
         super.receiveCommand(root, commandId, args)
         val viewId = args?.getInt(0) ?: return
