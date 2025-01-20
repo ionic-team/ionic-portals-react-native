@@ -30,13 +30,13 @@ See our docs to [get started with Portals](https://ionic.io/docs/portals/getting
 
 ## Registration
 
-The Ionic Portals library for React Native requires a **free** license key to use. Once you have integrated Portals into your project, login to your ionic account to get a key. See our doc on [how to register for free and get your Portals license key](https://ionic.io/docs/portals/how-to/get-a-product-key) and refer to the [React Native](https://ionic.io/docs/portals/getting-started/react-native) getting started guides to see where to add your key.
+The Ionic Portals library for React Native requires a license key to use. Once you have integrated Portals into your project, login to your ionic account to get a key. See our doc on [how to register for free and get your Portals license key](https://ionic.io/docs/portals/how-to/get-a-product-key) and refer to the [React Native](https://ionic.io/docs/portals/getting-started/react-native) getting started guides to see where to add your key.
 
 ## FAQ
 
 ### What is the pricing for Portals use?
 
-Portals is free to use in non-production environments. Businesses with more than USD $1 million in annual revenue are required to purchase a license from Ionic before using Portals in production.
+[Contact our sales team](https://ionic.io/portals#sales) for more information about pricing.
 
 ### Is Portals Open Source?
 
