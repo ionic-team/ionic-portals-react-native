@@ -1,5 +1,6 @@
 package io.ionic.portals.reactnative
 
+import android.util.Log
 import com.facebook.react.bridge.*
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import com.getcapacitor.JSObject
@@ -35,4 +36,12 @@ internal class PortalsPubSubModule(reactContext: ReactApplicationContext) :
     }
 }
 
-private fun ReadableMap.toJSObject(): JSObject = JSObject.fromJSONObject(JSONObject(toHashMap()))
+private fun ReadableMap.toJSObject(): JSObject {
+    val map = toHashMap() as? Map<*, *> ?: return JSObject()
+    return try {
+        JSObject.fromJSONObject(JSONObject(map))
+    } catch (e: Exception) {
+        Log.e("PortalsPubSubModule", "Error converting ReadableMap to JSObject", e)
+        JSObject()
+    }
+}
