@@ -33,6 +33,11 @@ internal class PortalsPubSubModule(reactContext: ReactApplicationContext) :
 
     @ReactMethod
     fun removeListeners(count: Int) {
+        subscriptionRefs.forEach {
+            PortalsPubSub.shared.unsubscribe(it.key, it.value)
+        }
+
+        subscriptionRefs.clear()
     }
 }
 
