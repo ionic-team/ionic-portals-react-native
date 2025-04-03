@@ -28,7 +28,7 @@ internal class PortalsPubSubModule(reactContext: ReactApplicationContext) :
                 .emit(eventName, result.toJSObject().toReactMap())
         }
 
-        subscriptionRefs[eventName] = ref
+        subscriptionRefs[topic] = ref
     }
 
     @ReactMethod
