@@ -28,11 +28,16 @@ internal class PortalsPubSubModule(reactContext: ReactApplicationContext) :
                 .emit(eventName, result.toJSObject().toReactMap())
         }
 
-        subscriptionRefs[eventName] = ref
+        subscriptionRefs[topic] = ref
     }
 
     @ReactMethod
     fun removeListeners(count: Int) {
+        subscriptionRefs.forEach {
+            PortalsPubSub.shared.unsubscribe(it.key, it.value)
+        }
+
+        subscriptionRefs.clear()
     }
 }
 
