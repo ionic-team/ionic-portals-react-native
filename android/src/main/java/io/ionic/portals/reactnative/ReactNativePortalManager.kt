@@ -65,9 +65,11 @@ internal object RNPortalManager {
             ?.let { rnArray ->
                 val list = mutableListOf<PortalPlugin>()
                 for (idx in 0 until rnArray.size()) {
-                    rnArray.getMap(idx)
-                        .let(PortalPlugin.Companion::fromReadableMap)
-                        ?.let(list::add)
+                    rnArray.getMap(idx)?.let { map ->
+                        PortalPlugin.fromReadableMap(map)?.let { plugin ->
+                            list.add(plugin)
+                        }
+                    }
                 }
                 return@let list
             } ?: listOf()
@@ -83,16 +85,16 @@ internal object RNPortalManager {
                 val list = mutableListOf<AssetMap>()
 
                 for (idx in 0 until rnArray.size()) {
-                    rnArray.getMap(idx)
-                        .let assetMap@{ map ->
-                            val name = map.getString("name") ?: return@assetMap null
+                    rnArray.getMap(idx)?.let { map ->
+                        val assetMapName = map.getString("name") ?: return@let
+                        list.add(
                             AssetMap(
-                                name = name,
-                                virtualPath = map.getString("virtualPath") ?: "/$name",
+                                name = assetMapName,
+                                virtualPath = map.getString("virtualPath") ?: "/$assetMapName",
                                 path = map.getString("startDir") ?: ""
                             )
-                        }
-                        ?.let(list::add)
+                        )
+                    }
                 }
 
                 return@let list
@@ -115,16 +117,17 @@ internal object RNPortalManager {
                 )
             }
 
-         portalBuilder
+        portalBuilder
             .addPlugin(PortalsPlugin::class.java)
 
         val vitals = map.getArray("webVitals")
         val maybeList = if (vitals != null) {
             val size = vitals.size()
             (0 until size).fold(mutableListOf<String>()) { list, next ->
-                val vital = vitals.getString(next)
-                list.add(vital)
-                return@fold list
+                vitals.getString(next)?.let { vital ->
+                    list.add(vital)
+                }
+                list
             }
         } else {
             null

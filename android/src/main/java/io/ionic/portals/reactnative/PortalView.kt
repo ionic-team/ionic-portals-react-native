@@ -19,7 +19,7 @@ import io.ionic.portals.WebVitals
 private data class PortalViewState(
     var fragment: PortalFragment?,
     var portal: RNPortal?,
-    var initialContext: HashMap<String, Any>?
+    var initialContext: HashMap<String, Any?>?
 )
 
 internal class PortalViewManager(private val context: ReactApplicationContext) :
@@ -30,11 +30,16 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
     @ReactProp(name = "portal")
     fun setPortal(viewGroup: ViewGroup, portal: ReadableMap) {
         val name = portal.getString("name") ?: return
+
+        // React Native 0.77 changed ReadableMap.toHashMap() from HashMap<String, Any> to HashMap<String, Any?>
+        // Casting is safe and keeps old versions compatible
+        val initialContext = portal.getMap("initialContext")?.toHashMap() as HashMap<String, Any?>?
+
         when (fragmentMap[viewGroup.id]) {
             null -> fragmentMap[viewGroup.id] = PortalViewState(
                 fragment = null,
                 portal = RNPortalManager.createPortal(portal),
-                initialContext = portal.getMap("initialContext")?.toHashMap()
+                initialContext
             )
         }
     }
