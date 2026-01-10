@@ -60,6 +60,20 @@ export default function App() {
             console.log('timeToFirstByte', duration);
           },
         }}
+        // webContentsDebuggingEnabled={true}
+      />
+      <PortalView
+        portal={portal}
+        style={styles.portalView}
+        webVitals={{
+          firstContentfulPaint: (duration: number) => 
+            console.log('firstContentfulPaint', duration),
+          firstInputDelay: (duration: number) =>
+            console.log('firstInputDelay', duration),
+          timeToFirstByte: (duration: number) => {
+            console.log('timeToFirstByte', duration);
+          },
+        }}
       />
       {/* ) : (
         <></>

@@ -1,6 +1,6 @@
 import './ExploreContainer.css';
 import { IonButton } from '@ionic/react';
-import { subscribe, publish } from '@ionic/portals';
+import { subscribe, publish, PortalMessage } from '@ionic/portals';
 import { useEffect, useRef, useState } from 'react';
 import { PluginListenerHandle } from '@capacitor/core';
 
@@ -8,10 +8,6 @@ interface ContainerProps {
   initialNumber: number
 }
 
-interface Message {
-  data: { message: number };
-  topic: string;
-}
 
 const ExploreContainer: React.FC<ContainerProps> = (props: ContainerProps) => {
   const subscription = useRef<PluginListenerHandle | null>(null);
@@ -32,7 +28,7 @@ const ExploreContainer: React.FC<ContainerProps> = (props: ContainerProps) => {
   const sub = async () => {
     subscription.current = await subscribe(
       subTopic,
-      (result: Message) => {
+      (result: PortalMessage) => {
         console.log(`Got message from ReactNative ${JSON.stringify(result)}`)
         setAppMessage(result.data.message);
       }
