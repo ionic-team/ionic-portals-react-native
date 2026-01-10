@@ -61,7 +61,7 @@ class PortalView: UIView {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.webView?.removeFromSuperview()
-                let webView = PortalUIView(portal: portal._portal)
+                let webView = PortalUIView(portal: portal._portal.configuring(\.isWebDebuggable, webContentsDebuggingEnabled))
                 webView.translatesAutoresizingMaskIntoConstraints = false
                 self.addSubview(webView)
                 NSLayoutConstraint.activate([
@@ -71,6 +71,20 @@ class PortalView: UIView {
                     webView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
                 ])
                 self.webView = webView
+            }
+        }
+    }
+    
+    @objc var webContentsDebuggingEnabled: Bool = {
+        #if DEBUG
+        true
+        #else
+        false
+        #endif
+    }() {
+        didSet {
+            if #available(iOS 16.4, *) {
+                self.webView?.bridge.webView?.isInspectable = webContentsDebuggingEnabled
             }
         }
     }

@@ -1,11 +1,17 @@
 package io.ionic.portals.reactnative
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Choreographer
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import android.widget.FrameLayout
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.ReadableMap
@@ -19,7 +25,8 @@ import io.ionic.portals.WebVitals
 private data class PortalViewState(
     var fragment: PortalFragment?,
     var portal: RNPortal?,
-    var initialContext: HashMap<String, Any?>?
+    var initialContext: HashMap<String, Any?>?,
+    var webContentsDebuggingEnabled: Boolean?
 )
 
 internal class PortalViewManager(private val context: ReactApplicationContext) :
@@ -35,13 +42,19 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         // Casting is safe and keeps old versions compatible
         val initialContext = portal.getMap("initialContext")?.toHashMap() as HashMap<String, Any?>?
 
-        when (fragmentMap[viewGroup.id]) {
-            null -> fragmentMap[viewGroup.id] = PortalViewState(
-                fragment = null,
-                portal = RNPortalManager.createPortal(portal),
-                initialContext
-            )
+        val state = fragmentMap.getOrPut(viewGroup.id) {
+            PortalViewState(null, null, null, null)
         }
+        state.portal = RNPortalManager.createPortal(portal)
+        state.initialContext = initialContext
+    }
+
+    @ReactProp(name = "webContentsDebuggingEnabled")
+    fun setWebContentsDebuggingEnabled(viewGroup: ViewGroup, webContentsDebuggingEnabled: Boolean) {
+        val state = fragmentMap.getOrPut(viewGroup.id) {
+            PortalViewState(null, null, null, null)
+        }
+        state.webContentsDebuggingEnabled = webContentsDebuggingEnabled
     }
 
     override fun getName() = "AndroidPortalView"
@@ -99,12 +112,26 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         }
 
         val portalFragment = PortalFragment(portal)
-
         viewState.initialContext?.let(portalFragment::setInitialContext)
         viewState.fragment = portalFragment
 
-        val fragmentActivity = context.currentActivity as? FragmentActivity ?: return
-        fragmentActivity.supportFragmentManager
+        portalFragment.lifecycle.addObserver(object : LifecycleEventObserver {
+            override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+                if (event == Lifecycle.Event.ON_RESUME) {
+                    source.lifecycle.removeObserver(this)
+
+                    viewState.webContentsDebuggingEnabled?.let { enabled ->
+                        // Post to the next main loop iteration to avoid racing with WebView initialization
+                        Handler(Looper.getMainLooper()).post {
+                            WebView.setWebContentsDebuggingEnabled(enabled)
+                        }
+                    }
+                }
+            }
+        })
+
+        val activity = context.currentActivity as? FragmentActivity ?: return
+        activity.supportFragmentManager
             .beginTransaction()
             .replace(viewId, portalFragment, "$viewId")
             .commit()
