@@ -172,7 +172,11 @@ export interface AssetMap {
 /**
  * Props needed for rendering a {@link Portal}
  */
-export type PortalProps = { portal: Portal; webVitals?: WebVitals } & ViewProps;
+export type PortalProps = {
+  portal: Portal;
+  webVitals?: WebVitals;
+  webContentsDebuggingEnabled?: boolean;
+} & ViewProps;
 
 export interface LiveUpdate {
   /** The AppFlow application ID */

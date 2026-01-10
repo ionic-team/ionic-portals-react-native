@@ -10,4 +10,5 @@
 
 @interface RCT_EXTERN_MODULE(IONPortalViewManager, RCTViewManager)
 RCT_EXPORT_VIEW_PROPERTY(portal, NSDictionary)
+RCT_EXPORT_VIEW_PROPERTY(webContentsDebuggingEnabled, BOOL)
 @end
