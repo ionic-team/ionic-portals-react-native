@@ -2,7 +2,7 @@ PODS:
   - boost (1.84.0)
   - Capacitor (7.0.1):
     - CapacitorCordova
-  - CapacitorCordova (7.0.1)
+  - CapacitorCordova (7.4.2)
   - DoubleConversion (1.1.6)
   - FBLazyVector (0.75.4)
   - fmt (9.1.0)
@@ -1504,7 +1504,7 @@ PODS:
     - React-logger (= 0.75.4)
     - React-perflogger (= 0.75.4)
     - React-utils (= 0.75.4)
-  - ReactNativePortals (0.7.1):
+  - ReactNativePortals (0.8.3):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1737,7 +1737,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   boost: 4cb898d0bf20404aab1850c656dcea009429d6c1
   Capacitor: 7b6faa2a912c47313a231c76363a863cea0c6123
-  CapacitorCordova: 326b9ada5bf8a750ced32b081d3a73e64f5ad51c
+  CapacitorCordova: 98d23e72010ecc9ecb31f51c01f8c099428ba0b5
   DoubleConversion: 76ab83afb40bddeeee456813d9c04f67f78771b5
   FBLazyVector: 430e10366de01d1e3d57374500b1b150fe482e6d
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120
@@ -1800,7 +1800,7 @@ SPEC CHECKSUMS:
   React-utils: 02526ea15628a768b8db9517b6017a1785c734d2
   ReactCodegen: 8b5341ecb61898b8bd40a73ebc443c6bf2d14423
   ReactCommon: 36d48f542b4010786d6b2bcee615fe5f906b7105
-  ReactNativePortals: 3569b75d8b489fec3bc2d5e943d5de3f259e1330
+  ReactNativePortals: e3d9aa8b5bf357f9301b92d22738f49852a3cd77
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: 055f92ad73f8c8600a93f0e25ac0b2344c3b07e6
 

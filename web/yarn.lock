@@ -1701,12 +1701,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@capacitor/core@npm:^5.0.0":
-  version: 5.7.6
-  resolution: "@capacitor/core@npm:5.7.6"
+"@capacitor/core@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@capacitor/core@npm:8.0.0"
   dependencies:
     tslib: ^2.1.0
-  checksum: dd35786ff0a589c067821ef23a90340442f8a8806ef5ca91138ebe5e912d770649d367d35ecee5fe355b6160152416c4ea903a31100dd81c8172100fddf50aa3
+  checksum: 8f36aa5a71a44be647c70590a38863e74749e64070b46b45d3d6db94df8036d46e9eff7f0b8563b00b8c0cd790255d57226615089c66c6cb7f4b95b0d321f7b3
   languageName: node
   linkType: hard
 
@@ -1961,52 +1961,52 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ionic/core@npm:6.7.5":
-  version: 6.7.5
-  resolution: "@ionic/core@npm:6.7.5"
+"@ionic/core@npm:8.7.16":
+  version: 8.7.16
+  resolution: "@ionic/core@npm:8.7.16"
   dependencies:
-    "@stencil/core": ^2.18.0
-    ionicons: ^6.1.3
+    "@stencil/core": 4.38.0
+    ionicons: ^8.0.13
     tslib: ^2.1.0
-  checksum: a93936a29547c85a810c4bcf785dcc63ede815d702bca280ab7c1eb3e09030db909e21ba176006c629c96018349970b73aa8ab59d948ed8f7073e851a88e3701
+  checksum: 8287ff23e38179688ee6a45acc0ce10301b13f1cee9118e655333a2873bd9dc09e89a7d38fada1f0af9fc1eb01242324985fb3dec6a59dbbfb1a5ff8e803a562
   languageName: node
   linkType: hard
 
-"@ionic/portals@npm:^0.8.1":
-  version: 0.8.1
-  resolution: "@ionic/portals@npm:0.8.1"
+"@ionic/portals@npm:^0.12.0":
+  version: 0.12.0
+  resolution: "@ionic/portals@npm:0.12.0"
   peerDependencies:
-    "@capacitor/core": ^5.0.0
-  checksum: dfdaf010ba62e861cc770428dfb3428f33eebdcb9a6939a9a115602a860e8db14b8f60cfa96d1e4167fa84bba2220fffd03c322d1093a2367b596c5e9bee4c04
+    "@capacitor/core": ">=7.0.0"
+  checksum: 4227e8b9d9caea34a80cf2e7d3e41e068d8b77a390aeeb339b6a14b069205f69d403b5c6615a91ca60c6407ae2bba9eaacdc0fc5a33dd23b62bb9fff95921089
   languageName: node
   linkType: hard
 
-"@ionic/react-router@npm:^6.0.0":
-  version: 6.7.5
-  resolution: "@ionic/react-router@npm:6.7.5"
+"@ionic/react-router@npm:^8.0.0":
+  version: 8.7.16
+  resolution: "@ionic/react-router@npm:8.7.16"
   dependencies:
-    "@ionic/react": 6.7.5
+    "@ionic/react": 8.7.16
     tslib: "*"
   peerDependencies:
     react: ">=16.8.6"
     react-dom: ">=16.8.6"
     react-router: ^5.0.1
     react-router-dom: ^5.0.1
-  checksum: 0521e55bbec08a5a8b74e74028b9049205c508be6dc36d3112724935f2394e3b77379f606ac4a157deef37f8a317bc7dc63ff071580611e34f934ec5d0e08976
+  checksum: fe403c5416777b63fb8b40e9fc771c9daa0e920e27ef23658fa7ccb956a29f9046c0a097770208e813d534aa9c86893c5069980c80d1f3411f5221246081e3ea
   languageName: node
   linkType: hard
 
-"@ionic/react@npm:6.7.5, @ionic/react@npm:^6.0.0":
-  version: 6.7.5
-  resolution: "@ionic/react@npm:6.7.5"
+"@ionic/react@npm:8.7.16, @ionic/react@npm:^8.0.0":
+  version: 8.7.16
+  resolution: "@ionic/react@npm:8.7.16"
   dependencies:
-    "@ionic/core": 6.7.5
-    ionicons: ^6.1.3
+    "@ionic/core": 8.7.16
+    ionicons: ^8.0.13
     tslib: "*"
   peerDependencies:
     react: ">=16.8.6"
     react-dom: ">=16.8.6"
-  checksum: 0546985d1759af4081ae19849816d63b3fb0816c8a5092e709cb710b13db99e1b1618169540e6a92375f1c7e66e0154e284fddc63318fa151dd41c4139a76e78
+  checksum: fa31ada27a943daaa446a73a686dd807598e34c66ada2798500f57df988eeb36fe4d9d34ec1b269277a09f20cde5d137ab6527c8037a6a0513da4ea50e725c8a
   languageName: node
   linkType: hard
 
@@ -2664,6 +2664,62 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rollup/rollup-darwin-arm64@npm:4.34.9":
+  version: 4.34.9
+  resolution: "@rollup/rollup-darwin-arm64@npm:4.34.9"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@rollup/rollup-darwin-x64@npm:4.34.9":
+  version: 4.34.9
+  resolution: "@rollup/rollup-darwin-x64@npm:4.34.9"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@rollup/rollup-linux-arm64-gnu@npm:4.34.9":
+  version: 4.34.9
+  resolution: "@rollup/rollup-linux-arm64-gnu@npm:4.34.9"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@rollup/rollup-linux-arm64-musl@npm:4.34.9":
+  version: 4.34.9
+  resolution: "@rollup/rollup-linux-arm64-musl@npm:4.34.9"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@rollup/rollup-linux-x64-gnu@npm:4.34.9":
+  version: 4.34.9
+  resolution: "@rollup/rollup-linux-x64-gnu@npm:4.34.9"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
+"@rollup/rollup-linux-x64-musl@npm:4.34.9":
+  version: 4.34.9
+  resolution: "@rollup/rollup-linux-x64-musl@npm:4.34.9"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@rollup/rollup-win32-arm64-msvc@npm:4.34.9":
+  version: 4.34.9
+  resolution: "@rollup/rollup-win32-arm64-msvc@npm:4.34.9"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@rollup/rollup-win32-x64-msvc@npm:4.34.9":
+  version: 4.34.9
+  resolution: "@rollup/rollup-win32-x64-msvc@npm:4.34.9"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@rushstack/eslint-patch@npm:^1.1.0":
   version: 1.10.3
   resolution: "@rushstack/eslint-patch@npm:1.10.3"
@@ -2703,12 +2759,73 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stencil/core@npm:^2.18.0":
-  version: 2.22.3
-  resolution: "@stencil/core@npm:2.22.3"
+"@stencil/core@npm:4.38.0":
+  version: 4.38.0
+  resolution: "@stencil/core@npm:4.38.0"
+  dependencies:
+    "@rollup/rollup-darwin-arm64": 4.34.9
+    "@rollup/rollup-darwin-x64": 4.34.9
+    "@rollup/rollup-linux-arm64-gnu": 4.34.9
+    "@rollup/rollup-linux-arm64-musl": 4.34.9
+    "@rollup/rollup-linux-x64-gnu": 4.34.9
+    "@rollup/rollup-linux-x64-musl": 4.34.9
+    "@rollup/rollup-win32-arm64-msvc": 4.34.9
+    "@rollup/rollup-win32-x64-msvc": 4.34.9
+  dependenciesMeta:
+    "@rollup/rollup-darwin-arm64":
+      optional: true
+    "@rollup/rollup-darwin-x64":
+      optional: true
+    "@rollup/rollup-linux-arm64-gnu":
+      optional: true
+    "@rollup/rollup-linux-arm64-musl":
+      optional: true
+    "@rollup/rollup-linux-x64-gnu":
+      optional: true
+    "@rollup/rollup-linux-x64-musl":
+      optional: true
+    "@rollup/rollup-win32-arm64-msvc":
+      optional: true
+    "@rollup/rollup-win32-x64-msvc":
+      optional: true
   bin:
     stencil: bin/stencil
-  checksum: b43fd0c0e10c8f6831821635de650f49c8d94eab75aa8e9214b723511cfd1f90fbf1ad33a79b4d2f165ef9ca6bee02839aac7b0a234ec6082b5959f98069f397
+  checksum: 6d679bed5129eeb0a0263341dc64a3a85c768af00caa93ba2b54fa88ed08f7eef0ed0ae0b894a6294eadd12e09e803ad02237ea2ffaedaf92a25e7233b97c1fe
+  languageName: node
+  linkType: hard
+
+"@stencil/core@npm:^4.35.3":
+  version: 4.41.1
+  resolution: "@stencil/core@npm:4.41.1"
+  dependencies:
+    "@rollup/rollup-darwin-arm64": 4.34.9
+    "@rollup/rollup-darwin-x64": 4.34.9
+    "@rollup/rollup-linux-arm64-gnu": 4.34.9
+    "@rollup/rollup-linux-arm64-musl": 4.34.9
+    "@rollup/rollup-linux-x64-gnu": 4.34.9
+    "@rollup/rollup-linux-x64-musl": 4.34.9
+    "@rollup/rollup-win32-arm64-msvc": 4.34.9
+    "@rollup/rollup-win32-x64-msvc": 4.34.9
+  dependenciesMeta:
+    "@rollup/rollup-darwin-arm64":
+      optional: true
+    "@rollup/rollup-darwin-x64":
+      optional: true
+    "@rollup/rollup-linux-arm64-gnu":
+      optional: true
+    "@rollup/rollup-linux-arm64-musl":
+      optional: true
+    "@rollup/rollup-linux-x64-gnu":
+      optional: true
+    "@rollup/rollup-linux-x64-musl":
+      optional: true
+    "@rollup/rollup-win32-arm64-msvc":
+      optional: true
+    "@rollup/rollup-win32-x64-msvc":
+      optional: true
+  bin:
+    stencil: bin/stencil
+  checksum: dd5979520039e6b420b46aed52bdbb328d9f4ffe1d8bb7a37b2075bcf4e35060b627b4a2e86e8f593d07dfbb76f3cd8dd3d7faa0c043df481bdf17a1a5fbdef2
   languageName: node
   linkType: hard
 
@@ -3769,10 +3886,10 @@ __metadata:
   resolution: "RNPortals@workspace:."
   dependencies:
     "@capacitor/cli": ^5.0.0
-    "@capacitor/core": ^5.0.0
-    "@ionic/portals": ^0.8.1
-    "@ionic/react": ^6.0.0
-    "@ionic/react-router": ^6.0.0
+    "@capacitor/core": ^8.0.0
+    "@ionic/portals": ^0.12.0
+    "@ionic/react": ^8.0.0
+    "@ionic/react-router": ^8.0.0
     "@testing-library/jest-dom": ^5.11.9
     "@testing-library/react": ^11.2.5
     "@testing-library/user-event": ^12.6.3
@@ -7829,12 +7946,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ionicons@npm:^6.1.3":
-  version: 6.1.3
-  resolution: "ionicons@npm:6.1.3"
+"ionicons@npm:^8.0.13":
+  version: 8.0.13
+  resolution: "ionicons@npm:8.0.13"
   dependencies:
-    "@stencil/core": ^2.18.0
-  checksum: c63aa3e0f83129129a836f97f07547b6c53a244e84a41f838a70b4eb17ddc9d926526e1fdee63f897a32300523192fe0c0889aa38617b9df01d15c62e9cb3a37
+    "@stencil/core": ^4.35.3
+  checksum: 6e74535bafe140a032ff3390ce8fff6fc4e30b99bd686df4c77af37b6a0f96f57d2912f735c9e5744965e688a51a4fd5eeb40e43ce1d3b2abefc5b8147df7fd8
   languageName: node
   linkType: hard
 
