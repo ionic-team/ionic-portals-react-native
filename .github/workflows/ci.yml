@@ -46,6 +46,7 @@ jobs:
 
       - name: Build package
         run: yarn prepare
+        
   build-android:
     runs-on: ubuntu-latest
     env:
