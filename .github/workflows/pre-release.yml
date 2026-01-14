@@ -24,4 +24,6 @@ jobs:
       - name: Push version bump commit
         uses: EndBug/add-and-commit@v9
       - name: Validate Publish Flow
-        run: yarn pack --dry-run
+        run: |
+          yarn prepare
+          yarn pack --dry-run
