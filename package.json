@@ -34,7 +34,8 @@
     "lint:fix": "eslint \"**/*.{js,ts,tsx}\" --fix",
     "docs": "typedoc --out ./docs/documentation ./src --tsconfig ./tsconfig.build.json",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
-    "prepare": "bob build"
+    "prepare": "bob build",
+    "prepack": "bob build"
   },
   "keywords": [
     "react-native",
