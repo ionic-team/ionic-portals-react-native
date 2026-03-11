@@ -7,9 +7,9 @@
 </div>
 <br />
 <p align="center">
-  <img src="https://img.shields.io/badge/platform-iOS%2013%2B-lightgrey?style=flat-square" alt="Supports iOS 13 and up" />
-  <img src="https://img.shields.io/badge/platform-Android%20SDK%2021%2B-brightgreen?style=flat-square" alt="Supports Android SDK 21 and up" />
-  <img src="https://img.shields.io/badge/platform-React%20Native%200.63.3%2B-blue?style=flat-square" alt="Supports React Native 0.63.3 and up" />
+  <img src="https://img.shields.io/badge/platform-iOS%2015.1%2B-lightgrey?style=flat-square" alt="Supports iOS 15.1 and up" />
+  <img src="https://img.shields.io/badge/platform-Android%20SDK%2024%2B-brightgreen?style=flat-square" alt="Supports Android SDK 24 and up" />
+  <img src="https://img.shields.io/badge/platform-React%20Native%200.80.3%2B-blue?style=flat-square" alt="Supports React Native 0.80.3 and up" />
 </p>
 <p align="center">
   <a href="https://github.com/ionic-team/react-native-ionic-portals/actions/workflows/verify.yml"><img src="https://img.shields.io/github/actions/workflow/status/ionic-team/react-native-ionic-portals/verify.yml?branch=main&style=flat-square" /></a>
