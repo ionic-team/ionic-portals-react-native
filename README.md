@@ -12,7 +12,6 @@
   <img src="https://img.shields.io/badge/platform-React%20Native%200.80.3%2B-blue?style=flat-square" alt="Supports React Native 0.80.3 and up" />
 </p>
 <p align="center">
-  <a href="https://github.com/ionic-team/react-native-ionic-portals/actions/workflows/verify.yml"><img src="https://img.shields.io/github/actions/workflow/status/ionic-team/react-native-ionic-portals/verify.yml?branch=main&style=flat-square" /></a>
   <a href="https://www.npmjs.com/package/@ionic/portals-react-native"><img src="https://img.shields.io/npm/l/@ionic/portals-react-native?style=flat-square" /></a>
 </p>
 <p align="center">
