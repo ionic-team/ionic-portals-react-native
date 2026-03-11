@@ -1,18 +1,20 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import { getInitialContext } from '@ionic/portals';
 
 const context = getInitialContext<{ initialNumber: number }>()?.value ?? { initialNumber: 0 };
+const rootElement = document.getElementById('root');
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App initialNumber={context.initialNumber} />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+if (rootElement) {
+  createRoot(rootElement).render(
+    <React.StrictMode>
+      <App initialNumber={context.initialNumber} />
+    </React.StrictMode>
+  );
+}
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

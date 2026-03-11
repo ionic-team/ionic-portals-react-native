@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useColorScheme, View, Text, StyleSheet } from 'react-native';
 import type { EmitterSubscription, ViewProps } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { type Message, subscribe, publish } from '@ionic/portals-react-native';
 
 const PubSubLabel: React.FC<{ initialNumber: number } & ViewProps> = ({
@@ -65,3 +64,8 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
 });
+
+const Colors = {
+  white: '#FFFFFF',
+  black: '#000000',
+};
