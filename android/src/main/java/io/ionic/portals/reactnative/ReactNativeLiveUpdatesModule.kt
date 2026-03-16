@@ -8,6 +8,7 @@ import io.ionic.liveupdates.data.model.FailResult
 import io.ionic.liveupdates.data.model.Snapshot
 import io.ionic.liveupdates.data.model.SyncResult
 import io.ionic.liveupdates.network.SyncCallback
+import io.ionic.liveupdatesprovider.LiveUpdatesError
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
@@ -21,24 +22,48 @@ internal object LiveUpdatesModule {
     )
 
     fun syncOne(appId: String, context: Context, promise: Promise) {
-        LiveUpdateManager.sync(
-            context = context,
-            appId = appId,
-            callback = object : SyncCallback {
-                override fun onAppComplete(syncResult: SyncResult) {
-                    promise.resolve(syncResult.toReadableMap())
-
+        // Check if there's a custom LiveUpdatesManager for this appId
+        val customManager = RNPortalManager.getLiveUpdatesManager(appId)
+        
+        if (customManager != null) {
+            // Use the custom manager's sync method
+            customManager.sync(object : io.ionic.liveupdatesprovider.SyncCallback {
+                override fun onComplete(result: io.ionic.liveupdatesprovider.models.SyncResult) {
+                    // Convert provider SyncResult to the format expected by the bridge
+                    val resultMap = WritableNativeMap()
+                    resultMap.putBoolean("didUpdate", result.didUpdate)
+                    resultMap.putString("appId", appId)
+                    if (result.latestAppDirectory != null) {
+                        resultMap.putString("latestAppDirectory", result.latestAppDirectory?.absolutePath)
+                    }
+                    promise.resolve(resultMap)
                 }
 
-                override fun onAppComplete(failResult: FailResult) {
-                    promise.resolve(failResult.toReadableMap())
+                override fun onError(error: LiveUpdatesError.SyncFailed) {
+                    promise.reject("SYNC_FAILED", error.message, error.cause)
                 }
+            })
+        } else {
+            // Fall back to the default LiveUpdateManager
+            LiveUpdateManager.sync(
+                context = context,
+                appId = appId,
+                callback = object : SyncCallback {
+                    override fun onAppComplete(syncResult: SyncResult) {
+                        promise.resolve(syncResult.toReadableMap())
 
-                override fun onSyncComplete() {
-                    // do nothing
+                    }
+
+                    override fun onAppComplete(failResult: FailResult) {
+                        promise.resolve(failResult.toReadableMap())
+                    }
+
+                    override fun onSyncComplete() {
+                        // do nothing
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 
     fun syncSome(appIds: ReadableArray, context: Context, promise: Promise) {

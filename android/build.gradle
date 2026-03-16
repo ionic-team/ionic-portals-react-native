@@ -1,8 +1,9 @@
 buildscript {
   // Buildscript is evaluated before everything else so we can't use getExtOrDefault
-  def kotlin_version = rootProject.ext.has("kotlinVersion") ? rootProject.ext.get("kotlinVersion") : project.properties["PortalsReactNative_kotlinVersion"]
+  def kotlin_version = "2.1.20"
 
   repositories {
+    mavenLocal()
     google()
     mavenCentral()
   }
@@ -83,6 +84,7 @@ android {
 }
 
 repositories {
+  mavenLocal()
   mavenCentral()
   google()
 }
@@ -93,9 +95,11 @@ dependencies {
   // For < 0.71, this will be from the local maven repo
   // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
   //noinspection GradleDynamicVersion
+  implementation "io.ionic:live-updates-provider:LOCAL-SNAPSHOT"
+  
   implementation "com.facebook.react:react-android"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation "io.ionic:portals:0.13.0-rn.1"
+  // implementation "io.ionic:portals:0.13.0-rn.1"
+  implementation "io.ionic:portals:LOCAL-SNAPSHOT"
   implementation "io.ionic:liveupdates:0.5.+"
 }
-

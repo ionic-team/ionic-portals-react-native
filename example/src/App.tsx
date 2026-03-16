@@ -1,7 +1,8 @@
 /* eslint-disable */
 import * as React from 'react';
 import PubSubLabel from './PubSubLabel';
-import { StyleSheet, View } from 'react-native';
+import MockLiveUpdatesExample from './MockLiveUpdatesExample';
+import { StyleSheet, View, Button } from 'react-native';
 import {
   PortalView,
   addPortal,
@@ -24,6 +25,8 @@ var portal: Portal = {
 };
 
 export default function App() {
+  const [showMockExample, setShowMockExample] = React.useState(false);
+
   // If using the old deprecated API, you can use the following code to register web vitals:
   // const [ready, setReady] = React.useState(false);
   // const setupPortal = async () => {
@@ -43,6 +46,11 @@ export default function App() {
   //     setReady(true);
   //   });
   // }, []);
+
+  if (showMockExample) {
+    return <MockLiveUpdatesExample />;
+  }
+
   const initialNumber = 0;
   return (
     <View style={styles.container}>
@@ -61,6 +69,12 @@ export default function App() {
           },
         }}
       />
+      <View style={styles.buttonContainer}>
+        <Button
+          title="Test Mock Live Updates"
+          onPress={() => setShowMockExample(true)}
+        />
+      </View>
       {/* ) : (
         <></>
       )} */}
@@ -79,5 +93,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  buttonContainer: {
+    marginTop: 20,
   },
 });

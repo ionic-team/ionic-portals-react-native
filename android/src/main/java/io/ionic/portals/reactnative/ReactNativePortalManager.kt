@@ -4,6 +4,9 @@ import com.facebook.react.bridge.*
 import com.getcapacitor.Plugin
 import io.ionic.liveupdates.LiveUpdate
 import io.ionic.liveupdates.LiveUpdateManager
+import io.ionic.liveupdatesprovider.LiveUpdatesManager
+import io.ionic.liveupdatesprovider.LiveUpdatesRegistry
+import io.ionic.liveupdatesprovider.models.ProviderConfig
 import io.ionic.portals.*
 import org.json.JSONArray
 import org.json.JSONException
@@ -44,7 +47,17 @@ internal object RNPortalManager {
     private lateinit var reactApplicationContext: ReactApplicationContext
     private var usesSecureLiveUpdates = false
 
+    // Map to store custom LiveUpdatesManager instances by appId
+    private val liveUpdatesManagers = ConcurrentHashMap<String, io.ionic.liveupdatesprovider.LiveUpdatesManager>()
+
     fun register(key: String) = manager.register(key)
+
+    /**
+     * Get a custom LiveUpdatesManager for the given appId, if one was registered.
+     */
+    fun getLiveUpdatesManager(appId: String): io.ionic.liveupdatesprovider.LiveUpdatesManager? {
+        return liveUpdatesManagers[appId]
+    }
 
     fun createPortal(map: ReadableMap): RNPortal? {
         val name = map.getString("name") ?: return null
@@ -102,20 +115,81 @@ internal object RNPortalManager {
 
         assetMaps.forEach(portalBuilder::addAssetMap)
 
-        map.getMap("liveUpdate")
-            ?.let { readableMap ->
-                val appId = readableMap.getString("appId") ?: return@let null
-                val channel = readableMap.getString("channel") ?: return@let null
-                val syncOnAdd = readableMap.getBoolean("syncOnAdd")
-                Pair(LiveUpdate(appId, channel, usesSecureLiveUpdates), syncOnAdd)
-            }
-            ?.let { (liveUpdate, updateOnAppLoad) ->
+        map.getMap("liveUpdate")?.let { liveUpdateMap ->
+            val appId = liveUpdateMap.getString("appId") ?: return@let
+            val channel = liveUpdateMap.getString("channel") ?: return@let
+            val syncOnAdd = liveUpdateMap.getBoolean("syncOnAdd")
+            val providerId = liveUpdateMap.getString("providerId")
+            val providerConfigMap = liveUpdateMap.getMap("providerConfig")
+
+            // Check if we should use the new LiveUpdatesManagerProvider approach
+            if (providerId != null && providerConfigMap != null) {
+                try {
+                    // Get the provider from the registry
+                    val provider = LiveUpdatesRegistry.resolve(providerId)
+
+                    if (provider == null) {
+                        // Fall back to the traditional LiveUpdate approach
+                        val liveUpdate = LiveUpdate(appId, channel, usesSecureLiveUpdates)
+                        portalBuilder.setLiveUpdateConfig(
+                            context = reactApplicationContext,
+                            liveUpdateConfig = liveUpdate,
+                            updateOnAppLoad = syncOnAdd
+                        )
+                        return@let
+                    }
+
+                    // Convert the providerConfig ReadableMap to a Map<String, Any>
+                    // Filter out null values to match the expected type
+                    val configDataMap = providerConfigMap.toHashMap()
+                        .filterValues { it != null }
+                        .mapValues { it.value as Any }
+
+                    // Add appId and channel to the config data
+                    val configData = mutableMapOf<String, Any>(
+                        "appId" to appId,
+                        "channel" to channel,
+                        "providerId" to providerId
+                    )
+                    configData.putAll(configDataMap)
+
+                    // Create the ProviderConfig
+                    val providerConfig = ProviderConfig(configData)
+
+                    // Create the manager using the provider
+                    val manager = provider.createManager(
+                        context = reactApplicationContext,
+                        config = providerConfig
+                    )
+
+                    // Store the manager by appId so it can be retrieved for sync operations
+                    liveUpdatesManagers[appId] = manager
+
+                    // Set the live updates manager on the portal builder
+                    portalBuilder.setLiveUpdateManager(
+                        context = reactApplicationContext,
+                        liveUpdatesManager = manager,
+                        updateOnAppLoad = syncOnAdd
+                    )
+                } catch (e: Exception) {
+                    // Fall back to the traditional LiveUpdate approach
+                    val liveUpdate = LiveUpdate(appId, channel, usesSecureLiveUpdates)
+                    portalBuilder.setLiveUpdateConfig(
+                        context = reactApplicationContext,
+                        liveUpdateConfig = liveUpdate,
+                        updateOnAppLoad = syncOnAdd
+                    )
+                }
+            } else {
+                // Fall back to the traditional LiveUpdate approach
+                val liveUpdate = LiveUpdate(appId, channel, usesSecureLiveUpdates)
                 portalBuilder.setLiveUpdateConfig(
                     context = reactApplicationContext,
                     liveUpdateConfig = liveUpdate,
-                    updateOnAppLoad = updateOnAppLoad
+                    updateOnAppLoad = syncOnAdd
                 )
             }
+        }
 
         portalBuilder
             .addPlugin(PortalsPlugin::class.java)
