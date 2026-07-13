@@ -116,13 +116,9 @@ export type WebVitals = {
 };
 
 /**
- * Validates that a valid registration key has been procured from http://ionic.io/register-portals
- * @param key The registration key
- * @returns Promise<void>
+ * @deprecated Registration keys are no longer required. This function is a no-op and will be removed in a future release.
  */
-export const register = async (key: string): Promise<void> => {
-  return IONPortalsReactNative.register(key);
-};
+export const register = async (_key: string): Promise<void> => {};
 
 /**
  * The configuration of a web application to be embedded in a React Native application.

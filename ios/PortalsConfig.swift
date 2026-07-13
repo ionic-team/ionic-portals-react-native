@@ -11,6 +11,5 @@ import IonicLiveUpdates
 import IonicPortals
 
 struct PortalsConfig: Decodable {
-    var registrationKey: String?
     var secureLiveUpdatesPublicKey: String?
 }
