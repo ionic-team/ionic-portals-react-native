@@ -19,10 +19,6 @@ public class PortalsReactNative: NSObject {
               let portalsConfig = try? JSONDecoder().decode(PortalsConfig.self, from: configData)
         else { fatalError("Portals config data is malformed. Aborting.") }
         
-        if let registrationKey = portalsConfig.registrationKey {
-            PortalsRegistrationManager.shared.register(key: registrationKey)
-        }
-        
         if let publicKeyPath = portalsConfig.secureLiveUpdatesPublicKey {
             guard let publicKeyUrl = Bundle.main.url(forResource: publicKeyPath, withExtension: nil) else { fatalError("Public key not found at \(publicKeyPath)") }
             Self.lum = SecureLiveUpdateManager(named: "secure-updates", publicKeyUrl: publicKeyUrl)
@@ -30,7 +26,6 @@ public class PortalsReactNative: NSObject {
     }
     
     @objc func register(_ key: String, resolver: RCTPromiseResolveBlock, rejector: RCTPromiseRejectBlock) {
-        PortalsRegistrationManager.shared.register(key: key)
         resolver(())
     }
     

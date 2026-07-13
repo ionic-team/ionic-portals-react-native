@@ -44,7 +44,7 @@ internal object RNPortalManager {
     private lateinit var reactApplicationContext: ReactApplicationContext
     private var usesSecureLiveUpdates = false
 
-    fun register(key: String) = manager.register(key)
+    fun register(key: String) = Unit
 
     fun createPortal(map: ReadableMap): RNPortal? {
         val name = map.getString("name") ?: return null
@@ -161,10 +161,6 @@ internal object RNPortalManager {
         } catch (e: JSONException) {
             throw Error("Portals config data is malformed. Aborting.", e)
         }
-
-        val registrationKey =
-            if (!configJson.isNull("registrationKey")) configJson.getString("registrationKey") else null
-        registrationKey?.let(::register)
 
         val liveUpdatesKey =
             if (!configJson.isNull("liveUpdatesKey")) configJson.getString("liveUpdatesKey") else null
