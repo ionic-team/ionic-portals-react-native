@@ -113,7 +113,6 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
 
         val portalFragment = PortalFragment(portal)
         viewState.initialContext?.let(portalFragment::setInitialContext)
-        viewState.fragment = portalFragment
 
         portalFragment.lifecycle.addObserver(object : LifecycleEventObserver {
             override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
@@ -130,28 +129,44 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
             }
         })
 
-        val activity = context.currentActivity as? FragmentActivity ?: return
-        activity.supportFragmentManager
-            .beginTransaction()
-            .replace(viewId, portalFragment, "$viewId")
-            .commit()
+        // The fragment transaction must not be committed asynchronously here:
+        // FragmentManager resolves the container view by id when the
+        // transaction executes (next main-loop iteration), and throws
+        // "No view found for id" if the container is not part of the
+        // activity's window at that moment. That happens when React drops the
+        // view before the transaction runs (mount and unmount in one batch),
+        // or when the view exists but is not attached yet / any more (e.g. a
+        // react-native-screens screen still animating in, or detached while
+        // React keeps the subtree mounted).
+        //
+        // Instead, commit synchronously once the view is attached and still ours
+        // (see runWhenAttached for why it is posted on the view).
+        runWhenAttached(parentView, isCurrent = { fragmentMap[viewId] === viewState }) {
+            val activity = context.currentActivity as? FragmentActivity ?: return@runWhenAttached
+            try {
+                activity.supportFragmentManager
+                    .beginTransaction()
+                    .replace(viewId, portalFragment, "$viewId")
+                    .commitNowAllowingStateLoss()
+                viewState.fragment = portalFragment
+            } catch (e: IllegalStateException) {
+                // Host destroyed or FragmentManager unavailable.
+                Log.i("io.ionic.portals.rn", "Fragment manager not available", e)
+            }
+        }
     }
 
     override fun onDropViewInstance(view: FrameLayout) {
         super.onDropViewInstance(view)
-        val viewState = fragmentMap[view.id] ?: return
-
-        try {
-            viewState.fragment
-                ?.parentFragmentManager
-                ?.beginTransaction()
-                ?.remove(viewState.fragment!!)
-                ?.commit()
-        } catch (e: IllegalStateException) {
-            Log.i("io.ionic.portals.rn", "Parent fragment manager not available")
-        }
-
-        fragmentMap.remove(view.id)
+        val viewState = fragmentMap.remove(view.id) ?: return
+        // Only set once the fragment was actually added, so parentFragmentManager
+        // is available here. A drop before the add ran is handled by the
+        // isCurrent check in runWhenAttached.
+        val fragment = viewState.fragment ?: return
+        fragment.parentFragmentManager
+            .beginTransaction()
+            .remove(fragment)
+            .commitAllowingStateLoss()
     }
 
     private fun setupLayout(view: ViewGroup) {
