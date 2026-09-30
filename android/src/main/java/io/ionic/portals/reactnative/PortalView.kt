@@ -139,32 +139,21 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         // react-native-screens screen still animating in, or detached while
         // React keeps the subtree mounted).
         //
-        // Instead, commit synchronously from a runnable posted on the view:
-        // - View.post() defers the runnable until the view is attached, and
-        //   always dispatches it through the main handler, so the commit never
-        //   nests inside another FragmentManager transaction that may be
-        //   executing (react-native-screens commits with commitNow).
-        // - When it runs, re-check that the view is still ours and attached.
-        parentView.post(object : Runnable {
-            override fun run() {
-                if (fragmentMap[viewId] !== viewState) return // dropped meanwhile
-                if (!parentView.isAttachedToWindow) {
-                    parentView.post(this) // re-queued until the next attach
-                    return
-                }
-                val activity = context.currentActivity as? FragmentActivity ?: return
-                try {
-                    activity.supportFragmentManager
-                        .beginTransaction()
-                        .replace(viewId, portalFragment, "$viewId")
-                        .commitNowAllowingStateLoss()
-                    viewState.fragment = portalFragment
-                } catch (e: IllegalStateException) {
-                    // Host destroyed or FragmentManager unavailable.
-                    Log.i("io.ionic.portals.rn", "Fragment manager not available", e)
-                }
+        // Instead, commit synchronously once the view is attached and still ours
+        // (see runWhenAttached for why it is posted on the view).
+        runWhenAttached(parentView, isCurrent = { fragmentMap[viewId] === viewState }) {
+            val activity = context.currentActivity as? FragmentActivity ?: return@runWhenAttached
+            try {
+                activity.supportFragmentManager
+                    .beginTransaction()
+                    .replace(viewId, portalFragment, "$viewId")
+                    .commitNowAllowingStateLoss()
+                viewState.fragment = portalFragment
+            } catch (e: IllegalStateException) {
+                // Host destroyed or FragmentManager unavailable.
+                Log.i("io.ionic.portals.rn", "Fragment manager not available", e)
             }
-        })
+        }
     }
 
     override fun onDropViewInstance(view: FrameLayout) {
@@ -172,7 +161,7 @@ internal class PortalViewManager(private val context: ReactApplicationContext) :
         val viewState = fragmentMap.remove(view.id) ?: return
         // Only set once the fragment was actually added, so parentFragmentManager
         // is available here. A drop before the add ran is handled by the
-        // identity check in the posted runnable above.
+        // isCurrent check in runWhenAttached.
         val fragment = viewState.fragment ?: return
         fragment.parentFragmentManager
             .beginTransaction()
