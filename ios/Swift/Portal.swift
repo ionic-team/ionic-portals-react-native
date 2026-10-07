@@ -98,7 +98,19 @@ extension Portal {
 
 extension Array where Element == Portal.Plugin {
     var toCapPlugin: [IonicPortals.Portal.Plugin] {
-        compactMap { NSClassFromString($0.iosClassName) as? CAPPlugin.Type }
-            .compactMap(IonicPortals.Portal.Plugin.type)
+        compactMap { plugin in
+            guard let pluginClass = NSClassFromString(plugin.iosClassName) else {
+                print("Portals: plugin class \(plugin.iosClassName) not found; skipping.")
+                return nil
+            }
+            guard let capPluginClass = pluginClass as? CAPPlugin.Type else {
+                // Usually two copies of Capacitor are linked (for example one from CocoaPods and
+                // one from SwiftPM), and the plugin subclasses the copy Portals does not use.
+                print("Portals: plugin class \(plugin.iosClassName) is not a CAPPlugin subclass of the Capacitor Portals uses; skipping. Check that the app links a single copy of Capacitor.")
+                return nil
+            }
+            return capPluginClass
+        }
+        .compactMap(IonicPortals.Portal.Plugin.type)
     }
 }

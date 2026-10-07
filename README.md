@@ -27,6 +27,19 @@ Ionic Portals is a supercharged native Web View component for React Native that 
 
 See our docs to [get started with Portals](https://ionic.io/docs/portals/getting-started/guide).
 
+## Experimental: Swift Package Manager (React Native 0.87+)
+
+React Native 0.87 added an opt-in mode where an iOS app uses Swift Package Manager instead of CocoaPods (`npx react-native spm`). This package ships a `Package.swift` for that mode. React Native marks the mode as experimental and not for production, and CocoaPods remains the supported integration.
+
+In SwiftPM mode, Portals depends on Capacitor through [`capacitor-swift-pm`](https://github.com/ionic-team/capacitor-swift-pm). Add any Capacitor plugins your portals use through SwiftPM too, so the app links a single copy of Capacitor. If a plugin comes from CocoaPods while Portals comes from SwiftPM, the app links two copies of Capacitor and Portals skips the plugin with a `not a CAPPlugin subclass` message in the Xcode console.
+
+React Native autolinks Capacitor plugins installed from npm, but it derives the Swift package name from the npm name (`@capacitor/preferences` becomes `Preferences`). Capacitor plugins name their package after the podspec (`CapacitorPreferences`), so resolution fails with `product 'Preferences' ... not found`. Until the plugin ships its own `react-native.config.js`, add one to it with [`patch-package`](https://github.com/ds300/patch-package), using the product name from the plugin's `Package.swift`:
+
+```js
+// node_modules/@capacitor/preferences/react-native.config.js
+module.exports = { spm: { name: 'CapacitorPreferences' } };
+```
+
 ## Registration
 
 The Ionic Portals library for React Native requires a license key to use. Once you have integrated Portals into your project, login to your ionic account to get a key. See our doc on [how to register for free and get your Portals license key](https://ionic.io/docs/portals/how-to/get-a-product-key) and refer to the [React Native](https://ionic.io/docs/portals/getting-started/react-native) getting started guides to see where to add your key.
