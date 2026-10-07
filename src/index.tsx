@@ -66,8 +66,8 @@ export const subscribe = (
 ): EmitterSubscription => {
   return PortalsPubSub.addListener(
     `PortalsSubscription:${topic}`,
-    (message: Message) => {
-      onMessageReceived(message);
+    (message) => {
+      onMessageReceived(message as Message);
     }
   );
 };
@@ -97,14 +97,12 @@ const registerVital = (
   callback: (duration: number) => void
 ) => {
   if (Platform.OS === 'ios' && vital !== 'fcp') return;
-  const listener = WebVitals.addListener(
-    `vitals:${vital}`,
-    (event: WebVitalsEvent) => {
-      if (event.portalName === portalName) {
-        callback(event.duration);
-      }
+  const listener = WebVitals.addListener(`vitals:${vital}`, (payload) => {
+    const event = payload as WebVitalsEvent;
+    if (event.portalName === portalName) {
+      callback(event.duration);
     }
-  );
+  });
 
   webVitalsMap.set(`${portalName}-vitals:${vital}`, listener);
 };
