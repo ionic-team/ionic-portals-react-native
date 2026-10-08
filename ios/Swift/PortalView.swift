@@ -12,9 +12,9 @@ import IonicPortals
 import React
 
 @objc(IONPortalViewManager)
-class PortalViewManager: RCTViewManager {
-    override class func requiresMainQueueSetup() -> Bool { true }
-    override func view() -> UIView! { PortalView() }
+public class PortalViewManager: RCTViewManager {
+    public override class func requiresMainQueueSetup() -> Bool { true }
+    public override func view() -> UIView! { PortalView() }
 }
 
 class PortalView: UIView {

@@ -7,7 +7,7 @@ import {
 
 const PortalViewManager = requireNativeComponent('AndroidPortalView');
 
-const createFragment = (viewId: number | null) =>
+const createFragment = (viewId: number) =>
   UIManager.dispatchViewManagerCommand(
     viewId,
     // we are calling the 'create' command
@@ -21,7 +21,9 @@ const BasePortalView = (props: any) => {
 
   useEffect(() => {
     const viewId = findNodeHandle(ref.current);
-    createFragment(viewId);
+    if (viewId != null) {
+      createFragment(viewId);
+    }
   }, []);
 
   return <PortalViewManager {...props} ref={ref} />;
