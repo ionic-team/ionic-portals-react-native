@@ -31,6 +31,23 @@ describe('Package.swift', () => {
     expect(objc.some((f) => f.startsWith('Swift/'))).toBe(false);
   });
 
+  // The .mm files register Swift classes by Objective-C name from another SwiftPM target.
+  // Release builds give internal classes a local symbol, so the link fails unless they're public.
+  it('makes every Swift class registered from Objective-C public', () => {
+    const read = (file: string) =>
+      fs.readFileSync(path.join(root, 'ios', file), 'utf8');
+    const registered = filesIn('ios', '.mm').flatMap((f) =>
+      [...read(f).matchAll(/RCT_EXTERN_MODULE\((\w+),/g)].map((m) => m[1])
+    );
+    const swift = filesIn('ios', '.swift').map(read).join('\n');
+    expect(registered.length).toBeGreaterThan(0);
+    for (const name of registered) {
+      expect(swift).toMatch(
+        new RegExp(`@objc\\(${name}\\)\\s*\\n\\s*public class `)
+      );
+    }
+  });
+
   it('uses the same name everywhere React Native looks it up', () => {
     const name = 'ReactNativePortals';
     expect(manifest).toContain(`name: "${name}"`);

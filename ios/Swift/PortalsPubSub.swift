@@ -11,17 +11,17 @@ import React
 import Combine
 
 @objc(IONPortalPubSub)
-class PortalsPubSub: RCTEventEmitter {
+public class PortalsPubSub: RCTEventEmitter {
     private let eventPrefix = "PortalsSubscription:"
     private var events: Set<String> = []
     
-    override func supportedEvents() -> [String] {
+    public override func supportedEvents() -> [String] {
         Array(events)
     }
 
     private let publishers = ConcurrentDictionary<String, AnyCancellable>(label: "io.ionic.rn.portalspubsub")
 
-    override func addListener(_ eventName: String) {
+    public override func addListener(_ eventName: String) {
         var topic = eventName
         if topic.hasPrefix(eventPrefix) {
             topic = String(eventName.suffix(from: eventPrefix.endIndex))
@@ -46,6 +46,6 @@ class PortalsPubSub: RCTEventEmitter {
         resolver(())
     }
     
-    override class func requiresMainQueueSetup() -> Bool { true }
+    public override class func requiresMainQueueSetup() -> Bool { true }
 }
 

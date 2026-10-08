@@ -11,11 +11,11 @@ import React
 import Combine
 
 @objc(IONPortalsWebVitals)
-class WebVitals: RCTEventEmitter {
+public class WebVitals: RCTEventEmitter {
     private let fcp = "vitals:fcp"
     private var subscription: AnyCancellable?
     
-    override init() {
+    public override init() {
         super.init()
         subscription = IonicPortals.PortalsPubSub
             .shared
@@ -30,9 +30,9 @@ class WebVitals: RCTEventEmitter {
             }
     }
 
-    override func supportedEvents() -> [String] {
+    public override func supportedEvents() -> [String] {
         [fcp]
     }
 
-    override class func requiresMainQueueSetup() -> Bool { true }
+    public override class func requiresMainQueueSetup() -> Bool { true }
 }
